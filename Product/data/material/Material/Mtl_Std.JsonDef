@@ -1,0 +1,26 @@
+{
+    "Info": {
+        "Shader": "data\\material\\material\\mtl_std.fx",
+        "DynamicEffectMark": 0
+    },
+    "RenderState": {
+        "StaticFlags": 1,
+        "DynamicFlags": 2,
+        "BlendMode": 1,
+        "LightingMode": 8,
+        "MaterialID": 1,
+        "AlphaRef": 128,
+        "AlphaRef2": 0,
+        "TwoSide": 0,
+        "DistortionMode": 0,
+        "Fur": 0
+    },
+    "Param": [
+        {
+            "Name": "BaseColorMap",
+            "RegisterName": "_0_local1_Texture",
+            "Type": "Texture",
+            "Value": "kg3denginedata\\texture\\defaulttexturergba.tga"
+        }
+    ]
+}

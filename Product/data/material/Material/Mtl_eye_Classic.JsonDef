@@ -1,0 +1,102 @@
+{
+    "Info": {
+        "Shader": "data\\material\\material\\mtl_eye_classic.fx",
+        "DynamicEffectMark": 1
+    },
+    "RenderState": {
+        "StaticFlags": 0,
+        "DynamicFlags": 0,
+        "BlendMode": 0,
+        "LightingMode": 8,
+        "MaterialID": 10,
+        "AlphaRef": 128,
+        "AlphaRef2": 0,
+        "TwoSide": 0,
+        "DistortionMode": 0,
+        "Fur": 0
+    },
+    "Param": [
+        {
+            "Name": "眼球颜色",
+            "RegisterName": "_1_local2_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\eyediffuse.tga"
+        },
+        {
+            "Name": "眼神光纹理",
+            "RegisterName": "_0_local24_Texture",
+            "Type": "Texture",
+            "Value": "data\\source\\player\\f2\\部件\\texture\\face\\f2_eyelight_01.tga"
+        },
+        {
+            "Name": "静态眼神光纹理",
+            "RegisterName": "_2_local61_Texture",
+            "Type": "Texture",
+            "Value": "data\\source\\player\\f2\\部件\\texture\\face\\f2_eyelight_02.tga"
+        },
+        {
+            "Name": "眼神光UV尺寸",
+            "RegisterName": "local31_Prepare",
+            "Type": "Float",
+            "Value": 1.5499999523162842
+        },
+        {
+            "Name": "眼神光切换",
+            "RegisterName": "local70_Prepare",
+            "Type": "Float",
+            "Value": 0.1599999964237213
+        },
+        {
+            "Name": "眼神光强度",
+            "RegisterName": "local71_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "静态眼神光UV尺寸",
+            "RegisterName": "local82_Prepare",
+            "Type": "Float",
+            "Value": 8.0
+        },
+        {
+            "Name": "眼神光偏移位置",
+            "RegisterName": "local42_Prepare",
+            "Type": "Float2",
+            "Value": [
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "Name": "静态眼神光位置",
+            "RegisterName": "local65_Prepare",
+            "Type": "Float2",
+            "Value": [
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "Name": "眼神光颜色",
+            "RegisterName": "local56_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.5706570148468018,
+                0.39343899488449099,
+                1.0,
+                0.800000011920929
+            ]
+        },
+        {
+            "Name": "静态眼神光颜色",
+            "RegisterName": "local62_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                0.8579999804496765
+            ]
+        }
+    ]
+}

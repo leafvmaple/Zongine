@@ -1,0 +1,422 @@
+{
+    "Info": {
+        "Shader": "data\\material\\material\\mtl_std_colorcastcharacter_sd_chs_modify.fx",
+        "DynamicEffectMark": 1
+    },
+    "RenderState": {
+        "StaticFlags": 769,
+        "DynamicFlags": 2,
+        "BlendMode": 0,
+        "LightingMode": 8,
+        "MaterialID": 1,
+        "AlphaRef": 128,
+        "AlphaRef2": 0,
+        "TwoSide": 0,
+        "DistortionMode": 0,
+        "Fur": 0
+    },
+    "Param": [
+        {
+            "Name": "BaseColorMap",
+            "RegisterName": "_0_local6_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\defaultwhite.dds"
+        },
+        {
+            "Name": "偏色区域mask贴图",
+            "RegisterName": "_1_local30_Texture",
+            "Type": "Texture",
+            "Value": "data\\public\\nulltex.tga"
+        },
+        {
+            "Name": "贴花2_albedo",
+            "RegisterName": "_3_local131_Texture",
+            "Type": "Texture",
+            "Value": "data\\public\\nulltex.tga"
+        },
+        {
+            "Name": "贴花3_albedo",
+            "RegisterName": "_4_local132_Texture",
+            "Type": "Texture",
+            "Value": "data\\public\\nulltex.tga"
+        },
+        {
+            "Name": "贴花1_albedo",
+            "RegisterName": "_2_local133_Texture",
+            "Type": "Texture",
+            "Value": "data\\public\\nulltex.tga"
+        },
+        {
+            "Name": "主体反射贴图",
+            "RegisterName": "_0_local326_Texture",
+            "Type": "Texture",
+            "Value": "data\\public\\detail_evn.dds"
+        },
+        {
+            "Name": "花纹反射贴图",
+            "RegisterName": "_1_local327_Texture",
+            "Type": "Texture",
+            "Value": "data\\public\\detail_evn.dds"
+        },
+        {
+            "Name": "流光贴图",
+            "RegisterName": "_5_local450_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\yanwu_03.tga"
+        },
+        {
+            "Name": "流光密度",
+            "RegisterName": "local114_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "流光速度_U",
+            "RegisterName": "local118_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "流光速度_V",
+            "RegisterName": "local119_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花2_UV缩放",
+            "RegisterName": "local135_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花3_UV缩放（1倍）",
+            "RegisterName": "local137_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花1_UV缩放",
+            "RegisterName": "local139_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "LightnessMax",
+            "RegisterName": "local146_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "LightnessMin",
+            "RegisterName": "local147_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "LightnessScale",
+            "RegisterName": "local148_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "偏色3_Alpha",
+            "RegisterName": "local192_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "偏色2_Alpha",
+            "RegisterName": "local193_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "偏色1_Alpha",
+            "RegisterName": "local194_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花2_着色力度",
+            "RegisterName": "local213_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花3_着色力度",
+            "RegisterName": "local214_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花1_着色力度",
+            "RegisterName": "local215_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花2_高光强度",
+            "RegisterName": "local219_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花1_高光强度",
+            "RegisterName": "local220_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花3_高光强度",
+            "RegisterName": "local221_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花2_反射强度",
+            "RegisterName": "local229_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花3_反射强度",
+            "RegisterName": "local230_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花1_反射强度",
+            "RegisterName": "local231_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "反射强度",
+            "RegisterName": "local242_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "高光强度",
+            "RegisterName": "local243_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花2_花纹偏色Alpha",
+            "RegisterName": "local309_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花3_花纹偏色Alpha",
+            "RegisterName": "local310_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花1_花纹偏色Alpha",
+            "RegisterName": "local311_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "偏色力度",
+            "RegisterName": "local315_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "流光颜色Alpha",
+            "RegisterName": "local319_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "贴花2_UV旋转",
+            "RegisterName": "local354_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花3_UV旋转",
+            "RegisterName": "local359_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花1_UV旋转",
+            "RegisterName": "local361_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花3_UV缩放（10倍）",
+            "RegisterName": "local365_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花2四方连续/只出现一次(0或1)",
+            "RegisterName": "local371_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花3四方连续/只出现一次(0或1)",
+            "RegisterName": "local387_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "贴花1四方连续/只出现一次(0或1)",
+            "RegisterName": "local398_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "ReflectionIntensity_classic",
+            "RegisterName": "local456_Prepare",
+            "Type": "Float",
+            "Value": 0.75
+        },
+        {
+            "Name": "maskAlphaPower",
+            "RegisterName": "local458_Prepare",
+            "Type": "Float",
+            "Value": 0.75
+        },
+        {
+            "Name": "addReflectionInt_classic",
+            "RegisterName": "local462_Prepare",
+            "Type": "Float",
+            "Value": 0.10000000149011612
+        },
+        {
+            "Name": "贴花2_UV平移",
+            "RegisterName": "local352_Prepare",
+            "Type": "Float2",
+            "Value": [
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "Name": "贴花3_UV平移",
+            "RegisterName": "local357_Prepare",
+            "Type": "Float2",
+            "Value": [
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "Name": "贴花1_UV平移",
+            "RegisterName": "local363_Prepare",
+            "Type": "Float2",
+            "Value": [
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "Name": "流光偏色",
+            "RegisterName": "local126_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                0.0
+            ]
+        },
+        {
+            "Name": "贴花2_color",
+            "RegisterName": "local141_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "贴花3_color",
+            "RegisterName": "local143_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "贴花1_color",
+            "RegisterName": "local145_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "part02_color",
+            "RegisterName": "local189_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "part03_color",
+            "RegisterName": "local190_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "part01_color",
+            "RegisterName": "local191_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "SceneLight",
+            "RegisterName": "local279_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "PlayerLight",
+            "RegisterName": "local280_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ]
+}

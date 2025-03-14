@@ -1,0 +1,14 @@
+{
+    "Info": {
+        "Version": 2,
+        "RefPath": "data\\material\\shader\\mtl_water\\Mtl_Water_TS.JsonDef"
+    },
+    "RenderState": {
+        "bOverWriteRS": 1,
+        "nRenderState": 0,
+        "AlphaRef": 128,
+        "BlendMode": 0,
+        "DistortionMode": 0
+    },
+   "Param": []
+}

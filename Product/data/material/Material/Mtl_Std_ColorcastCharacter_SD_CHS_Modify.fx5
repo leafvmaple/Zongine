@@ -1,0 +1,16 @@
+Texture2D _0_local6_Texture;
+
+SamplerState g_Sampler_0
+{
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = Wrap;
+	AddressV = Wrap;
+};
+
+void CalculateMainPixelNode(in out MaterialPixelParameters Parameters, in out ParamsMainPixelNode MainNodeParam)
+{
+    float4 local1 = _0_local6_Texture.Sample(g_Sampler_0, Parameters.TexCoords.xy);
+    MainNodeParam.Albedo  = local1.rgb;
+    MainNodeParam.Opacity = local1.a;
+}
+

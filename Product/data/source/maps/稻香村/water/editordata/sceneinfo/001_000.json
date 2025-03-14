@@ -1,0 +1,149 @@
+{
+    "__internal_type": "JXSubSceneInfo",
+    "worldObjects": {
+        "{d72826f5-a235-43a1-8731-ec0b5fcd25f4}": {
+            "_tableName": "water_1",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "actorBoundBoxMax": [
+                    102400.0,
+                    175.0,
+                    51200.0
+                ],
+                "actorBoundBoxMin": [
+                    51200.0,
+                    165.0,
+                    0.0
+                ],
+                "actorLocalMatrix": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    76800.0,
+                    -325.0,
+                    25600.0,
+                    1.0
+                ],
+                "uuid": "{d72826f5-a235-43a1-8731-ec0b5fcd25f4}"
+            },
+            "comBlockWater": {
+                "BlockMaskPath": "",
+                "WaterName": "water_1",
+                "WaterNewMaterialPath": "data/material/Shader/Mtl_Water/Mtl_Water_Dx9_Std_BWater.JsonIns",
+                "WaterNewUWMaterialPath": ""
+            },
+            "comEditor": {
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "templateFile": "water/block water.json"
+            },
+            "comGroup": {
+                "elements": {
+                    "count": 1,
+                    "id": 1,
+                    "item_0": {
+                        "comBasic": {
+                            "_ignoreBatch": 0,
+                            "actorBoundBoxMax": [
+                                76850.0,
+                                -225.0,
+                                25650.0
+                            ],
+                            "actorBoundBoxMin": [
+                                76750.0,
+                                -325.0,
+                                25550.0
+                            ],
+                            "actorLocalMatrix": [
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "uuid": "{0b5a44b4-3885-44cb-9b15-2c1c2dfa10f7}"
+                        },
+                        "comEditor": {
+                            "templateFile": "_editor/icon.json"
+                        }
+                    }
+                }
+            },
+            "comGroupBBox": {
+                "BBoxMax": [
+                    76850.0,
+                    -225.0,
+                    25650.0
+                ],
+                "BBoxMin": [
+                    76750.0,
+                    -325.0,
+                    25550.0
+                ]
+            },
+            "comPolygon": {
+                "Vertices": [
+                    [
+                        -25600.0,
+                        0.0,
+                        25600.0
+                    ],
+                    [
+                        25600.0,
+                        0.0,
+                        25600.0
+                    ],
+                    [
+                        25600.0,
+                        0.0,
+                        -25600.0
+                    ],
+                    [
+                        -25600.0,
+                        0.0,
+                        -25600.0
+                    ]
+                ]
+            },
+            "comWaterRender": {
+                "WaterReflectDistortion": 0.02500000037252903,
+                "WaterReflectIndensity": 0.6000000238418579
+            },
+            "comWaterWaveData": {
+                "PerlinBlendArea": [
+                    800.0,
+                    20000.0
+                ],
+                "fftWindDir": [
+                    0.800000011920929,
+                    0.6000000238418579
+                ]
+            },
+            "comWaterWaveDataForRtx": {
+                "fftWindDir": [
+                    0.800000011920929,
+                    0.6000000238418579
+                ]
+            }
+        }
+    }
+}

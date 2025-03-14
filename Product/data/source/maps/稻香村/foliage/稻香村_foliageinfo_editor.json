@@ -1,0 +1,308 @@
+[
+    {
+        "FoliagePatternPath": "data\\public\\grasspattern\\grass002.mesh",
+        "FoliagePatternDesc": "grass002",
+        "FoliagePatternID": 1,
+        "FoliagePatternRadius": 1.0,
+        "FoliagePatternRandAngle": 0.0,
+        "FoliagePatternUniformScale": 1,
+        "FoliagePatternNormalType": 1,
+        "FoliagePatternSelected": 1,
+        "FoliagePatternScaleMin": [
+            5.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternScaleMax": [
+            10.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternYOffset": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZRotation": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZNormalMatch": 0,
+        "FoliagePatternShadow": 0,
+        "FoliagePatternCullDistance": 10000.0,
+        "FoliagePatternSceneScale": 1.0,
+        "FoliagePatternSceneColor": 4294967295,
+        "FoliagePatternSceneColorOffset": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "FoliagePatternVisibleDensity": 1.0,
+        "FoliagePatternInteractive": 1.0,
+        "FoliagePatternDisableGrassScale": 0,
+        "FoliagePatternSceneBrightness": 1.0,
+        "FoliagePatternOptimizeDistance": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternColorScheme": 0,
+        "FoliagePatternType": 0,
+        "FoliagePatternTexture": "Data\\source\\maps_source\\Texture\\GrassTexture\\ZW_新手村_002.tga",
+        "FoliageTextureSplitX": 3,
+        "FoliageTextureSplitY": 2
+    },
+    {
+        "FoliagePatternPath": "data\\public\\grasspattern\\grass003.mesh",
+        "FoliagePatternDesc": "grass003",
+        "FoliagePatternID": 3,
+        "FoliagePatternRadius": 1.0,
+        "FoliagePatternRandAngle": 0.0,
+        "FoliagePatternUniformScale": 1,
+        "FoliagePatternNormalType": 1,
+        "FoliagePatternSelected": 1,
+        "FoliagePatternScaleMin": [
+            5.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternScaleMax": [
+            10.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternYOffset": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZRotation": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZNormalMatch": 0,
+        "FoliagePatternShadow": 0,
+        "FoliagePatternCullDistance": 10000.0,
+        "FoliagePatternSceneScale": 1.0,
+        "FoliagePatternSceneColor": 4294967295,
+        "FoliagePatternSceneColorOffset": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "FoliagePatternVisibleDensity": 1.0,
+        "FoliagePatternInteractive": 1.0,
+        "FoliagePatternDisableGrassScale": 0,
+        "FoliagePatternSceneBrightness": 1.0,
+        "FoliagePatternOptimizeDistance": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternColorScheme": 0,
+        "FoliagePatternType": 0,
+        "FoliagePatternTexture": "Data\\source\\maps_source\\Texture\\GrassTexture\\ZW_新手村_002.tga",
+        "FoliageTextureSplitX": 3,
+        "FoliageTextureSplitY": 2
+    },
+    {
+        "FoliagePatternPath": "Data\\public\\GrassPattern\\grass004.Mesh",
+        "FoliagePatternDesc": "grass004",
+        "FoliagePatternID": 4,
+        "FoliagePatternRadius": 1.0,
+        "FoliagePatternRandAngle": 0.0,
+        "FoliagePatternUniformScale": 1,
+        "FoliagePatternNormalType": 1,
+        "FoliagePatternSelected": 1,
+        "FoliagePatternScaleMin": [
+            5.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternScaleMax": [
+            10.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternYOffset": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZRotation": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZNormalMatch": 0,
+        "FoliagePatternShadow": 0,
+        "FoliagePatternCullDistance": 10000.0,
+        "FoliagePatternSceneScale": 1.0,
+        "FoliagePatternSceneColor": 4294967295,
+        "FoliagePatternSceneColorOffset": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "FoliagePatternVisibleDensity": 1.0,
+        "FoliagePatternInteractive": 1.0,
+        "FoliagePatternDisableGrassScale": 0,
+        "FoliagePatternSceneBrightness": 1.0,
+        "FoliagePatternOptimizeDistance": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternColorScheme": 0,
+        "FoliagePatternType": 0,
+        "FoliagePatternTexture": "Data\\source\\maps_source\\Texture\\GrassTexture\\ZW_新手村_002.tga",
+        "FoliageTextureSplitX": 3,
+        "FoliageTextureSplitY": 2
+    },
+    {
+        "FoliagePatternPath": "Data\\public\\GrassPattern\\grass005.Mesh",
+        "FoliagePatternDesc": "grass005",
+        "FoliagePatternID": 5,
+        "FoliagePatternRadius": 1.0,
+        "FoliagePatternRandAngle": 0.0,
+        "FoliagePatternUniformScale": 1,
+        "FoliagePatternNormalType": 1,
+        "FoliagePatternSelected": 1,
+        "FoliagePatternScaleMin": [
+            5.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternScaleMax": [
+            10.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternYOffset": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZRotation": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZNormalMatch": 0,
+        "FoliagePatternShadow": 0,
+        "FoliagePatternCullDistance": 10000.0,
+        "FoliagePatternSceneScale": 1.0,
+        "FoliagePatternSceneColor": 4294967295,
+        "FoliagePatternSceneColorOffset": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "FoliagePatternVisibleDensity": 1.0,
+        "FoliagePatternInteractive": 1.0,
+        "FoliagePatternDisableGrassScale": 0,
+        "FoliagePatternSceneBrightness": 1.0,
+        "FoliagePatternOptimizeDistance": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternColorScheme": 0,
+        "FoliagePatternType": 0,
+        "FoliagePatternTexture": "Data\\source\\maps_source\\Texture\\GrassTexture\\ZW_新手村_002.tga",
+        "FoliageTextureSplitX": 3,
+        "FoliageTextureSplitY": 2
+    },
+    {
+        "FoliagePatternPath": "Data\\public\\FrutexPattern\\笔刷灌木001.Mesh",
+        "FoliagePatternDesc": "笔刷灌木001",
+        "FoliagePatternID": 8,
+        "FoliagePatternRadius": 1.0,
+        "FoliagePatternRandAngle": 0.0,
+        "FoliagePatternUniformScale": 1,
+        "FoliagePatternNormalType": 1,
+        "FoliagePatternSelected": 1,
+        "FoliagePatternScaleMin": [
+            5.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternScaleMax": [
+            10.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternYOffset": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZRotation": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZNormalMatch": 0,
+        "FoliagePatternShadow": 0,
+        "FoliagePatternCullDistance": 10000.0,
+        "FoliagePatternSceneScale": 1.0,
+        "FoliagePatternSceneColor": 4294967295,
+        "FoliagePatternSceneColorOffset": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "FoliagePatternVisibleDensity": 1.0,
+        "FoliagePatternInteractive": 1.0,
+        "FoliagePatternDisableGrassScale": 0,
+        "FoliagePatternSceneBrightness": 1.0,
+        "FoliagePatternOptimizeDistance": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternColorScheme": 0,
+        "FoliagePatternType": 2,
+        "FoliagePatternTexture": "Data\\source\\maps_source\\Texture\\FrutexTexture\\新手村灌木_002.tga",
+        "FoliageTextureSplitX": 2,
+        "FoliageTextureSplitY": 1
+    },
+    {
+        "FoliagePatternPath": "Data\\public\\FrutexPattern\\笔刷灌木004.Mesh",
+        "FoliagePatternDesc": "笔刷灌木004",
+        "FoliagePatternID": 10,
+        "FoliagePatternRadius": 1.0,
+        "FoliagePatternRandAngle": 0.0,
+        "FoliagePatternUniformScale": 1,
+        "FoliagePatternNormalType": 1,
+        "FoliagePatternSelected": 1,
+        "FoliagePatternScaleMin": [
+            5.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternScaleMax": [
+            10.0,
+            1.0,
+            1.0
+        ],
+        "FoliagePatternYOffset": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZRotation": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternXZNormalMatch": 0,
+        "FoliagePatternShadow": 0,
+        "FoliagePatternCullDistance": 10000.0,
+        "FoliagePatternSceneScale": 1.0,
+        "FoliagePatternSceneColor": 4294967295,
+        "FoliagePatternSceneColorOffset": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "FoliagePatternVisibleDensity": 1.0,
+        "FoliagePatternInteractive": 1.0,
+        "FoliagePatternDisableGrassScale": 0,
+        "FoliagePatternSceneBrightness": 1.0,
+        "FoliagePatternOptimizeDistance": [
+            0.0,
+            0.0
+        ],
+        "FoliagePatternColorScheme": 0,
+        "FoliagePatternType": 2,
+        "FoliagePatternTexture": "Data\\source\\maps_source\\Texture\\FrutexTexture\\新手村灌木_002.tga",
+        "FoliageTextureSplitX": 2,
+        "FoliageTextureSplitY": 1
+    }
+]

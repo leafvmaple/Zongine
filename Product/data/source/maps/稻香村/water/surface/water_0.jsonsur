@@ -1,0 +1,11 @@
+{
+  "WaterType" : 1,
+  "Postion" : [25600.000000, 0.000000, 25600.000000],
+  "Depth"	 : 1000000.0,
+  "RangBox" : [0.000000, 51200.000000, 0.000000, 51200.000000],
+  "CustumVHName" : "water_0",
+  "WaterMaterial" : "data/material/Shader/Mtl_Water/Mtl_Water_Dx9_Std_BWater.JsonIns",
+  "UWaterMaterial" : "",
+  "ReflectIndensity" : 0.6,
+  "ReflectDistortion" : 0.025
+}

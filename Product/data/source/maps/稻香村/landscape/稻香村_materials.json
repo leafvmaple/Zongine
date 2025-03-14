@@ -1,0 +1,656 @@
+{
+  "EnbaleCompileTessellation": false,
+  "UseAdaptiveTessellationFactor": false,
+  "UseTessellationPNT": false,
+  "UseAttenuationFactor": false,
+  "MaxTessellationFactor": 20,
+  "TessellationTriangleWidth": 10,
+  "TessellationMultiper": 1.0,
+  "UseNoiseDeformersInTS": false,
+  "NoiseBase": -200.0,
+  "NoiseAmplitudeBase": 800.0,
+  "NoiseAmplitudeScaleStep": 0.5,
+  "NoiseFrequencyBase": 0.001500000013038516,
+  "NoiseFrequencyScaleStep": 1.7999999523162842,
+  "Materials": [
+    {
+      "Name": "",
+      "LogicOptionName": "草地",
+      "ID": 0,
+      "BlendType": 1,
+      "IsDynamicLayer": 0,
+      "IsForceWeightEdit": 0,
+      "MaterialHeightDepth": 0.0,
+      "MaterialHeightLerpRange": 1.0,
+      "MaterialOpaqueScaling": 1.0,
+      "LOD": [
+        {
+          "Info": {
+            "Version": 2,
+            "RefPath": "data\\material\\shader\\std_mtl_terrain_jx3classic.jsondef"
+          },
+          "RenderState": {
+            "bOverWriteRS": 1,
+            "nRenderState": 0,
+            "AlphaRef": 128,
+            "AlphaRef2": 0,
+            "TwoSide": 0,
+            "CreatShadow": 0,
+            "BlendMode": 0,
+            "OITWorkflow": 0,
+            "OITOptimiseOption": 1,
+            "DistortionMode": 0
+          },
+          "Param": [
+            {
+              "Name": "Albedo Map",
+              "Type": "Texture",
+              "Value": "data\\source\\maps_source\\Texture\\地表贴图\\新手村_草地05.tga"
+            },
+            {
+              "Name": "Emissive",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "EnvReflection",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "Specular",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "UTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0024999999441206455,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "Name": "VTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.0,
+                0.0024999999441206455
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "LogicOptionName": "崖壁",
+      "ID": 1,
+      "BlendType": 1,
+      "IsDynamicLayer": 0,
+      "IsForceWeightEdit": 0,
+      "MaterialHeightDepth": 0.0,
+      "MaterialHeightLerpRange": 1.0,
+      "MaterialOpaqueScaling": 1.0,
+      "LOD": [
+        {
+          "Info": {
+            "Version": 2,
+            "RefPath": "data\\material\\shader\\std_mtl_terrain_jx3classic.jsondef"
+          },
+          "RenderState": {
+            "bOverWriteRS": 1,
+            "nRenderState": 0,
+            "AlphaRef": 128,
+            "AlphaRef2": 0,
+            "TwoSide": 0,
+            "CreatShadow": 0,
+            "BlendMode": 0,
+            "OITWorkflow": 0,
+            "OITOptimiseOption": 1,
+            "DistortionMode": 0
+          },
+          "Param": [
+            {
+              "Name": "Albedo Map",
+              "Type": "Texture",
+              "Value": "data\\source\\maps_source\\Texture\\地表贴图\\新手村_石壁01_SD.tga"
+            },
+            {
+              "Name": "Emissive",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "EnvReflection",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "Specular",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "UTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.001500000013038516,
+                0.0
+              ]
+            },
+            {
+              "Name": "VTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.0,
+                0.001500000013038516
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "LogicOptionName": "崖壁",
+      "ID": 2,
+      "BlendType": 1,
+      "IsDynamicLayer": 0,
+      "IsForceWeightEdit": 0,
+      "MaterialHeightDepth": 0.0,
+      "MaterialHeightLerpRange": 1.0,
+      "MaterialOpaqueScaling": 1.0,
+      "LOD": [
+        {
+          "Info": {
+            "Version": 2,
+            "RefPath": "data\\material\\shader\\std_mtl_terrain_jx3classic.jsondef"
+          },
+          "RenderState": {
+            "bOverWriteRS": 1,
+            "nRenderState": 0,
+            "AlphaRef": 128,
+            "AlphaRef2": 0,
+            "TwoSide": 0,
+            "CreatShadow": 0,
+            "BlendMode": 0,
+            "OITWorkflow": 0,
+            "OITOptimiseOption": 1,
+            "DistortionMode": 0
+          },
+          "Param": [
+            {
+              "Name": "Albedo Map",
+              "Type": "Texture",
+              "Value": "data\\source\\maps_source\\Texture\\地表贴图\\新手村_石壁02_SD.tga"
+            },
+            {
+              "Name": "Emissive",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "EnvReflection",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "Specular",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "UTransform",
+              "Type": "Float3",
+              "Value": [
+                0.00079999997979030013,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "Name": "VTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.00079999997979030013,
+                0.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "LogicOptionName": "湿地",
+      "ID": 3,
+      "BlendType": 1,
+      "IsDynamicLayer": 0,
+      "IsForceWeightEdit": 0,
+      "MaterialHeightDepth": 0.0,
+      "MaterialHeightLerpRange": 1.0,
+      "MaterialOpaqueScaling": 1.0,
+      "LOD": [
+        {
+          "Info": {
+            "Version": 2,
+            "RefPath": "data\\material\\shader\\std_mtl_terrain_jx3classic.jsondef"
+          },
+          "RenderState": {
+            "bOverWriteRS": 1,
+            "nRenderState": 0,
+            "AlphaRef": 128,
+            "AlphaRef2": 0,
+            "TwoSide": 0,
+            "CreatShadow": 0,
+            "BlendMode": 0,
+            "OITWorkflow": 0,
+            "OITOptimiseOption": 1,
+            "DistortionMode": 0
+          },
+          "Param": [
+            {
+              "Name": "Albedo Map",
+              "Type": "Texture",
+              "Value": "data\\source\\maps_source\\Texture\\地表贴图\\新手村_苔藓地01_SD.tga"
+            },
+            {
+              "Name": "Emissive",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "EnvReflection",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "Specular",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "UTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0024999999441206455,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "Name": "VTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.0,
+                0.0024999999441206455
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "LogicOptionName": "草地",
+      "ID": 4,
+      "BlendType": 1,
+      "IsDynamicLayer": 0,
+      "IsForceWeightEdit": 0,
+      "MaterialHeightDepth": 0.0,
+      "MaterialHeightLerpRange": 1.0,
+      "MaterialOpaqueScaling": 1.0,
+      "LOD": [
+        {
+          "Info": {
+            "Version": 2,
+            "RefPath": "data\\material\\shader\\std_mtl_terrain_jx3classic.jsondef"
+          },
+          "RenderState": {
+            "bOverWriteRS": 1,
+            "nRenderState": 0,
+            "AlphaRef": 128,
+            "AlphaRef2": 0,
+            "TwoSide": 0,
+            "CreatShadow": 0,
+            "BlendMode": 0,
+            "OITWorkflow": 0,
+            "OITOptimiseOption": 1,
+            "DistortionMode": 0
+          },
+          "Param": [
+            {
+              "Name": "Albedo Map",
+              "Type": "Texture",
+              "Value": "Data\\source\\maps_source\\Texture\\地表贴图\\新手村_草地02.tga"
+            },
+            {
+              "Name": "Emissive",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "EnvReflection",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "Specular",
+              "Type": "Float",
+              "Value": 3.0
+            },
+            {
+              "Name": "UTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0024999999441206455,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "Name": "VTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.0,
+                0.0024999999441206455
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "LogicOptionName": "石路",
+      "ID": 5,
+      "BlendType": 1,
+      "IsDynamicLayer": 0,
+      "IsForceWeightEdit": 0,
+      "MaterialHeightDepth": 0.0,
+      "MaterialHeightLerpRange": 1.0,
+      "MaterialOpaqueScaling": 1.0,
+      "LOD": [
+        {
+          "Info": {
+            "Version": 2,
+            "RefPath": "data\\material\\shader\\std_mtl_terrain_jx3classic.jsondef"
+          },
+          "RenderState": {
+            "bOverWriteRS": 1,
+            "nRenderState": 0,
+            "AlphaRef": 128,
+            "AlphaRef2": 0,
+            "TwoSide": 0,
+            "CreatShadow": 0,
+            "BlendMode": 0,
+            "OITWorkflow": 0,
+            "OITOptimiseOption": 1,
+            "DistortionMode": 0
+          },
+          "Param": [
+            {
+              "Name": "Albedo Map",
+              "Type": "Texture",
+              "Value": "data\\source\\maps_source\\Texture\\地表贴图\\新手村_石块路02.tga"
+            },
+            {
+              "Name": "Emissive",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "EnvReflection",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "Specular",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "UTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0024999999441206455,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "Name": "VTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.0,
+                0.0024999999441206455
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "LogicOptionName": "土路",
+      "ID": 6,
+      "BlendType": 1,
+      "IsDynamicLayer": 0,
+      "IsForceWeightEdit": 0,
+      "MaterialHeightDepth": 0.0,
+      "MaterialHeightLerpRange": 1.0,
+      "MaterialOpaqueScaling": 1.0,
+      "LOD": [
+        {
+          "Info": {
+            "Version": 2,
+            "RefPath": "data\\material\\shader\\std_mtl_terrain_jx3classic.jsondef"
+          },
+          "RenderState": {
+            "bOverWriteRS": 1,
+            "nRenderState": 0,
+            "AlphaRef": 128,
+            "AlphaRef2": 0,
+            "TwoSide": 0,
+            "CreatShadow": 0,
+            "BlendMode": 0,
+            "OITWorkflow": 0,
+            "OITOptimiseOption": 1,
+            "DistortionMode": 0
+          },
+          "Param": [
+            {
+              "Name": "Albedo Map",
+              "Type": "Texture",
+              "Value": "data\\source\\maps_source\\Texture\\地表贴图\\新手村_土地02_SD.tga"
+            },
+            {
+              "Name": "Emissive",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "EnvReflection",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "Specular",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "UTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0010000000474974513,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "Name": "VTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.0,
+                0.0010000000474974513
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "LogicOptionName": "崖壁",
+      "ID": 7,
+      "BlendType": 1,
+      "IsDynamicLayer": 0,
+      "IsForceWeightEdit": 0,
+      "MaterialHeightDepth": 0.0,
+      "MaterialHeightLerpRange": 1.0,
+      "MaterialOpaqueScaling": 1.0,
+      "LOD": [
+        {
+          "Info": {
+            "Version": 2,
+            "RefPath": "data\\material\\shader\\std_mtl_terrain_jx3classic.jsondef"
+          },
+          "RenderState": {
+            "bOverWriteRS": 1,
+            "nRenderState": 0,
+            "AlphaRef": 128,
+            "AlphaRef2": 0,
+            "TwoSide": 0,
+            "CreatShadow": 0,
+            "BlendMode": 0,
+            "OITWorkflow": 0,
+            "OITOptimiseOption": 1,
+            "DistortionMode": 0
+          },
+          "Param": [
+            {
+              "Name": "Albedo Map",
+              "Type": "Texture",
+              "Value": "data\\source\\maps_source\\Texture\\地表贴图\\新手村_石壁04_SD.tga"
+            },
+            {
+              "Name": "Emissive",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "EnvReflection",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "Specular",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "UTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0024999999441206455,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "Name": "VTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.0,
+                0.0024999999441206455
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "",
+      "LogicOptionName": "草地",
+      "ID": 8,
+      "BlendType": 1,
+      "IsDynamicLayer": 0,
+      "IsForceWeightEdit": 0,
+      "MaterialHeightDepth": 0.0,
+      "MaterialHeightLerpRange": 1.0,
+      "MaterialOpaqueScaling": 1.0,
+      "LOD": [
+        {
+          "Info": {
+            "Version": 2,
+            "RefPath": "data\\material\\shader\\std_mtl_terrain_jx3classic.jsondef"
+          },
+          "RenderState": {
+            "bOverWriteRS": 1,
+            "nRenderState": 0,
+            "AlphaRef": 128,
+            "AlphaRef2": 0,
+            "TwoSide": 0,
+            "CreatShadow": 0,
+            "BlendMode": 0,
+            "OITWorkflow": 0,
+            "OITOptimiseOption": 1,
+            "DistortionMode": 0
+          },
+          "Param": [
+            {
+              "Name": "Albedo Map",
+              "Type": "Texture",
+              "Value": "Data\\source\\maps_source\\Texture\\地表贴图\\新手村_草地03.tga"
+            },
+            {
+              "Name": "Emissive",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "EnvReflection",
+              "Type": "Float",
+              "Value": 0.0
+            },
+            {
+              "Name": "Specular",
+              "Type": "Float",
+              "Value": 1.0
+            },
+            {
+              "Name": "UTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0024999999441206455,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "Name": "VTransform",
+              "Type": "Float3",
+              "Value": [
+                0.0,
+                0.0,
+                0.0024999999441206455
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

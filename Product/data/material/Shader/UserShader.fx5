@@ -1,0 +1,4 @@
+
+void CalculateMainPixelNode(in out MaterialPixelParameters Parameters, in out ParamsMainPixelNode MainNodeParam)
+{
+}

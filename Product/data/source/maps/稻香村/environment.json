@@ -1,0 +1,624 @@
+{
+    "environmentType": 1,
+    "lightSource": 0,
+    "enableDayNightCycle": 0,
+    "enableCovermap": 0,
+    "cameraRangeFromDist": 30000,
+    "cameraRangeToDist": 800000,
+    "underWaterFogColor": [
+        0.11760000139474869,
+        0.513700008392334,
+        0.48240000009536745,
+        1.0
+    ],
+    "sunlight": {
+        "dir": [
+            0.6869990229606628,
+            0.5735759735107422,
+            -0.4461419880390167
+        ],
+        "diffuse": [
+            0.49803921580314639,
+            0.42352941632270815,
+            0.42352941632270815,
+            1.0
+        ],
+        "specular": [
+            0.49803921580314639,
+            0.40392157435417178,
+            0.35686275362968447,
+            1.0
+        ],
+        "diffuseIntensity": 1.0,
+        "specularIntensity": 1.0,
+        "ambientColor": [
+            0.2980392277240753,
+            0.2705882489681244,
+            0.4000000059604645,
+            0.47843137383461
+        ],
+        "skyLightColor": [
+            0.2980392277240753,
+            0.2549019753932953,
+            0.2549019753932953,
+            0.47843137383461
+        ],
+        "commonLightColor": [
+            0.20000000298023225,
+            0.20000000298023225,
+            0.20000000298023225,
+            0.47843137383461
+        ],
+        "ambientIntensity": 1.0,
+        "skyLightIntensity": 1.0,
+        "commonLightIntensity": 1.0
+    },
+    "moonlight": {
+        "dir": [
+            0.5773500204086304,
+            0.5773500204086304,
+            0.5773500204086304
+        ],
+        "diffuse": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "specular": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "diffuseIntensity": 1.0,
+        "specularIntensity": 1.0
+    },
+    "envMap": {
+        "intensity": 1.0,
+        "saturation": 1.0
+    },
+    "speedTreeEnv": {
+        "lodLevelOption": 0,
+        "globalLodScaleTimes": 1.0,
+        "enableWindAnimationOriginal": 1,
+        "enableWindAnimationLod0": 0,
+        "enableWindAnimationLod1": 0,
+        "enableWindAnimationLod2": 0,
+        "enableWindAnimationBillboard": 0
+    },
+    "oldSkySkyBox": {
+        "topColor": [
+            0.364705890417099,
+            0.47843137383461,
+            0.8039215803146362,
+            1.0
+        ],
+        "midColor": [
+            0.7764706015586853,
+            0.7215686440467835,
+            0.7411764860153198,
+            1.0
+        ],
+        "botmColor": [
+            0.5764706134796143,
+            0.5490196347236633,
+            0.6549019813537598,
+            0.9803921580314636
+        ],
+        "topPercent": 80.0,
+        "midPercent": 18.9237117767334,
+        "botmPercent": 98.84719848632813,
+        "topMidBlendPercent": 47.00727081298828,
+        "midBotmBlendPercent": 9.000076293945313
+    },
+    "oldSkyWeather": {
+        "enable": 0,
+        "type": 0,
+        "enableSnowCover": 0,
+        "enableSplash": 0,
+        "useMaterial": 0,
+        "density": 10.0,
+        "densityGate": 800.0,
+        "speed": 150.0,
+        "speedGate": 10.0,
+        "length": 10.0,
+        "width": 10.0,
+        "alpha": 0.20000000298023225,
+        "splashAlpha": 0.20000000298023225,
+        "splashScale": 0.05000000074505806,
+        "wind": 0.0,
+        "particalTexture": "data/public/stainForDyWeather.dds",
+        "materialFile": "data/material/Material/Decal/Mtl_Decal_Default.JsonIns",
+        "useNew": 0,
+        "rainColor": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "rainTextures": "",
+        "waterWaveIntensity": 0.5,
+        "rainRippleIntensity": 0.5
+    },
+    "cloudList": {
+        "{3e51e194-7dee-4001-964c-05647d5ba094}": {
+            "colorMapPath": "Data/source/maps_source/Texture/‘∆≤„/YC_µæœ„¥Â02.tga",
+            "blendColorMapPath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/alpha.tga",
+            "maskMapPath": "Data/source/maps_source/Texture/‘∆≤„/YC_Õ®µ¿04.tga",
+            "height": 150000.0,
+            "speed": 0.009999999776482582,
+            "angle": 0.0,
+            "size": 500000.0,
+            "uvRepeat": 3.0,
+            "visibility": 0.800000011920929,
+            "alphaRef": 0.5,
+            "blendTexRatio": 0.6999769806861877,
+            "diffuseColor": [
+                0.4627451002597809,
+                0.5607843399047852,
+                0.9803921580314636,
+                0.0
+            ],
+            "ambientColor": [
+                0.9843137264251709,
+                0.7921568751335144,
+                0.7490196228027344,
+                0.0
+            ],
+            "enableControlColor": 1,
+            "texFactor": 1.0
+        },
+        "{5434119d-630b-4e37-a4f2-0dd6f1caaf54}": {
+            "colorMapPath": "data/source/maps_source/Texture/‘∆≤„/YC_µæœ„¥Â–«ø’01.tga",
+            "blendColorMapPath": "",
+            "maskMapPath": "Data/public/Cloud/mask.dds",
+            "height": 70000.0,
+            "speed": 0.009999999776482582,
+            "angle": 0.0,
+            "size": 500000.0,
+            "uvRepeat": 15.0,
+            "visibility": 0.0,
+            "alphaRef": 0.5,
+            "blendTexRatio": 0.17016999423503877,
+            "diffuseColor": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ambientColor": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "enableControlColor": 0,
+            "texFactor": 1.0
+        },
+        "{03743952-f1ad-4573-8880-fee18147020b}": {
+            "colorMapPath": "Data/source/maps_source/Texture/‘∆≤„/YC_∂‡‘∆03.tga",
+            "blendColorMapPath": "",
+            "maskMapPath": "Data/public/Cloud/mask.dds",
+            "height": 180000.0,
+            "speed": 0.009999999776482582,
+            "angle": 0.0,
+            "size": 500000.0,
+            "uvRepeat": 3.0,
+            "visibility": 0.0,
+            "alphaRef": 0.5,
+            "blendTexRatio": 1.0,
+            "diffuseColor": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ambientColor": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "enableControlColor": 1,
+            "texFactor": 1.0
+        },
+        "{8025b533-f9f7-4e6a-9f94-66fc506ef964}": {
+            "colorMapPath": "Data/source/maps_source/Texture/‘∆≤„/YC_ø‹µ∫02.tga",
+            "blendColorMapPath": "",
+            "maskMapPath": "Data/public/Cloud/mask.dds",
+            "height": 180000.0,
+            "speed": 0.029999999329447748,
+            "angle": 0.0,
+            "size": 500000.0,
+            "uvRepeat": 6.0,
+            "visibility": 0.000003999999989900971,
+            "alphaRef": 0.5,
+            "blendTexRatio": 0.0,
+            "diffuseColor": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "ambientColor": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "enableControlColor": 0,
+            "texFactor": 1.0
+        }
+    },
+    "farMountainList": {
+        "{df39dc5d-6260-407a-bf51-61bdea0e80e1}": {
+            "texturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/BJ_µæœ„¥Â»’“π001.tga",
+            "blendTexturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/alpha.tga",
+            "texFactor": 0.9999970197677612,
+            "cylinderAngleDegree": 360.0,
+            "radius": 220000.0,
+            "height": 75000.0,
+            "botmZPos": 0.30000001192092898,
+            "zRotation": 60.0,
+            "texCordUTiles": 6.0,
+            "enableTexColor": 0,
+            "fogBlendFactor": 0.6999840140342712,
+            "botmBlendHeight": 0.0,
+            "speed": 0.0,
+            "blendTextureRatio": 0.2999739944934845,
+            "color": [
+                0.8196078538894653,
+                0.6431372761726379,
+                0.4000000059604645,
+                1.0
+            ],
+            "fogColor": [
+                0.40392157435417178,
+                0.2823529541492462,
+                0.41960784792900088,
+                1.0
+            ],
+            "up": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        },
+        "{371c1654-5c93-4847-82c2-6eab31d31aa9}": {
+            "texturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/BJ_µæœ„¥Â»’“πΩ•±‰001.tga",
+            "blendTexturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/alpha.tga",
+            "texFactor": 1.0,
+            "cylinderAngleDegree": 200.0,
+            "radius": 150000.0,
+            "height": 250000.0,
+            "botmZPos": -30000.0,
+            "zRotation": 270.0,
+            "texCordUTiles": 1.0,
+            "enableTexColor": 1,
+            "fogBlendFactor": 1.0,
+            "botmBlendHeight": 0.0,
+            "speed": 0.0,
+            "blendTextureRatio": 0.5,
+            "color": [
+                0.8196078538894653,
+                0.6431372761726379,
+                0.4000000059604645,
+                1.0
+            ],
+            "fogColor": [
+                0.9921568632125855,
+                0.7882353067398071,
+                0.5529412031173706,
+                0.9921568632125855
+            ],
+            "up": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        },
+        "{a9de7451-0d5f-4f6e-89c9-e5836a6e8973}": {
+            "texturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/BJ_µæœ„¥Â»’“π»’≥ˆ001.tga",
+            "blendTexturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/alpha.tga",
+            "texFactor": 1.0,
+            "cylinderAngleDegree": 130.0,
+            "radius": 300000.0,
+            "height": 220000.0,
+            "botmZPos": 40000.0,
+            "zRotation": 270.0,
+            "texCordUTiles": 1.0,
+            "enableTexColor": 1,
+            "fogBlendFactor": 0.7000100016593933,
+            "botmBlendHeight": 0.0,
+            "speed": 0.0,
+            "blendTextureRatio": 0.5964909791946411,
+            "color": [
+                0.8196078538894653,
+                0.6431372761726379,
+                0.4000000059604645,
+                1.0
+            ],
+            "fogColor": [
+                0.9921568632125855,
+                0.686274528503418,
+                0.3803921639919281,
+                0.9960784316062927
+            ],
+            "up": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        },
+        "{c09f27c5-f6ef-491e-ba37-1bfb5c739dd1}": {
+            "texturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/BJ_µæœ„¥Â»’“π»’¬‰001.tga",
+            "blendTexturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/alpha.tga",
+            "texFactor": 0.9998000264167786,
+            "cylinderAngleDegree": 180.0,
+            "radius": 300000.0,
+            "height": 250000.0,
+            "botmZPos": -20000.0,
+            "zRotation": 140.0,
+            "texCordUTiles": 1.0,
+            "enableTexColor": 1,
+            "fogBlendFactor": 0.0,
+            "botmBlendHeight": 0.0,
+            "speed": 0.0,
+            "blendTextureRatio": 0.0,
+            "color": [
+                0.8196078538894653,
+                0.6431372761726379,
+                0.4000000059604645,
+                1.0
+            ],
+            "fogColor": [
+                1.0,
+                0.5686274766921997,
+                0.4313725531101227,
+                1.0
+            ],
+            "up": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        },
+        "{e2008eb9-a6f5-40f8-b3ae-47891661b5c7}": {
+            "texturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/BJ_µæœ„¥Â»’“π‘∆001.tga",
+            "blendTexturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/alpha.tga",
+            "texFactor": 1.0,
+            "cylinderAngleDegree": 50.0,
+            "radius": 700000.0,
+            "height": 350000.0,
+            "botmZPos": 0.0,
+            "zRotation": -35.0,
+            "texCordUTiles": 1.0,
+            "enableTexColor": 1,
+            "fogBlendFactor": 0.0,
+            "botmBlendHeight": 0.0,
+            "speed": 0.0,
+            "blendTextureRatio": 0.21818199753761292,
+            "color": [
+                0.8196078538894653,
+                0.6431372761726379,
+                0.4000000059604645,
+                1.0
+            ],
+            "fogColor": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "up": [
+                -0.16330699622631074,
+                0.9542400240898132,
+                0.2505120038986206
+            ]
+        },
+        "{620cd622-3dca-494c-8915-c1f41a249743}": {
+            "texturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/BJ_µæœ„¥Â»’“π‘∆002.tga",
+            "blendTexturePath": "Data/source/maps_source/Texture/±≥æ∞»¶÷·/alpha.tga",
+            "texFactor": 1.0,
+            "cylinderAngleDegree": 80.0,
+            "radius": 300000.0,
+            "height": 150000.0,
+            "botmZPos": 40000.0,
+            "zRotation": -30.0,
+            "texCordUTiles": 1.0,
+            "enableTexColor": 0,
+            "fogBlendFactor": 1.0,
+            "botmBlendHeight": 0.0,
+            "speed": 0.0,
+            "blendTextureRatio": 0.0,
+            "color": [
+                0.8196078538894653,
+                0.6431372761726379,
+                0.4000000059604645,
+                1.0
+            ],
+            "fogColor": [
+                0.6000000238418579,
+                0.686274528503418,
+                1.0,
+                1.0
+            ],
+            "up": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        }
+    },
+    "lensflares": {
+        "sunLensflareDesc": {
+            "lensflareDescTexturePath": "data/source/maps_source/Texture/π‚‘Œ/Flare.tga",
+            "lensflareDescTexNumX": 3,
+            "lensflareDescTexNumY": 3,
+            "lensflareDescVisibility": 0.4000000059604645,
+            "lensflareDescBound": 0.0,
+            "lensflareDescDummyLenSize": 0.009999999776482582,
+            "lensflareList": {
+                "{716e19d0-389c-41a7-bed5-6164427f85dd}": {
+                    "lensflareIndexX": 0,
+                    "lensflareIndexY": 0,
+                    "lensflareHeight": 1.0,
+                    "lensflareSize": 0.15000000596046449,
+                    "lensflareRate": 2.0
+                },
+                "{70adadd6-5e7a-4218-9c00-da7d89c7abbb}": {
+                    "lensflareIndexX": 1,
+                    "lensflareIndexY": 0,
+                    "lensflareHeight": 1.0,
+                    "lensflareSize": 0.4000000059604645,
+                    "lensflareRate": 2.0
+                },
+                "{c01a1d0c-bc86-40c4-b544-aa29ea6eb013}": {
+                    "lensflareIndexX": 1,
+                    "lensflareIndexY": 2,
+                    "lensflareHeight": 0.8999999761581421,
+                    "lensflareSize": 0.30000001192092898,
+                    "lensflareRate": 2.0
+                },
+                "{8489230b-e148-4192-be96-34bdb86306a1}": {
+                    "lensflareIndexX": 2,
+                    "lensflareIndexY": 0,
+                    "lensflareHeight": 0.800000011920929,
+                    "lensflareSize": 0.15000000596046449,
+                    "lensflareRate": 2.0
+                },
+                "{428aa520-4e80-43c4-867b-d21990420228}": {
+                    "lensflareIndexX": 1,
+                    "lensflareIndexY": 2,
+                    "lensflareHeight": 0.699999988079071,
+                    "lensflareSize": 0.10000000149011612,
+                    "lensflareRate": 2.0
+                },
+                "{2adda320-805b-44ce-9607-17c63c86fcc9}": {
+                    "lensflareIndexX": 1,
+                    "lensflareIndexY": 2,
+                    "lensflareHeight": 0.6000000238418579,
+                    "lensflareSize": 0.05000000074505806,
+                    "lensflareRate": 2.0
+                },
+                "{5cdc092a-e9c9-454a-80c6-2bd74f0345af}": {
+                    "lensflareIndexX": 2,
+                    "lensflareIndexY": 1,
+                    "lensflareHeight": 0.5,
+                    "lensflareSize": 0.05000000074505806,
+                    "lensflareRate": 2.0
+                }
+            }
+        },
+        "moonLensflareDesc": {
+            "lensflareDescTexturePath": "Data/source/maps_source/Texture/π‚‘Œ/MoonFlare06.tga",
+            "lensflareDescTexNumX": 1,
+            "lensflareDescTexNumY": 1,
+            "lensflareDescVisibility": 0.0,
+            "lensflareDescBound": 0.30000001192092898,
+            "lensflareDescDummyLenSize": 0.009999999776482582,
+            "lensflareList": {
+                "{409107bd-5940-4e90-9267-0dcddeb36b73}": {
+                    "lensflareIndexX": 0,
+                    "lensflareIndexY": 0,
+                    "lensflareHeight": 1.0,
+                    "lensflareSize": 0.09000000357627869,
+                    "lensflareRate": 2.0
+                }
+            }
+        }
+    },
+    "globalEnvironmentSphere": {
+        "savefileSpecular": "data\\source\\maps\\µæœ„¥Â\\env_probe\\skybox_s.dds",
+        "savefileDiffuse": "data\\source\\maps\\µæœ„¥Â\\env_probe\\skybox_d.dds",
+        "customAtmoBottom": 1,
+        "atmoBottomColorStartY": 0.0,
+        "atmoBottomColorLength": 0.0,
+        "atmoBottomColor": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "dynamic": 0,
+        "useDefaultFile": 1
+    },
+    "dayNightCycle": {
+        "CurrentDate": [
+            2000.0,
+            1.0,
+            1.0
+        ],
+        "Latitude": 0.0,
+        "Longitude": 0.0,
+        "time": 0.0,
+        "Timezone": 1.0,
+        "StarTrailsEnable": 0,
+        "Height": 0.0
+    },
+    "heightFog": {
+        "enable": 0,
+        "fogDensity": 0.019999999552965165,
+        "fogHeightFalloff": 0.20000000298023225,
+        "fogOpacity": 0.30000001192092898,
+        "fogStartDistance": 0.0,
+        "fogCutoffDistance": 0.0,
+        "fogHeight": 30000.0,
+        "directionalInscatteringExponent": 4.0,
+        "directionalInscatteringStartDistance": 10000.0,
+        "fogColor": [
+            0.4699999988079071,
+            0.6380000114440918,
+            1.0,
+            1.0
+        ],
+        "directionalInscatteringColor": [
+            0.25,
+            0.25,
+            0.125,
+            1.0
+        ]
+    },
+    "distanceFog": {
+        "enable": 0,
+        "fogColor": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        ],
+        "fogStartDistance": 0.0,
+        "fogEndDistance": 30000.0
+    },
+    "sceneFog": {
+        "fogEnable": 1,
+        "fogColor": [
+            0.5764706134796143,
+            0.5490196347236633,
+            0.6549019813537598,
+            0.9803921580314636
+        ],
+        "fogStartValue": 2000.0,
+        "fogEndValue": 40000.0,
+        "fogDensity": 1.0
+    },
+    "indirectLightVolume": {
+        "enable": 0,
+        "enableDiffLodSmoothFilter": 1,
+        "diffLodSmoothFilterBeginPosScale": 0.800000011920929,
+        "indirectLightVolumeWeight": 1.0,
+        "surfelAlbedoIntensity": 1.0,
+        "localLightAffect": 1.0,
+        "mainLightAffect": 1.0,
+        "jitterPrevWeight": 0.6000000238418579
+    },
+    "editor_ui_attribute": {
+        "movieEditorCurrFrame": 0
+    },
+    "playerLightingModeSetting": {
+        "enableLight0LerpLight1OnSkinMesh": 1,
+        "light0LerpLight1PercentOnSkinMesh": 1.0,
+        "pointLightIntensityOnSkinMesh": 0.0
+    }
+}
