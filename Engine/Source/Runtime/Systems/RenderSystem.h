@@ -7,11 +7,16 @@
 #include "Entities/Entity.h"
 
 namespace Zongine {
-    struct RenderSystemInitInfo {
-    };
-    struct RenderSystemTickInfo {
-        std::shared_ptr<ID3D11InputLayout> piInputLayout;
-        D3D11_PRIMITIVE_TOPOLOGY ePrimitiveTopology;
+    class EntityManager;
+    class DeviceManager;
+    class ShaderManager;
+    class StateManager;
+
+    struct RenderSystemInfo {
+        std::shared_ptr<EntityManager> entityManager;
+        std::shared_ptr<DeviceManager> deviceManager;
+        std::shared_ptr<ShaderManager> shaderManager;
+        std::shared_ptr<StateManager> stateManager;
     };
 
     class RenderEntity {
@@ -20,15 +25,19 @@ namespace Zongine {
 
     class RenderSystem {
     public:
-        void Initialize(RenderSystemInitInfo initInfo);
+        void Initialize(RenderSystemInfo info) {
+			m_EntityManager = info.entityManager;
+            m_WindowManager = info.deviceManager;
+            m_ShaderManager = info.shaderManager;
+            m_StateManager = info.stateManager;
+        }
         void Tick(float fDeltaTime);
 
-        std::shared_ptr<ID3D11Device> GetDevice() const { return m_piDevice; }
-
     private:
-        std::shared_ptr<ID3D11Device> m_piDevice;
-        std::shared_ptr<ID3D11DeviceContext> m_piImmediateContext;
-
-        std::vector<RenderEntity> m_RenderEntities;
+        std::shared_ptr<EntityManager> m_EntityManager{};
+        std::shared_ptr<DeviceManager> m_WindowManager{};
+        std::shared_ptr<ShaderManager> m_ShaderManager{};
+        std::shared_ptr<StateManager> m_StateManager{};
+        std::vector<RenderEntity> m_RenderEntities{};
     };
 }

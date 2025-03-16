@@ -22,25 +22,39 @@
     <ClCompile Include="Entities\Entity.cpp" />
     <ClCompile Include="Entities\EntityManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Systems\CameraSystem.cpp" />
+    <ClCompile Include="Systems\InputSystem.cpp" />
     <ClCompile Include="Systems\RenderSystem.cpp" />
+    <ClCompile Include="Systems\ShaderSystem.cpp" />
     <ClCompile Include="Systems\TransformSystem.cpp" />
     <ClCompile Include="Systems\WindowsSystem.cpp" />
+    <ClCompile Include="Utilities\DeviceManager.cpp" />
     <ClCompile Include="Utilities\Engine.cpp" />
     <ClCompile Include="Utilities\ResourceManager.cpp" />
+    <ClCompile Include="Utilities\ShaderManager.cpp" />
+    <ClCompile Include="Utilities\StateManager.cpp" />
     <ClCompile Include="Utilities\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\BaseComponent.h" />
+    <ClInclude Include="Components\CameraComponent.h" />
     <ClInclude Include="Components\MaterialComponent.h" />
     <ClInclude Include="Components\MeshComponent.h" />
     <ClInclude Include="Components\TransformComponent.h" />
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Entities\EntityManager.h" />
+    <ClInclude Include="Include\Types.h" />
+    <ClInclude Include="Systems\CameraSystem.h" />
+    <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\RenderSystem.h" />
+    <ClInclude Include="Systems\ShaderSystem.h" />
     <ClInclude Include="Systems\TransformSystem.h" />
     <ClInclude Include="Systems\WindowsSystem.h" />
+    <ClInclude Include="Utilities\DeviceManager.h" />
     <ClInclude Include="Utilities\Engine.h" />
     <ClInclude Include="Utilities\ResourceManager.h" />
+    <ClInclude Include="Utilities\ShaderManager.h" />
+    <ClInclude Include="Utilities\StateManager.h" />
     <ClInclude Include="Utilities\WindowManager.h" />
   </ItemGroup>
   <ItemGroup>

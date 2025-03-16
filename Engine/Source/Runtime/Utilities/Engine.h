@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Systems/RenderSystem.h"
+#include <memory>
+#include <windows.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "winmm.lib")
@@ -8,12 +9,19 @@
 #pragma comment(lib, "dxguid.lib")
 
 namespace Zongine {
+    class RenderSystem;
+    class InputSystem;
+
     class Engine {
     public:
+        Engine();
+        ~Engine();
+
         void Initialize(HINSTANCE hInstance);
         void Run();
 
     private:
-        std::unique_ptr<RenderSystem> renderSystem;
+        std::unique_ptr<RenderSystem> renderSystem{};
+        std::unique_ptr<InputSystem> inputSystem{};
     };
 }

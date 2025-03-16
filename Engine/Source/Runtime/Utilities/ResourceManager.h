@@ -4,22 +4,28 @@
 
 #include <memory>
 #include <string>
+#include <wrl/client.h>
 
 struct MESH_SOURCE;
 
 namespace Zongine {
     class Entity;
+    class EntityManager;
+    class DeviceManager;
+
     struct SubMesh;
 
-    struct ResourceInitInfo {
-        std::shared_ptr<ID3D11Device> piDevice;
+    struct ResourceManagerInfo {
+        std::shared_ptr<EntityManager> entityManager{};
+        std::shared_ptr<DeviceManager> windowManager{};
     };
 
     class ResourceManager {
     public:
-        void Initialize(const ResourceInitInfo& initInfo) {
-            m_piDevice = initInfo.piDevice;
-        }
+        void Initialize(const ResourceManagerInfo& info) {
+            m_WindowManager = info.windowManager;
+			m_EntityManager = info.entityManager;
+        };
 
         void CreateMeshComponent(const Entity& entity, const std::string& path);
 
@@ -28,8 +34,7 @@ namespace Zongine {
         template<typename T>
         bool _CreateIndexBuffer(SubMesh& mesh, const MESH_SOURCE& source, DXGI_FORMAT eFormat);
 
-        std::shared_ptr<ID3D11Device> m_piDevice{};
+        std::shared_ptr<DeviceManager> m_WindowManager{};
+        std::shared_ptr<EntityManager> m_EntityManager{};
     };
-
-    extern ResourceManager GResourceManager;
 }

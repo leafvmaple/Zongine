@@ -1,7 +1,7 @@
 #include "WindowManager.h"
 
 namespace Zongine {
-    void WindowManager::Initialize(WindowManagerDesc& desc) {
+    void WindowManager::Initialize(const WindowManagerDesc& desc) {
         WNDCLASSEX wndClassEx{};
 
         wndClassEx.cbSize = sizeof(WNDCLASSEX);
@@ -17,12 +17,15 @@ namespace Zongine {
         m_Wnd = CreateWindow(desc.szClassName, desc.szTitle, WS_OVERLAPPEDWINDOW,
             desc.x, desc.y, desc.width, desc.height, NULL, NULL, desc.hInstance, NULL);
 
+		m_Width = desc.width;
+		m_Height = desc.height;
+
         SetWindowLongPtr(m_Wnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
         ShowWindow(m_Wnd, SW_SHOW);
     }
 
-    void WindowManager::HandleMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+    void WindowManager::OnMessageEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         for (auto& callback : m_EventCallbacks) {
             callback({ hWnd, message, wParam, lParam });
         }
@@ -31,10 +34,8 @@ namespace Zongine {
     static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         WindowManager* pThis = reinterpret_cast<WindowManager*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
         if (pThis) {
-            pThis->HandleMessage(hWnd, message, wParam, lParam);
+            pThis->OnMessageEvent(hWnd, message, wParam, lParam);
         }
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
-
-    WindowManager GWindowManager;
 }

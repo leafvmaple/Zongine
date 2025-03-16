@@ -26,20 +26,24 @@ namespace Zongine {
 
     class WindowManager {
     public:
-        void Initialize(WindowManagerDesc& desc);
-        void HandleMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+        void Initialize(const WindowManagerDesc& desc);
+        void OnMessageEvent(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
         HWND GetWindowHandle() const { return m_Wnd; }
+
+        int GetWidth() const { return m_Width; }
+        int GetHeight() const { return m_Height; }
+
         void AddEventCallback(EventCallback callback) {
             m_EventCallbacks.push_back(callback);
         }
 
     private:
         HWND m_Wnd{};
+        int m_Width{};
+        int m_Height{};
         std::vector<EventCallback> m_EventCallbacks;
     };
 
     static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
-    extern WindowManager GWindowManager;
 }

@@ -4,6 +4,7 @@
 
 namespace Zongine {
     using EntityID = uint32_t;
+    const EntityID INVALID_ENTITY{};
 
     class EntityManager;
 

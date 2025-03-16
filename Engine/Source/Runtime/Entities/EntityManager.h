@@ -39,22 +39,37 @@ namespace Zongine {
         bool HasComponent(EntityID entity) const {
             return components.find(entity) != components.end();
         }
+
+        const std::unordered_map<EntityID, ComponentType>& GetComponents() const {
+            return components;
+        }
     };
 
     class EntityManager {
     private:
-        EntityID nextEntityID = 1; // 自动生成的实体 ID
-        std::vector<Entity> m_Entities;
-        std::unordered_map<std::type_index, std::unique_ptr<IComponentStorage>> componentStorages;
+        EntityID m_NextEntityID{};
+        std::unordered_map<EntityID, Entity> m_Entities{};
+        std::unordered_map<std::type_index, std::unique_ptr<IComponentStorage>> componentStorages{};
 
     public:
         Entity& CreateEntity() {
-            EntityID id = nextEntityID++;
-            return m_Entities.emplace_back(Entity(id, this));
+            EntityID id = ++m_NextEntityID;
+			return m_Entities.emplace(id, Entity(id, this)).first->second;
         }
 
-        const std::vector<Entity>& GetEntities() {
+        const std::unordered_map<EntityID, Entity>& GetEntities() {
             return m_Entities;
+        }
+
+        template<typename ComponentType>
+        const std::unordered_map<EntityID, ComponentType>& GetEntities() {
+            const auto& storage = GetOrCreateStorage<ComponentType>();
+            return storage.GetComponents();
+        }
+
+        Entity& GetEntity(EntityID entity) {
+            assert(m_Entities.find(entity) != m_Entities.end() && "Entity not found.");
+            return m_Entities.at(entity);
         }
 
         template<typename ComponentType>
@@ -91,7 +106,6 @@ namespace Zongine {
             return static_cast<ComponentStorage<ComponentType>&>(*componentStorages[typeIndex]);
         }
 
-        // 获取组件存储
         template<typename ComponentType>
         ComponentStorage<ComponentType>& GetStorage() const {
             std::type_index typeIndex(typeid(ComponentType));
@@ -100,6 +114,4 @@ namespace Zongine {
             return static_cast<ComponentStorage<ComponentType>&>(*it->second);
         }
     };
-
-    extern EntityManager GEntityManager;
 }
