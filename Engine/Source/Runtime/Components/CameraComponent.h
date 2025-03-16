@@ -7,28 +7,21 @@ using DirectX::XMMATRIX;
 using DirectX::XMVECTOR;
 
 namespace Zongine {
-    struct CAMERA_PROPERTY {
-        union {
-            struct PERSPECTIVE_PARAM
-            {
-                float fFovAngleY;
-                float fAspectRatio;
-            } Persective;
-        };
-    };
-
-    struct __declspec(align(16)) CAMERA_INFO {
-		XMMATRIX mView;
-		XMMATRIX mProject;
-
-		CAMERA_PROPERTY Property;
+    __declspec(align(16)) struct CAMERA
+    {
+        XMMATRIX CameraView;
+        XMMATRIX CameraProject;
     };
 
     struct __declspec(align(16)) CameraComponent {
-        CAMERA_INFO CameraInfo;
+        CAMERA Camera;
+        struct PERSPECTIVE_PARAM
+        {
+            float fFovAngleY;
+            float fAspectRatio;
+        } Persective;
 
         EntityID target{ INVALID_ENTITY };
-
         XMVECTOR Offset;
     };
 }

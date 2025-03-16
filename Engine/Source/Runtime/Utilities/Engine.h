@@ -11,6 +11,7 @@
 namespace Zongine {
     class RenderSystem;
     class InputSystem;
+    class CameraSystem;
 
     class Engine {
     public:
@@ -23,5 +24,6 @@ namespace Zongine {
     private:
         std::unique_ptr<RenderSystem> renderSystem{};
         std::unique_ptr<InputSystem> inputSystem{};
+        std::unique_ptr<CameraSystem> cameraSystem{};
     };
 }

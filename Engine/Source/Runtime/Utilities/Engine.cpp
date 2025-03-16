@@ -8,6 +8,9 @@
 
 #include "Systems/RenderSystem.h"
 #include "Systems/InputSystem.h"
+#include "Systems/CameraSystem.h"
+
+#include "Components/CameraComponent.h"
 
 #include "Entities/EntityManager.h"
 
@@ -35,12 +38,18 @@ namespace Zongine {
         // System initialization
         renderSystem = std::make_unique<RenderSystem>();
         inputSystem = std::make_unique<InputSystem>();
+        cameraSystem = std::make_unique<CameraSystem>();
+
 
         renderSystem->Initialize({ entityManager, deviceManager, shaderManager, stateManager });
         inputSystem->Initialize({ windowManager });
+        cameraSystem->Initialize({ entityManager, windowManager });
 
-        auto entity = entityManager->CreateEntity();
-        resourceManager->CreateMeshComponent(entity, "data/source/player/F1/部件/F1_2206_body.mesh");
+        auto player = entityManager->CreateEntity();
+        resourceManager->CreateMeshComponent(player, "data/source/player/F1/部件/F1_2206_body.mesh");
+
+        auto camera = entityManager->CreateEntity();
+        entityManager->AddComponent<CameraComponent>(camera.GetID(), CameraComponent{});
     }
 
     void Engine::Run() {

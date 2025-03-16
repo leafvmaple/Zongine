@@ -24,7 +24,7 @@ namespace Zongine {
     public:
         void Initialize(const ResourceManagerInfo& info) {
             m_WindowManager = info.windowManager;
-			m_EntityManager = info.entityManager;
+            m_EntityManager = info.entityManager;
         };
 
         void CreateMeshComponent(const Entity& entity, const std::string& path);

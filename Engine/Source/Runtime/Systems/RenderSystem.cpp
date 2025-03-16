@@ -3,6 +3,7 @@
 #include "Entities/EntityManager.h"
 #include "Utilities/DeviceManager.h"
 
+#include "Components/CameraComponent.h"
 #include "Components/MeshComponent.h"
 #include "Components/TransformComponent.h"
 
@@ -13,6 +14,20 @@
 #include "LAssert.h"
 
 namespace Zongine {
+    __declspec(align(16)) struct SHARED_SHADER_COMMON
+    {
+        __declspec(align(16)) struct SWITCH
+        {
+            int bEnableSunLight = 0;
+            int bEnableConvertMap = 0;
+            int bEnableIBL = 0;
+            int bEnableFog = 0;
+        };
+
+        SWITCH Switch;
+        CAMERA Camera;
+    };
+
     void RenderSystem::Tick(float fDeltaTime) {
         auto context = m_WindowManager->GetImmediateContext();
         auto entities = m_EntityManager->GetEntities();

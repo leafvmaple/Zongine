@@ -40,6 +40,7 @@
     <ClInclude Include="Components\CameraComponent.h" />
     <ClInclude Include="Components\MaterialComponent.h" />
     <ClInclude Include="Components\MeshComponent.h" />
+    <ClInclude Include="Components\ShaderComponent.h" />
     <ClInclude Include="Components\TransformComponent.h" />
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Entities\EntityManager.h" />
