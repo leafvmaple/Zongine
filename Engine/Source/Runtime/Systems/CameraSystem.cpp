@@ -32,9 +32,9 @@ namespace Zongine {
             auto& persective = cameraComponent.Persective;
 
             XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(
-                DirectX::XMConvertToRadians(transformComponent.Rotation.x), // Pitch
-                DirectX::XMConvertToRadians(transformComponent.Rotation.y), // Yaw
-                DirectX::XMConvertToRadians(transformComponent.Rotation.z)  // Roll
+                XMConvertToRadians(transformComponent.Rotation.x), // Pitch
+                XMConvertToRadians(transformComponent.Rotation.y), // Yaw
+                XMConvertToRadians(transformComponent.Rotation.z)  // Roll
             );
 
             cameraInfo.CameraView = XMMatrixLookAtLH(

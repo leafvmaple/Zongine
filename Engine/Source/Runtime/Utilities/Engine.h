@@ -25,5 +25,9 @@ namespace Zongine {
         std::unique_ptr<RenderSystem> renderSystem{};
         std::unique_ptr<InputSystem> inputSystem{};
         std::unique_ptr<CameraSystem> cameraSystem{};
+
+        void Tick(float fDeltaTime);
+
+        bool m_bRunning{ true };
     };
 }
