@@ -28,7 +28,7 @@ namespace Zongine {
 
         data.pSysMem = source.pVertices;
 
-        m_WindowManager->GetDevice()->CreateBuffer(&desc, &data, mesh.VertexBuffer.piBuffer.GetAddressOf());
+        m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh.VertexBuffer.piBuffer.GetAddressOf());
 
         return true;
     }
@@ -53,7 +53,7 @@ namespace Zongine {
 
         data.pSysMem = indices.data();
 
-        m_WindowManager->GetDevice()->CreateBuffer(&desc, &data, mesh.IndexBuffer.piBuffer.GetAddressOf());
+        m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh.IndexBuffer.piBuffer.GetAddressOf());
 
         return true;
     }

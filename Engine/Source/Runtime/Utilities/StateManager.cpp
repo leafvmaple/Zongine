@@ -109,5 +109,7 @@ namespace Zongine {
 
         for (int i = 0; i < DEPTH_WRITE_COUNT; i++)
             CHECK_HRESULT(pDevice->CreateDepthStencilState(&DEPTH_STENCIL_STATE_LIST[i].Desc, m_DepthStencils[i].GetAddressOf()));
+
+        return true;
     }
 }

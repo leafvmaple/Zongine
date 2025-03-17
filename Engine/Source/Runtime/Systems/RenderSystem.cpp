@@ -5,7 +5,6 @@
 #include "Utilities/EffectManager.h"
 
 #include "Components/ShaderComponent.h"
-#include "Components/CameraComponent.h"
 #include "Components/MeshComponent.h"
 #include "Components/TransformComponent.h"
 
@@ -17,24 +16,12 @@
 
 #include "LAssert.h"
 
+constexpr int SHARED_COMMON_SLOT = 0;
+
 namespace Zongine {
-    __declspec(align(16)) struct SHARED_SHADER_COMMON
-    {
-        __declspec(align(16)) struct SWITCH
-        {
-            int bEnableSunLight = 0;
-            int bEnableConvertMap = 0;
-            int bEnableIBL = 0;
-            int bEnableFog = 0;
-        };
-
-        SWITCH Switch;
-        CAMERA Camera;
-    };
-
     bool RenderSystem::Initialize(const RenderSystemInfo& info) {
         m_EntityManager = info.entityManager;
-        m_WindowManager = info.deviceManager;
+        m_DeviceManager = info.deviceManager;
         m_ShaderManager = info.shaderManager;
         m_StateManager = info.stateManager;
         m_EffectManager = info.effectManager;
@@ -45,7 +32,7 @@ namespace Zongine {
     }
 
     void RenderSystem::Tick(float fDeltaTime) {
-        auto context = m_WindowManager->GetImmediateContext();
+        auto context = m_DeviceManager->GetImmediateContext();
         auto entities = m_EntityManager->GetEntities();
 
         for (auto& [entityID, entity]:entities) {
@@ -67,7 +54,7 @@ namespace Zongine {
     }
 
     void RenderSystem::_InitializeConstantBuffer() {
-        auto device = m_WindowManager->GetDevice();
+        auto device = m_DeviceManager->GetDevice();
         D3D11_BUFFER_DESC bufferDesc{};
 
         bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -79,7 +66,25 @@ namespace Zongine {
     }
 
     void RenderSystem::_UpdateConstantBuffer() {
+        D3D11_MAPPED_SUBRESOURCE resource{};
+        auto context = m_DeviceManager->GetImmediateContext();
 
+        auto entities = m_EntityManager->GetEntities<CameraComponent>();
+        auto cameraComponent = entities.begin()->second;
+
+        m_SharedShaderCommon.Camera = cameraComponent.Camera;
+
+        context->Map(m_SharedShaderCommonBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+        memcpy(resource.pData, &m_SharedShaderCommon, sizeof(SHARED_SHADER_COMMON));
+
+        context->Unmap(m_SharedShaderCommonBuffer.Get(), 0);
+
+        context->VSSetConstantBuffers(SHARED_COMMON_SLOT, 1, m_SharedShaderCommonBuffer.GetAddressOf());
+        context->HSSetConstantBuffers(SHARED_COMMON_SLOT, 1, m_SharedShaderCommonBuffer.GetAddressOf());
+        context->DSSetConstantBuffers(SHARED_COMMON_SLOT, 1, m_SharedShaderCommonBuffer.GetAddressOf());
+        context->PSSetConstantBuffers(SHARED_COMMON_SLOT, 1, m_SharedShaderCommonBuffer.GetAddressOf());
+        context->GSSetConstantBuffers(SHARED_COMMON_SLOT, 1, m_SharedShaderCommonBuffer.GetAddressOf());
+        context->CSSetConstantBuffers(SHARED_COMMON_SLOT, 1, m_SharedShaderCommonBuffer.GetAddressOf());
     }
 
     void RenderSystem::_UpdateEffect() {

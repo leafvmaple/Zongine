@@ -23,7 +23,7 @@ namespace Zongine {
     class ResourceManager {
     public:
         void Initialize(const ResourceManagerInfo& info) {
-            m_WindowManager = info.windowManager;
+            m_DeviceManager = info.windowManager;
             m_EntityManager = info.entityManager;
         };
 
@@ -34,7 +34,7 @@ namespace Zongine {
         template<typename T>
         bool _CreateIndexBuffer(SubMesh& mesh, const MESH_SOURCE& source, DXGI_FORMAT eFormat);
 
-        std::shared_ptr<DeviceManager> m_WindowManager{};
+        std::shared_ptr<DeviceManager> m_DeviceManager{};
         std::shared_ptr<EntityManager> m_EntityManager{};
     };
 }

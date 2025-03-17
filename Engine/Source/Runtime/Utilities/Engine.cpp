@@ -36,7 +36,7 @@ namespace Zongine {
         resourceManager->Initialize({ entityManager, deviceManager });
         shaderManager->Initialize({ deviceManager });
         stateManager->Initialize({ deviceManager });
-        effectManager->Initialize({});
+        effectManager->Initialize({ deviceManager });
 
         // System initialization
         renderSystem = std::make_unique<RenderSystem>();

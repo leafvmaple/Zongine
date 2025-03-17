@@ -7,6 +7,8 @@
 
 #include "Entities/Entity.h"
 
+#include "components/CameraComponent.h"
+
 namespace Zongine {
     class EntityManager;
     class DeviceManager;
@@ -34,8 +36,22 @@ namespace Zongine {
         void Tick(float fDeltaTime);
 
     private:
+        __declspec(align(16)) struct SHARED_SHADER_COMMON
+        {
+            __declspec(align(16)) struct SWITCH
+            {
+                int bEnableSunLight = 0;
+                int bEnableConvertMap = 0;
+                int bEnableIBL = 0;
+                int bEnableFog = 0;
+            };
+
+            SWITCH Switch;
+            CAMERA Camera;
+        };
+
         std::shared_ptr<EntityManager> m_EntityManager{};
-        std::shared_ptr<DeviceManager> m_WindowManager{};
+        std::shared_ptr<DeviceManager> m_DeviceManager{};
         std::shared_ptr<ShaderManager> m_ShaderManager{};
         std::shared_ptr<StateManager> m_StateManager{};
         std::shared_ptr<EffectManager> m_EffectManager{};
@@ -43,6 +59,8 @@ namespace Zongine {
         Microsoft::WRL::ComPtr<ID3D11Buffer> m_SharedShaderCommonBuffer{};
 
         std::vector<RenderEntity> m_RenderEntities{};
+
+        SHARED_SHADER_COMMON m_SharedShaderCommon{};
 
         void _InitializeConstantBuffer();
 
