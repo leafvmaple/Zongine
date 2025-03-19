@@ -33,8 +33,8 @@ namespace Zongine {
             m_piDevice.GetAddressOf(), nullptr, m_piImmediateContext.GetAddressOf()
         );
 
-        _CreateViewport(width, height);
         _CreateSwapChain(width, height, desc.windowManager->GetWindowHandle());
+        _CreateViewport(width, height);
     }
 
     bool DeviceManager::_CreateSwapChain(unsigned uWidth, unsigned uHeight, HWND hWnd) {

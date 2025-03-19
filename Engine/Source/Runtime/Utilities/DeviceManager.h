@@ -19,6 +19,7 @@ namespace Zongine {
 
         ComPtr<ID3D11Device> GetDevice() const { return m_piDevice; }
         ComPtr<ID3D11DeviceContext> GetImmediateContext() const { return m_piImmediateContext; }
+        ComPtr<IDXGISwapChain> GetSwapChain() const { return m_piSwapChain; }
     private:
         bool _CreateSwapChain(unsigned uWidth, unsigned uHeight, HWND hWnd);
 		bool _CreateViewport(unsigned uWidth, unsigned uHeight);

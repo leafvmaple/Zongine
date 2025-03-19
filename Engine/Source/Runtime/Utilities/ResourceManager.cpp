@@ -141,6 +141,8 @@ namespace Zongine {
 
         data.pSysMem = source.pVertices;
 
+        mesh.VertexBuffer.uStride = source.nVertexSize;
+
         m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh.VertexBuffer.piBuffer.GetAddressOf());
 
         return true;
@@ -154,7 +156,7 @@ namespace Zongine {
         UINT nOffset{};
 
         for (int i = 0; i < source.nSubsetCount; i++) {
-            mesh.Subsets.emplace_back(SubsetMesh{ source.pSubsetVertexCount[i], nOffset });
+            mesh.Subsets.emplace_back(SubsetMesh{ nOffset, source.pSubsetVertexCount[i] });
             nOffset += source.pSubsetVertexCount[i];
         }
         for (int i = 0; i < source.nIndexCount; i++)
@@ -165,6 +167,8 @@ namespace Zongine {
         desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
         data.pSysMem = indices.data();
+
+        mesh.IndexBuffer.eFormat = nFormat;
 
         m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh.IndexBuffer.piBuffer.GetAddressOf());
 

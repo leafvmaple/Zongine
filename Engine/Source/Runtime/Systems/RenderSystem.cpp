@@ -4,6 +4,7 @@
 #include "Utilities/DeviceManager.h"
 #include "Utilities/EffectManager.h"
 #include "Utilities/StateManager.h"
+#include "Utilities/ShaderManager.h"
 
 #include "Components/ShaderComponent.h"
 #include "Components/MeshComponent.h"
@@ -20,7 +21,7 @@
 
 using namespace DirectX;
 
-constexpr int SHARED_BUFFER_SLOT = 0;
+constexpr int SHARED_BUFFER_SLOT = 13;
 
 namespace Zongine {
     bool RenderSystem::Initialize(const RenderSystemInfo& info) {
@@ -36,8 +37,11 @@ namespace Zongine {
     }
 
     void RenderSystem::Tick(float fDeltaTime) {
+        auto swapChain = m_DeviceManager->GetSwapChain();
         auto context = m_DeviceManager->GetImmediateContext();
         auto& entities = m_EntityManager->GetEntities();
+
+        _UpdateSharedBuffer();
 
         for (auto& [entityID, entity]:entities) {
             if (!m_EntityManager->HasComponent<MeshComponent>(entity.GetID()))
@@ -52,6 +56,10 @@ namespace Zongine {
             auto& vertexBuffer = meshComponent.VertexBuffer;
             auto& indexBuffer = meshComponent.IndexBuffer;
 
+            // TODO
+            auto inputLayout = m_ShaderManager->GetInputLayout(INPUT_LAYOUT_CI_SKINMESH);
+
+            context->IASetInputLayout(inputLayout.Get());
             context->IASetVertexBuffers(0, 1, vertexBuffer.piBuffer.GetAddressOf(), &vertexBuffer.uStride, &vertexBuffer.uOffset);
             context->IASetIndexBuffer(indexBuffer.piBuffer.Get(), indexBuffer.eFormat, indexBuffer.uOffset);
             context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -69,21 +77,23 @@ namespace Zongine {
                 }
 
                 auto effectPass = m_EffectManager->GetEffectPass(subsetShader.Effect, shaderComponent.Pass);
-                effectPass->Apply(0, m_DeviceManager->GetImmediateContext().Get());
+                effectPass->Apply(0, context.Get());
 
                 context->DrawIndexed(subsetMesh.uIndexCount, subsetMesh.uStartIndex, 0);
             }
         }
+
+        swapChain->Present(0, 0);
     }
 
     void RenderSystem::_InitializeSharedBuffer() {
         auto device = m_DeviceManager->GetDevice();
         D3D11_BUFFER_DESC bufferDesc{};
 
-        bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+        bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
         bufferDesc.ByteWidth = sizeof(SHARED_SHADER_COMMON);
         bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        bufferDesc.CPUAccessFlags = 0;
+        bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
         device->CreateBuffer(&bufferDesc, nullptr, m_SharedBuffer.GetAddressOf());
     }

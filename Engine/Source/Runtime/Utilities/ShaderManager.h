@@ -41,6 +41,10 @@ namespace Zongine {
     public:
         bool Initialize(const ShaderInitInfo& info);
 
+        ComPtr<ID3D11VertexShader> GetVertexShader(VERTEX_SHADER id) const { return m_VertexShaders[id]; }
+        ComPtr<ID3D11PixelShader> GetPixelShader(PIXEL_SHADER id) const { return m_PixelShaders[id]; }
+        ComPtr<ID3D11InputLayout> GetInputLayout(INPUT_LAYOUT id) const { return m_InputLayouts[id]; }
+
     private:
         std::array<ComPtr<ID3D11VertexShader>, VERTEX_SHADER_COUNT> m_VertexShaders{};
         std::array<ComPtr<ID3D11PixelShader>, PIXEL_SHADER_COUNT> m_PixelShaders{};
