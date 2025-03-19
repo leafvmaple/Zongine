@@ -10,12 +10,13 @@
 namespace Zongine {
     using Microsoft::WRL::ComPtr;
 
-    struct SUBSET_INFO {
+    struct SubsetMesh {
         UINT uStartIndex{};
         UINT uIndexCount{};
     };
 
-    struct SubMesh {
+    struct MeshComponent : public BaseComponent {
+
         struct VERTEX_BUFFER
         {
             ComPtr<ID3D11Buffer> piBuffer{};
@@ -30,10 +31,6 @@ namespace Zongine {
             UINT uOffset{};
         } IndexBuffer;
 
-        std::vector<SUBSET_INFO> Subsets;
-    };
-
-    struct MeshComponent : public BaseComponent {
-        std::vector<SubMesh> SubMeshes;
+        std::vector<SubsetMesh> Subsets;
     };
 }

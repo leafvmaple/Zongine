@@ -8,8 +8,7 @@
 namespace Zongine {
     class DeviceManager;
 
-    enum INPUT_LAYOUT
-    {
+    enum INPUT_LAYOUT {
         INPUT_LAYOUT_CI_MESH,
         INPUT_LAYOUT_CI_SKINMESH,
         INPUT_LAYOUT_CI_TERRAIN,
@@ -17,16 +16,14 @@ namespace Zongine {
         INPUT_LAYOUT_COUNT,
     };
 
-    enum PIXEL_SHADER
-    {
+    enum PIXEL_SHADER {
         PIXEL_SHADER_NULL,
         PIXEL_SHADER_UV1_NO_LIGHT,
 
         PIXEL_SHADER_COUNT,
     };
 
-    enum VERTEX_SHADER
-    {
+    enum VERTEX_SHADER {
         VERTEX_SHADER_CI_MESH,
         VERTEX_SHADER_CI_SKINMESH,
         VERTEX_SHADER_CI_TERRAIN,

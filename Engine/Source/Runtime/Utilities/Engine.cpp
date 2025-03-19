@@ -12,8 +12,14 @@
 #include "Systems/CameraSystem.h"
 
 #include "Components/CameraComponent.h"
+#include "components/MaterialComponent.h"
+#include "components/TransformComponent.h"
 
 #include "Entities/EntityManager.h"
+
+#include <algorithm>
+#include <string>
+#include <iterator>
 
 namespace Zongine {
     Engine::Engine() {
@@ -33,7 +39,7 @@ namespace Zongine {
 
         windowManager->Initialize({ hInstance, L"Zongine", L"Zongine", 0, 0, 1280, 720 });
         deviceManager->Initialize({ windowManager });
-        resourceManager->Initialize({ entityManager, deviceManager });
+        resourceManager->Initialize({ entityManager, deviceManager, effectManager });
         shaderManager->Initialize({ deviceManager });
         stateManager->Initialize({ deviceManager });
         effectManager->Initialize({ deviceManager });
@@ -43,15 +49,29 @@ namespace Zongine {
         inputSystem = std::make_unique<InputSystem>();
         cameraSystem = std::make_unique<CameraSystem>();
 
-        renderSystem->Initialize({ entityManager, deviceManager, shaderManager, stateManager });
-        inputSystem->Initialize({ windowManager });
-        cameraSystem->Initialize({ entityManager, windowManager });
+        auto camera = entityManager->CreateEntity();
+        auto cameraComponent = entityManager->AddComponent<CameraComponent>(camera.GetID(), CameraComponent{});
+
+        entityManager->AddComponent<TransformComponent>(camera.GetID(), TransformComponent{});
 
         auto player = entityManager->CreateEntity();
-        resourceManager->CreateMeshComponent(player, "data/source/player/F1/部件/F1_2206_body.mesh");
 
-        auto camera = entityManager->CreateEntity();
-        entityManager->AddComponent<CameraComponent>(camera.GetID(), CameraComponent{});
+        entityManager->AddComponent<TransformComponent>(player.GetID(), TransformComponent{});
+        entityManager->AddComponent<MeshComponent>(player.GetID(), resourceManager->LoadMesh("data/source/player/F1/部件/F1_2206_body.mesh"));
+        auto material = entityManager->AddComponent<MaterialComponent>(player.GetID(), resourceManager->LoadMaterial("data/source/player/F1/部件/F1_2206_body.JsonInspack"));
+        std::vector<std::string> shaderNames;
+        shaderNames.reserve(material.Subsets.size()); // 预留空间
+        std::transform(material.Subsets.begin(), material.Subsets.end(),
+            std::back_inserter(shaderNames),
+            [](const std::shared_ptr<ReferMaterial>& subset) -> std::string {
+                return subset->ShaderName;
+            });
+
+        entityManager->AddComponent<ShaderComponent>(player.GetID(), resourceManager->LoadShader(RUNTIME_MACRO_SKIN_MESH, shaderNames));
+
+        renderSystem->Initialize({ entityManager, deviceManager, shaderManager, stateManager, effectManager });
+        inputSystem->Initialize({ windowManager });
+        cameraSystem->Initialize({ entityManager, windowManager });
 
         m_bRunning = true;
     }

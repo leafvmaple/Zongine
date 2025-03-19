@@ -3,18 +3,12 @@
 #include <string>
 #include <cstdlib>
 
-namespace Zongine {
-    std::wstring AnsiToWString(const std::string& ansiStr) {
-        size_t wideSize = std::mbstowcs(nullptr, ansiStr.c_str(), 0) + 1;
-        std::wstring wideStr(wideSize, L'\0');
-        std::mbstowcs(&wideStr[0], ansiStr.c_str(), wideSize);
-        return wideStr;
-    }
+#include <filesystem>
 
-    std::string WStringToAnsi(const std::wstring& wideStr) {
-        size_t ansiSize = wcstombs(nullptr, wideStr.c_str(), 0) + 1;
-        std::string ansiStr(ansiSize, '\0');
-        wcstombs(&ansiStr[0], wideStr.c_str(), ansiSize);
-        return ansiStr;
-    }
+namespace Zongine {
+    size_t _GetExtensionPos(const std::string& path);
+    std::string replaceFileExtension(const std::string& path, const std::string& newExtension);
+    std::string getFileExtension(const std::string& path);
+
+    void TryReplaceExtension(std::filesystem::path& path, const std::filesystem::path& ext);
 }

@@ -40,7 +40,7 @@ namespace Zongine {
             return components.find(entity) != components.end();
         }
 
-        const std::unordered_map<EntityID, ComponentType>& GetComponents() const {
+        std::unordered_map<EntityID, ComponentType>& GetComponents() {
             return components;
         }
     };
@@ -57,13 +57,17 @@ namespace Zongine {
 			return m_Entities.emplace(id, Entity(id, this)).first->second;
         }
 
-        const std::unordered_map<EntityID, Entity>& GetEntities() {
+        std::unordered_map<EntityID, Entity>& GetEntities() {
+            return m_Entities;
+        }
+
+        const std::unordered_map<EntityID, Entity>& GetEntities() const {
             return m_Entities;
         }
 
         template<typename ComponentType>
-        const std::unordered_map<EntityID, ComponentType>& GetEntities() {
-            const auto& storage = GetOrCreateStorage<ComponentType>();
+        std::unordered_map<EntityID, ComponentType>& GetEntities() {
+            auto& storage = GetOrCreateStorage<ComponentType>();
             return storage.GetComponents();
         }
 
@@ -91,9 +95,9 @@ namespace Zongine {
         }
 
         template<typename ComponentType>
-        bool HasComponent(EntityID entity) const {
-            const auto* storage = GetOrCreateStorage<ComponentType>();
-            return storage && storage->HasComponent(entity);
+        bool HasComponent(EntityID entity) {
+            const auto& storage = GetOrCreateStorage<ComponentType>();
+            return storage.HasComponent(entity);
         }
 
     private:

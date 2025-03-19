@@ -5,15 +5,13 @@
 #include "IShader.h"
 
 namespace Zongine {
-    static const char* VERTEX_SHADER_ID_NAME[] =
-    {
+    static const char* VERTEX_SHADER_ID_NAME[] {
         "VERTEX_SHADER_CI_MESH",
         "VERTEX_SHADER_CI_SKINMESH",
         "VERTEX_SHADER_CI_TERRAIN",
     };
 
-    static const char* PIXEL_SHADER_ID_NAME[] =
-    {
+    static const char* PIXEL_SHADER_ID_NAME[] {
         "PIXEL_SHADER_NULL",
         "PIXEL_SHADER_UV1_NO_LIGHT",
     };
@@ -23,8 +21,7 @@ namespace Zongine {
         VERTEX_SHADER eVertexShader;
         unsigned int uDescCount;
         D3D11_INPUT_ELEMENT_DESC DescArr[30];
-    } INPUT_LAYOUT_LIST[] =
-    {
+    } INPUT_LAYOUT_LIST[] {
         {
             INPUT_LAYOUT_CI_MESH,
             VERTEX_SHADER_CI_MESH,

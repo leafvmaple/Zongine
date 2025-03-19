@@ -75,6 +75,9 @@
     <ClCompile Include="Utilities\EffectManager.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities\StringUtils.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\RenderSystem.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="Utilities\StringUtils.h">
       <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Enums.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

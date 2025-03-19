@@ -19,7 +19,7 @@ namespace Zongine {
         {
             float fFovAngleY;
             float fAspectRatio;
-        } Persective;
+        } Perspective;
 
         EntityID target{ INVALID_ENTITY };
         XMVECTOR Offset;

@@ -56,15 +56,15 @@ namespace Zongine {
         std::shared_ptr<StateManager> m_StateManager{};
         std::shared_ptr<EffectManager> m_EffectManager{};
 
-        Microsoft::WRL::ComPtr<ID3D11Buffer> m_SharedShaderCommonBuffer{};
+        ComPtr<ID3D11Buffer> m_SharedBuffer{};
 
         std::vector<RenderEntity> m_RenderEntities{};
 
         SHARED_SHADER_COMMON m_SharedShaderCommon{};
 
-        void _InitializeConstantBuffer();
+        void _InitializeSharedBuffer();
 
-        void _UpdateConstantBuffer();
-        void _UpdateEffect();
+        void _UpdateSharedBuffer();
+        void _UpdateModelBuffer(const Entity& entity);
     };
 }

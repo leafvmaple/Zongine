@@ -34,6 +34,7 @@
     <ClCompile Include="Utilities\ResourceManager.cpp" />
     <ClCompile Include="Utilities\ShaderManager.cpp" />
     <ClCompile Include="Utilities\StateManager.cpp" />
+    <ClCompile Include="Utilities\StringUtils.cpp" />
     <ClCompile Include="Utilities\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +46,7 @@
     <ClInclude Include="Components\TransformComponent.h" />
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Entities\EntityManager.h" />
+    <ClInclude Include="Include\Enums.h" />
     <ClInclude Include="Include\Types.h" />
     <ClInclude Include="Systems\CameraSystem.h" />
     <ClInclude Include="Systems\InputSystem.h" />
@@ -62,6 +64,9 @@
     <ClInclude Include="Utilities\WindowManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rd\DirectXTex\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
+      <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\3rd\FX11\Effects11_2019_Win10.vcxproj">
       <Project>{df460eab-570d-4b50-9089-2e2fc801bf38}</Project>
     </ProjectReference>

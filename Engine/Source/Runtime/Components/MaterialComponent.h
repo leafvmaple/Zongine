@@ -3,11 +3,28 @@
 #include "BaseComponent.h"
 
 #include <d3d11.h>
+#include <vector>
 #include <memory>
+#include <string>
+#include <wrl/client.h>
+
+#include "FX11/inc/d3dx11effect.h"
 
 namespace Zongine {
-    class MaterialComponent : public BaseComponent {
-        std::shared_ptr<ID3D11InputLayout> pInputLayout;
-        D3D11_PRIMITIVE_TOPOLOGY topology;
+    using Microsoft::WRL::ComPtr;
+
+    struct _Texture {
+        std::string Name;
+        ComPtr<ID3D11ShaderResourceView> Texture;
+    };
+
+    struct ReferMaterial {
+        std::string Path;
+        std::string ShaderName;
+        std::unordered_map<std::string, _Texture> Textures;
+    };
+
+    struct MaterialComponent : public BaseComponent {
+        std::vector<std::shared_ptr<ReferMaterial>> Subsets;
     };
 }

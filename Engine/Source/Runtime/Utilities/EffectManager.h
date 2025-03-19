@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Include/Enums.h"
+
 #include <unordered_map>
 #include <string>
 #include <array>
@@ -13,11 +15,6 @@
 namespace Zongine {
     class DeviceManager;
 
-    enum class RENDER_PASS {
-        COLOR,
-        COLORSOFTMASK,
-    };
-
     using Microsoft::WRL::ComPtr;
 
     struct EffectManagerInfo {
@@ -28,7 +25,9 @@ namespace Zongine {
     public:
         void Initialize(const EffectManagerInfo& info);
 
-        ComPtr<ID3DX11Effect> LoadEffect(RUNTIME_MACRO macro, const std::string& filePath);
+        ComPtr<ID3DX11Effect> LoadEffect(RUNTIME_MACRO macro, const std::string& path);
+
+        void LoadVariables(ComPtr<ID3DX11Effect> effect, std::unordered_map<std::string, ID3DX11EffectShaderResourceVariable*>& Variables);
 
         ID3DX11EffectPass* GetEffectPass(ComPtr<ID3DX11Effect> effect, RENDER_PASS pass);
 
@@ -39,7 +38,7 @@ namespace Zongine {
         };
 
         std::shared_ptr<DeviceManager> m_DeviceManager{};
-        std::array<std::unordered_map<std::string, ComPtr<ID3DX11Effect>>, RUNTIME_MACRO_COUNT> m_Effects;
+        std::array<std::unordered_map<std::string, ComPtr<ID3DX11Effect>>, RUNTIME_MACRO_COUNT> m_Effects {};
 
         std::unordered_map<RENDER_PASS, RENDER_PASS_TABLE> m_RenderPassTable = {
             { RENDER_PASS::COLOR, { "Color" } },
