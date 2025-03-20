@@ -59,6 +59,8 @@ namespace Zongine {
 
         std::vector<RenderEntity> m_RenderEntities{};
 
+        void TickEntity(ComPtr<ID3D11DeviceContext> context, ComPtr<ID3D11Buffer> cameraBuffer, const Entity& entity);
+
         ComPtr<ID3D11Buffer> _GetCameraBuffer();
         void _UpdateModelBuffer(const Entity& entity);
     };

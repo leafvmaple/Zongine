@@ -5,6 +5,9 @@
 #include "Utilities/EffectManager.h"
 #include "Utilities/StringUtils.h"
 
+#include "Components/TransformComponent.h"
+
+
 #include "LAssert.h"
 
 #include "IMesh.h"
@@ -14,6 +17,24 @@
 #include "FX11/inc/d3dx11effect.h"
 
 namespace Zongine {
+    void ResourceManager::LoadModel(Entity& entity, const std::string& path) {
+        std::filesystem::path filePath = path;
+
+        entity.AddComponent<TransformComponent>(TransformComponent{});
+        entity.AddComponent<MeshComponent>(LoadMesh(path));
+
+        TryReplaceExtension(filePath, ".JsonInspack");
+        const auto& material = entity.AddComponent<MaterialComponent>(LoadMaterial(filePath.string().c_str()));
+
+        std::vector<std::string> shaderNames;
+        std::transform(material.Subsets.begin(), material.Subsets.end(), std::back_inserter(shaderNames),
+            [](const auto& subset) -> std::string {
+                return subset->ShaderName;
+            });
+
+        entity.AddComponent<ShaderComponent>(LoadShader(RUNTIME_MACRO_SKIN_MESH, shaderNames));
+    }
+
     MeshComponent ResourceManager::LoadMesh(const std::string& path) {
         auto& component = m_MeshComponents[path];
         if (component.Subsets.empty()) {
@@ -67,7 +88,15 @@ namespace Zongine {
 
     ShaderComponent ResourceManager::LoadShader(RUNTIME_MACRO macro, const std::vector<std::string>& paths) {
         ShaderComponent component{};
-        ID3DX11EffectConstantBuffer* modelEffectBuffer{};
+        D3D11_BUFFER_DESC bufferDesc{};
+        auto device = m_DeviceManager->GetDevice();
+
+        bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+        bufferDesc.ByteWidth = sizeof(XMMATRIX);
+        bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+        bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+        device->CreateBuffer(&bufferDesc, nullptr, component.ModelBuffer.GetAddressOf());
 
         for (const auto& path : paths) {
             auto& cache = m_SubsetShaderCache[macro][path];
@@ -75,9 +104,8 @@ namespace Zongine {
                 cache.ShaderPath = path;
                 cache.Effect = m_EffectManager->LoadEffect(macro, path);
                 m_EffectManager->LoadVariables(cache.Effect, cache.Variables);
-
-                _LoadConstantBuffer(component.EffectMatrix, cache.Effect, "MODEL_MATRIX");
             }
+            cache.Effect->GetConstantBufferByName("MODEL_MATRIX")->SetConstantBuffer(component.ModelBuffer.Get());
             component.Subsets.push_back(cache);
         }
 
@@ -137,17 +165,6 @@ namespace Zongine {
             device->CreateShaderResourceView(resource.Get(), &srvDesc, texture.GetAddressOf());
         }
         return texture;
-    }
-
-    void ResourceManager::_LoadConstantBuffer(ID3DX11EffectConstantBuffer*& effectBuffer, ComPtr<ID3DX11Effect> effect, const char* szBuffer) {
-        ID3D11Buffer* buffer{};
-
-        if (!effectBuffer)
-            effectBuffer = effect->GetConstantBufferByName(szBuffer);
-        else {
-            effectBuffer->GetConstantBuffer(&buffer);
-            effect->GetConstantBufferByName(szBuffer)->SetConstantBuffer(buffer);
-        }
     }
 
     bool ResourceManager::_CreateVertexBuffer(MeshComponent& mesh, const MESH_SOURCE& source) {

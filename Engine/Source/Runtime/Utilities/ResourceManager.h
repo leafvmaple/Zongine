@@ -36,6 +36,8 @@ namespace Zongine {
             m_EffectManager = info.effectManager;
         };
 
+        void LoadModel(Entity& entity, const std::string& path);
+
         MeshComponent LoadMesh(const std::string& path);
         MaterialComponent LoadMaterial(const std::string& path);
         ShaderComponent LoadShader(RUNTIME_MACRO macro, const std::vector<std::string>& paths);
@@ -43,7 +45,6 @@ namespace Zongine {
     private:
         std::shared_ptr<ReferMaterial> _LoadReferMaterial(const std::string& path);
         ComPtr<ID3D11ShaderResourceView> _LoadTexture(const std::string& path);
-        void _LoadConstantBuffer(ID3DX11EffectConstantBuffer*& effectBuffer, ComPtr<ID3DX11Effect> effect, const char* szBuffer);
 
         bool _CreateVertexBuffer(MeshComponent& mesh, const MESH_SOURCE& source);
         template<typename T>

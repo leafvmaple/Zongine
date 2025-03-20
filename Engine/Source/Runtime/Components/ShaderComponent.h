@@ -30,8 +30,6 @@ namespace Zongine {
 
         ComPtr<ID3D11Buffer> ModelBuffer{};
 
-        ID3DX11EffectConstantBuffer* EffectMatrix{};
-
         std::vector<ComPtr<ID3D11Buffer>> SubsetBuffers{};
     };
 }

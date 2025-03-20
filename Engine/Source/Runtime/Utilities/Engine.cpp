@@ -57,18 +57,15 @@ namespace Zongine {
 
         auto player = entityManager->CreateEntity();
 
-        entityManager->AddComponent<TransformComponent>(player.GetID(), TransformComponent{});
-        entityManager->AddComponent<MeshComponent>(player.GetID(), resourceManager->LoadMesh("data/source/player/F1/部件/F1_2206_body.mesh"));
-        auto material = entityManager->AddComponent<MaterialComponent>(player.GetID(), resourceManager->LoadMaterial("data/source/player/F1/部件/F1_2206_body.JsonInspack"));
-        std::vector<std::string> shaderNames;
-        shaderNames.reserve(material.Subsets.size()); // 预留空间
-        std::transform(material.Subsets.begin(), material.Subsets.end(),
-            std::back_inserter(shaderNames),
-            [](const std::shared_ptr<ReferMaterial>& subset) -> std::string {
-                return subset->ShaderName;
-            });
+        auto body = player.AddChild();
+        auto hand = player.AddChild();
+        auto leg = player.AddChild();
+        auto belt = player.AddChild();
 
-        entityManager->AddComponent<ShaderComponent>(player.GetID(), resourceManager->LoadShader(RUNTIME_MACRO_SKIN_MESH, shaderNames));
+        resourceManager->LoadModel(body, "data/source/player/F1/部件/F1_2206_body.mesh");
+        resourceManager->LoadModel(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
+        resourceManager->LoadModel(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
+        resourceManager->LoadModel(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
 
         renderSystem->Initialize({ entityManager, deviceManager, shaderManager, stateManager, effectManager });
         inputSystem->Initialize({ windowManager });

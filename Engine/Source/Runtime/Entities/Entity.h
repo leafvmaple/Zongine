@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 namespace Zongine {
     using EntityID = uint32_t;
@@ -11,7 +12,9 @@ namespace Zongine {
     class Entity {
     private:
         EntityID m_ID;
-        class EntityManager* m_Manager;
+        class EntityManager* m_Manager{};
+
+        std::vector<Entity> m_Children{};
 
     public:
         Entity(EntityID id, EntityManager* manager) : m_ID(id), m_Manager(manager) {}
@@ -22,6 +25,12 @@ namespace Zongine {
         template<typename ComponentType>
         ComponentType& GetComponent();
 
+        template<typename ComponentType>
+        ComponentType& AddComponent(const ComponentType& component);
+
         EntityID GetID() const { return m_ID; }
+
+        Entity& AddChild();
+        const std::vector<Entity>& GetChildren() const { return m_Children; }
     };
 }
