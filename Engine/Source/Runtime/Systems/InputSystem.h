@@ -5,17 +5,20 @@
 
 namespace Zongine {
     struct WindowEvent;
-	class WindowManager;
+    class WindowManager;
 
-	struct InputSystemInitInfo {
+    struct InputSystemInitInfo {
         std::shared_ptr<WindowManager> windowManager{};
-	};
+    };
 
     class InputSystem {
     public:
         void Initialize(const InputSystemInitInfo& info);
         void Tick(float fDeltaTime);
 
-        void OnWindowEvent(const WindowEvent& event) {};
+        void OnWindowEvent(const WindowEvent& event);
+
+    private:
+        std::shared_ptr<WindowManager> m_WindowManager{};
     };
 }
