@@ -57,11 +57,13 @@ namespace Zongine {
 
         auto player = entityManager->CreateEntity();
 
+        auto head = player.AddChild();
         auto body = player.AddChild();
         auto hand = player.AddChild();
         auto leg = player.AddChild();
         auto belt = player.AddChild();
 
+        resourceManager->LoadModel(head, "data/source/player/F1/部件/F1_0000_head.mesh");
         resourceManager->LoadModel(body, "data/source/player/F1/部件/F1_2206_body.mesh");
         resourceManager->LoadModel(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
         resourceManager->LoadModel(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
