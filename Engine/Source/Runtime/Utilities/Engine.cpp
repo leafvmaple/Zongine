@@ -52,7 +52,8 @@ namespace Zongine {
         auto camera = entityManager->CreateEntity();
         auto cameraComponent = entityManager->AddComponent<CameraComponent>(camera.GetID(), CameraComponent{});
 
-        entityManager->AddComponent<TransformComponent>(camera.GetID(), TransformComponent{});
+        auto& cameraTransform = entityManager->AddComponent<TransformComponent>(camera.GetID(), TransformComponent{});
+        cameraTransform.Position = { 0.0f, 40.0f, -100.0f };
 
         auto player = entityManager->CreateEntity();
 
@@ -71,7 +72,7 @@ namespace Zongine {
 
         renderSystem->Initialize({ entityManager, deviceManager, shaderManager, stateManager, effectManager });
         inputSystem->Initialize({ windowManager });
-        cameraSystem->Initialize({ entityManager, windowManager });
+        cameraSystem->Initialize({ entityManager, windowManager, deviceManager });
 
         m_bRunning = true;
     }

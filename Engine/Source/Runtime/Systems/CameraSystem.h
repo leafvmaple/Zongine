@@ -7,10 +7,12 @@
 namespace Zongine {
     class EntityManager;
     class WindowManager;
+    class DeviceManager;
 
     struct CameraSystemInfo {
         std::shared_ptr<EntityManager> entityManager{};
         std::shared_ptr<WindowManager> windowManager{};
+        std::shared_ptr<DeviceManager> deviceManager{};
     };
 
     class CameraSystem {

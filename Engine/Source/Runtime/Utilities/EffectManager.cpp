@@ -74,10 +74,14 @@ namespace Zongine {
         if (!effect) {
             std::filesystem::path filePath = SShaderTemplate[macro];
             auto device = m_DeviceManager->GetDevice();
+            char error[MAX_PATH];
 
             D3DInclude include(path);
 
             auto hr = D3DCompileFromFile(filePath.wstring().c_str(), 0, &include, 0, "fx_5_0", nShaderFlags, 0, compiledShader.GetAddressOf(), compiledMsgs.GetAddressOf());
+            if (FAILED(hr)) {
+                strcpy(error, (const char*)compiledMsgs->GetBufferPointer());
+            }
             D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), 0, device.Get(), effect.GetAddressOf());
         }
 

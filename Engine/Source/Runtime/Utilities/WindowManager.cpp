@@ -2,6 +2,7 @@
 
 namespace Zongine {
     void WindowManager::Initialize(const WindowManagerDesc& desc) {
+        RECT rect{};
         WNDCLASSEX wndClassEx{};
 
         wndClassEx.cbSize = sizeof(WNDCLASSEX);
@@ -17,8 +18,13 @@ namespace Zongine {
         m_Wnd = CreateWindow(desc.szClassName, desc.szTitle, WS_OVERLAPPEDWINDOW,
             desc.x, desc.y, desc.width, desc.height, NULL, NULL, desc.hInstance, NULL);
 
-		m_Width = desc.width;
-		m_Height = desc.height;
+        ::GetClientRect(m_Wnd, &rect);
+
+        m_Width = desc.width;
+        m_Height = desc.height;
+
+        m_ViewportWidth = rect.right - rect.left;
+        m_ViewportHeight = rect.bottom - rect.top;
 
         SetWindowLongPtr(m_Wnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 

@@ -33,6 +33,8 @@ namespace Zongine {
 
         int GetWidth() const { return m_Width; }
         int GetHeight() const { return m_Height; }
+        int GetViewportWidth() const { return m_ViewportWidth; }
+        int GetViewportHeight() const { return m_ViewportHeight; }
 
         void AddEventCallback(EventCallback callback) {
             m_EventCallbacks.push_back(callback);
@@ -40,8 +42,11 @@ namespace Zongine {
 
     private:
         HWND m_Wnd{};
+
         int m_Width{};
         int m_Height{};
+        int m_ViewportWidth{};
+        int m_ViewportHeight{};
         std::vector<EventCallback> m_EventCallbacks;
     };
 

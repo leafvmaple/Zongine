@@ -11,19 +11,18 @@ struct SWITCH
     int bEnableFog;
 };
 
-struct CAMERA
+cbuffer CAMERA_MATRIX
 {
-    row_major matrix CameraView           : View;
-    row_major matrix CameraProject        : Project;
+    row_major matrix ZONGINE_MATRIX_V;
+    row_major matrix ZONGINE_MATRIX_P;
 };
 
 struct COMMON_PARAM
 {
     SWITCH Switch;
-    CAMERA Camera;
 };
 
-cbuffer CBUFFER_COMMON : register(b13)
+cbuffer CBUFFER_COMMON 
 {
     COMMON_PARAM g_Com;
 };

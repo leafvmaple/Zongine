@@ -43,6 +43,7 @@ namespace Zongine {
     private:
         std::shared_ptr<ReferMaterial> _LoadReferMaterial(const std::string& path);
         ComPtr<ID3D11ShaderResourceView> _LoadTexture(const std::string& path);
+        void _LoadConstantBuffer(ID3DX11EffectConstantBuffer*& effectBuffer, ComPtr<ID3DX11Effect> effect, const char* szBuffer);
 
         bool _CreateVertexBuffer(MeshComponent& mesh, const MESH_SOURCE& source);
         template<typename T>

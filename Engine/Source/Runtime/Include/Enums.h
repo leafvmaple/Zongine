@@ -1,5 +1,7 @@
 #pragma once
 
+#include <DirectXMath.h>
+
 namespace Zongine {
     enum RASTERIZER_STATE_ID {
         RASTERIZER_STATE_CULL_NONE,
@@ -33,4 +35,8 @@ namespace Zongine {
         COLOR,
         COLORSOFTMASK,
     };
+
+    namespace Colors {
+        XMGLOBALCONST DirectX::XMFLOAT4 White = { 1.0f, 1.0f, 1.0f, 1.0f };
+    }
 }

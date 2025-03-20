@@ -47,7 +47,8 @@ namespace Zongine {
         __declspec(align(16)) struct SHARED_SHADER_COMMON
         {
             SWITCH Switch;
-            CAMERA Camera;
+            XMMATRIX CameraView;
+            XMMATRIX CameraProject;
         };
 
         std::shared_ptr<EntityManager> m_EntityManager{};
@@ -56,15 +57,9 @@ namespace Zongine {
         std::shared_ptr<StateManager> m_StateManager{};
         std::shared_ptr<EffectManager> m_EffectManager{};
 
-        ComPtr<ID3D11Buffer> m_SharedBuffer{};
-
         std::vector<RenderEntity> m_RenderEntities{};
 
-        SHARED_SHADER_COMMON m_SharedShaderCommon{};
-
-        void _InitializeSharedBuffer();
-
-        void _UpdateSharedBuffer();
+        ComPtr<ID3D11Buffer> _GetCameraBuffer();
         void _UpdateModelBuffer(const Entity& entity);
     };
 }

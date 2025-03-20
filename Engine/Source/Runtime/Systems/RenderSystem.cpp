@@ -31,17 +31,21 @@ namespace Zongine {
         m_StateManager = info.stateManager;
         m_EffectManager = info.effectManager;
 
-        _InitializeSharedBuffer();
-
         return true;
     }
 
     void RenderSystem::Tick(float fDeltaTime) {
         auto swapChain = m_DeviceManager->GetSwapChain();
         auto context = m_DeviceManager->GetImmediateContext();
+        auto renderTargetView = m_DeviceManager->GetRenderTargetView();
+        auto depthStencilView = m_DeviceManager->GetDepthStencilView();
+
+        context->ClearRenderTargetView(renderTargetView.Get(), reinterpret_cast<const float*>(&Colors::White));
+        context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
         auto& entities = m_EntityManager->GetEntities();
 
-        _UpdateSharedBuffer();
+        auto cameraBuffer = _GetCameraBuffer();
 
         for (auto& [entityID, entity]:entities) {
             if (!m_EntityManager->HasComponent<MeshComponent>(entity.GetID()))
@@ -76,6 +80,11 @@ namespace Zongine {
                     it->second->SetResource(texture.Texture.Get());
                 }
 
+                auto rasterizerState = m_StateManager->GetRasterizerState(subsetMaterial->Rasterizer);
+                context->RSSetState(rasterizerState.Get());
+
+                subsetShader.Effect->GetConstantBufferByName("CAMERA_MATRIX")->SetConstantBuffer(cameraBuffer.Get());
+
                 auto effectPass = m_EffectManager->GetEffectPass(subsetShader.Effect, shaderComponent.Pass);
                 effectPass->Apply(0, context.Get());
 
@@ -86,37 +95,18 @@ namespace Zongine {
         swapChain->Present(0, 0);
     }
 
-    void RenderSystem::_InitializeSharedBuffer() {
-        auto device = m_DeviceManager->GetDevice();
-        D3D11_BUFFER_DESC bufferDesc{};
-
-        bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-        bufferDesc.ByteWidth = sizeof(SHARED_SHADER_COMMON);
-        bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-        device->CreateBuffer(&bufferDesc, nullptr, m_SharedBuffer.GetAddressOf());
-    }
-
-    void RenderSystem::_UpdateSharedBuffer() {
+    ComPtr<ID3D11Buffer> RenderSystem::_GetCameraBuffer() {
         D3D11_MAPPED_SUBRESOURCE resource{};
 
         auto context = m_DeviceManager->GetImmediateContext();
         auto entities = m_EntityManager->GetEntities<CameraComponent>();
         const auto& cameraComponent = entities.begin()->second;
 
-        m_SharedShaderCommon.Camera = cameraComponent.Camera;
+        context->Map(cameraComponent.Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+        memcpy(resource.pData, &cameraComponent.Camera, sizeof(CAMERA));
+        context->Unmap(cameraComponent.Buffer.Get(), 0);
 
-        context->Map(m_SharedBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-        memcpy(resource.pData, &m_SharedShaderCommon, sizeof(SHARED_SHADER_COMMON));
-        context->Unmap(m_SharedBuffer.Get(), 0);
-
-        context->VSSetConstantBuffers(SHARED_BUFFER_SLOT, 1, m_SharedBuffer.GetAddressOf());
-        context->HSSetConstantBuffers(SHARED_BUFFER_SLOT, 1, m_SharedBuffer.GetAddressOf());
-        context->DSSetConstantBuffers(SHARED_BUFFER_SLOT, 1, m_SharedBuffer.GetAddressOf());
-        context->PSSetConstantBuffers(SHARED_BUFFER_SLOT, 1, m_SharedBuffer.GetAddressOf());
-        context->GSSetConstantBuffers(SHARED_BUFFER_SLOT, 1, m_SharedBuffer.GetAddressOf());
-        context->CSSetConstantBuffers(SHARED_BUFFER_SLOT, 1, m_SharedBuffer.GetAddressOf());
+        return cameraComponent.Buffer;
     }
 
     void RenderSystem::_UpdateModelBuffer(const Entity& entity) {
@@ -138,22 +128,11 @@ namespace Zongine {
             XMQuaternionRotationRollPitchYaw(XMConvertToRadians(rotation.x), XMConvertToRadians(rotation.y), XMConvertToRadians(rotation.z)),
             XMLoadFloat3(&transformComponent.Position)
         );
-#if 0
 
-        context->Map(buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-        memcpy(resource.pData, &matrix, sizeof(XMFLOAT4X4));
-        context->Unmap(buffer.Get(), 0);
+        auto effectMatrix = shaderComponent.EffectMatrix->GetMemberByName("ZONGINE_MATRIX_M");
+        effectMatrix->AsMatrix()->SetMatrix(reinterpret_cast<const float*>(&matrix));
 
-        context->VSSetConstantBuffers(1, 1, buffer.GetAddressOf());
-        context->HSSetConstantBuffers(1, 1, buffer.GetAddressOf());
-        context->DSSetConstantBuffers(1, 1, buffer.GetAddressOf());
-        context->PSSetConstantBuffers(1, 1, buffer.GetAddressOf());
-        context->GSSetConstantBuffers(1, 1, buffer.GetAddressOf());
-        context->CSSetConstantBuffers(1, 1, buffer.GetAddressOf());
-
-#endif
-
-
+        // auto effectMatrix = shaderComponent.EffectMatrix->SetRawValue(&matrix, 0, sizeof(matrix));
     }
 }
 

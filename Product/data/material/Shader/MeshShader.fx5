@@ -18,6 +18,11 @@ cbuffer SubsetConstParam : register (b3)
     float  AlphaReference2 = 0.f;
 };
 
+cbuffer MODEL_MATRIX : register (b0)
+{
+    row_major float4x4 ZONGINE_MATRIX_M;
+};
+
 struct VertexInput
 {
     float4 Position  : POSITION;
@@ -48,7 +53,7 @@ MaterialVertexParameters GetMaterialVertexParameters(VertexInput vin)
 
     Params.TexCoords = vin.TexCoords;
 
-    Params.MatrixWorld = g_ModelParams.MatrixWorld;
+    Params.MatrixWorld = ZONGINE_MATRIX_M;
 
     return Params;
 }

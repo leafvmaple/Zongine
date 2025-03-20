@@ -19,8 +19,8 @@ namespace Zongine {
     void DeviceManager::Initialize(const DeviceManagerDesc& desc) {
         UINT uCreateDeviceFlag{};
 
-        auto width = desc.windowManager->GetWidth();
-        auto height = desc.windowManager->GetHeight();
+        auto width = desc.windowManager->GetViewportWidth();
+        auto height = desc.windowManager->GetViewportHeight();
         m_WindowManager = desc.windowManager;
 
 #if defined(DEBUG) || defined(_DEBUG)  

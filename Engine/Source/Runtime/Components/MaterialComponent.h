@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Include/Enums.h"
 #include "BaseComponent.h"
 
 #include <d3d11.h>
@@ -19,9 +20,12 @@ namespace Zongine {
     };
 
     struct ReferMaterial {
-        std::string Path;
-        std::string ShaderName;
-        std::unordered_map<std::string, _Texture> Textures;
+        std::string Path{};
+        std::string ShaderName{};
+
+        RASTERIZER_STATE_ID Rasterizer{};
+
+        std::unordered_map<std::string, _Texture> Textures{};
     };
 
     struct MaterialComponent : public BaseComponent {

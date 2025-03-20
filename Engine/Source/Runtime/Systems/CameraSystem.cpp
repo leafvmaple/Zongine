@@ -2,6 +2,7 @@
 
 #include "Entities/EntityManager.h"
 #include "Utilities/WindowManager.h"
+#include "Utilities/DeviceManager.h"
 
 #include "Components/CameraComponent.h"
 #include "Components/TransformComponent.h"
@@ -11,12 +12,25 @@ using namespace DirectX;
 
 namespace Zongine {
     bool CameraSystem::Initialize(const CameraSystemInfo& info) {
+        D3D11_BUFFER_DESC bufferDesc{};
+        ComPtr<ID3D11Buffer> buffer{};
+
         m_EntityManager = info.entityManager;
+
+        auto device = info.deviceManager->GetDevice();
+
+        bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+        bufferDesc.ByteWidth = sizeof(CAMERA);
+        bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+        bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+        device->CreateBuffer(&bufferDesc, nullptr, buffer.GetAddressOf());
 
         auto& entities = m_EntityManager->GetEntities<CameraComponent>();
         for (auto& [entityID, cameraComponent] : entities) {
             cameraComponent.Perspective.fFovAngleY = XM_PIDIV2;
-            cameraComponent.Perspective.fAspectRatio = info.windowManager->GetWidth() / info.windowManager->GetHeight();
+            cameraComponent.Perspective.fAspectRatio = (float)info.windowManager->GetViewportWidth() / info.windowManager->GetViewportHeight();
+            cameraComponent.Buffer = buffer;
         }
 
         return true;
@@ -28,7 +42,7 @@ namespace Zongine {
             auto& entity = m_EntityManager->GetEntity(entityID);
             auto& transformComponent = entity.GetComponent<TransformComponent>();
 
-            auto cameraInfo = cameraComponent.Camera;
+            auto& cameraInfo = cameraComponent.Camera;
             auto& perspective = cameraComponent.Perspective;
 
             XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(

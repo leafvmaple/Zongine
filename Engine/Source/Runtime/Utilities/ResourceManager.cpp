@@ -54,6 +54,10 @@ namespace Zongine {
                             value.Texture = _LoadTexture(texture.szValue);
                 }
 
+                referMaterial->Rasterizer = RASTERIZER_STATE_CULL_CLOCKWISE;
+                if (Subset.nTwoSideFlag)
+                    referMaterial->Rasterizer = RASTERIZER_STATE_CULL_NONE;
+
                 component.Subsets.emplace_back(referMaterial);
             }
         }
@@ -63,12 +67,16 @@ namespace Zongine {
 
     ShaderComponent ResourceManager::LoadShader(RUNTIME_MACRO macro, const std::vector<std::string>& paths) {
         ShaderComponent component{};
+        ID3DX11EffectConstantBuffer* modelEffectBuffer{};
+
         for (const auto& path : paths) {
             auto& cache = m_SubsetShaderCache[macro][path];
             if (cache.ShaderPath.empty()) {
                 cache.ShaderPath = path;
                 cache.Effect = m_EffectManager->LoadEffect(macro, path);
                 m_EffectManager->LoadVariables(cache.Effect, cache.Variables);
+
+                _LoadConstantBuffer(component.EffectMatrix, cache.Effect, "MODEL_MATRIX");
             }
             component.Subsets.push_back(cache);
         }
@@ -129,6 +137,17 @@ namespace Zongine {
             device->CreateShaderResourceView(resource.Get(), &srvDesc, texture.GetAddressOf());
         }
         return texture;
+    }
+
+    void ResourceManager::_LoadConstantBuffer(ID3DX11EffectConstantBuffer*& effectBuffer, ComPtr<ID3DX11Effect> effect, const char* szBuffer) {
+        ID3D11Buffer* buffer{};
+
+        if (!effectBuffer)
+            effectBuffer = effect->GetConstantBufferByName(szBuffer);
+        else {
+            effectBuffer->GetConstantBuffer(&buffer);
+            effect->GetConstantBufferByName(szBuffer)->SetConstantBuffer(buffer);
+        }
     }
 
     bool ResourceManager::_CreateVertexBuffer(MeshComponent& mesh, const MESH_SOURCE& source) {
