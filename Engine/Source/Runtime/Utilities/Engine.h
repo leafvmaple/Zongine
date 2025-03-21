@@ -12,6 +12,7 @@ namespace Zongine {
     class RenderSystem;
     class InputSystem;
     class CameraSystem;
+    class TransformSystem;
 
     class Engine {
     public:
@@ -25,6 +26,7 @@ namespace Zongine {
         std::unique_ptr<RenderSystem> renderSystem{};
         std::unique_ptr<InputSystem> inputSystem{};
         std::unique_ptr<CameraSystem> cameraSystem{};
+        std::unique_ptr<TransformSystem> transformSystem{};
 
         void Tick(float fDeltaTime);
 

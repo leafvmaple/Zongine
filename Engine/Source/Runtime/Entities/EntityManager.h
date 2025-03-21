@@ -52,9 +52,13 @@ namespace Zongine {
         std::unordered_map<std::type_index, std::unique_ptr<IComponentStorage>> componentStorages{};
 
     public:
+        EntityManager() {
+            m_Entities.emplace(0, Entity(0, this)); // Root entity
+        }
+
         Entity& CreateEntity() {
             EntityID id = ++m_NextEntityID;
-			return m_Entities.emplace(id, Entity(id, this)).first->second;
+            return m_Entities.emplace(id, Entity(id, this)).first->second;
         }
 
         std::unordered_map<EntityID, Entity>& GetEntities() {
@@ -74,6 +78,10 @@ namespace Zongine {
         Entity& GetEntity(EntityID entity) {
             assert(m_Entities.find(entity) != m_Entities.end() && "Entity not found.");
             return m_Entities.at(entity);
+        }
+
+        Entity& GetRootEntity() {
+            return GetEntity(0);
         }
 
         template<typename ComponentType>

@@ -43,26 +43,29 @@ namespace Zongine {
         context->ClearRenderTargetView(renderTargetView.Get(), reinterpret_cast<const float*>(&Colors::White));
         context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-        auto& entities = m_EntityManager->GetEntities();
+        m_RenderQueue.clear();
+        _UpdateRenderQueue(m_EntityManager->GetRootEntity());
 
-        auto cameraBuffer = _GetCameraBuffer();
-
-        for (auto& [entityID, entity]:entities) {
-            TickEntity(context, cameraBuffer, entity);
+        for (auto& entity: m_RenderQueue) {
+            TickEntity(context, entity);
         }
 
         swapChain->Present(0, 0);
     }
 
-    void RenderSystem::TickEntity(ComPtr<ID3D11DeviceContext> context, ComPtr<ID3D11Buffer> cameraBuffer, const Entity& entity) {
-        if (!m_EntityManager->HasComponent<MeshComponent>(entity.GetID()))
-            return;
+    void RenderSystem::TickEntity(ComPtr<ID3D11DeviceContext> context, const Entity& entity) {
+        D3D11_MAPPED_SUBRESOURCE resource{};
+
         auto& meshComponent = entity.GetComponent<MeshComponent>();
         auto& transformComponent = entity.GetComponent<TransformComponent>();
         auto& shaderComponent = entity.GetComponent<ShaderComponent>();
         auto& materialComponent = entity.GetComponent<MaterialComponent>();
 
-        _UpdateModelBuffer(entity);
+        auto& buffer = shaderComponent.ModelBuffer;
+
+        context->Map(buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+        memcpy(resource.pData, &transformComponent.World, sizeof(transformComponent.World));
+        context->Unmap(buffer.Get(), 0);
 
         auto& vertexBuffer = meshComponent.VertexBuffer;
         auto& indexBuffer = meshComponent.IndexBuffer;
@@ -90,56 +93,38 @@ namespace Zongine {
             auto rasterizerState = m_StateManager->GetRasterizerState(subsetMaterial->Rasterizer);
             context->RSSetState(rasterizerState.Get());
 
-            subsetShader.Effect->GetConstantBufferByName("CAMERA_MATRIX")->SetConstantBuffer(cameraBuffer.Get());
+            if (m_CameraBuffer)
+                subsetShader.Effect->GetConstantBufferByName("CAMERA_MATRIX")->SetConstantBuffer(m_CameraBuffer.Get());
 
             auto effectPass = m_EffectManager->GetEffectPass(subsetShader.Effect, shaderComponent.Pass);
             effectPass->Apply(0, context.Get());
 
             context->DrawIndexed(subsetMesh.uIndexCount, subsetMesh.uStartIndex, 0);
         }
+    }
 
-        for (auto& child : entity.GetChildren()) {
-            TickEntity(context, cameraBuffer, child);
+    void RenderSystem::_UpdateRenderQueue(Entity& entity) {
+        if (m_EntityManager->HasComponent<MeshComponent>(entity.GetID())) {
+            m_RenderQueue.push_back(entity);
         }
-    }
 
-    ComPtr<ID3D11Buffer> RenderSystem::_GetCameraBuffer() {
-        D3D11_MAPPED_SUBRESOURCE resource{};
+        if (m_EntityManager->HasComponent<CameraComponent>(entity.GetID())) {
+            D3D11_MAPPED_SUBRESOURCE resource{};
+            auto context = m_DeviceManager->GetImmediateContext();
 
-        auto context = m_DeviceManager->GetImmediateContext();
-        auto entities = m_EntityManager->GetEntities<CameraComponent>();
-        const auto& cameraComponent = entities.begin()->second;
+            auto& cameraComponent = entity.GetComponent<CameraComponent>();
+            m_CameraBuffer = cameraComponent.Buffer;
 
-        context->Map(cameraComponent.Buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-        memcpy(resource.pData, &cameraComponent.Camera, sizeof(CAMERA));
-        context->Unmap(cameraComponent.Buffer.Get(), 0);
+            context->Map(m_CameraBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+            memcpy(resource.pData, &cameraComponent.Camera, sizeof(CAMERA));
+            context->Unmap(m_CameraBuffer.Get(), 0);
+        }
 
-        return cameraComponent.Buffer;
-    }
+        for (auto& id : entity.GetChildren()) {
+            auto& child = m_EntityManager->GetEntity(id);
 
-    void RenderSystem::_UpdateModelBuffer(const Entity& entity) {
-        D3D11_MAPPED_SUBRESOURCE resource{};
-
-        auto context = m_DeviceManager->GetImmediateContext();
-
-        auto& transformComponent = entity.GetComponent<TransformComponent>();
-        auto& shaderComponent = entity.GetComponent<ShaderComponent>();
-
-        auto& rotation = transformComponent.Rotation;
-        auto& buffer = shaderComponent.ModelBuffer;
-
-        auto matrix = XMMatrixTransformation(
-            g_XMZero,
-            g_XMIdentityR3,
-            XMLoadFloat3(&transformComponent.Scale),
-            g_XMZero,
-            XMQuaternionRotationRollPitchYaw(XMConvertToRadians(rotation.x), XMConvertToRadians(rotation.y), XMConvertToRadians(rotation.z)),
-            XMLoadFloat3(&transformComponent.Position)
-        );
-
-        context->Map(buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-        memcpy(resource.pData, &matrix, sizeof(matrix));
-        context->Unmap(buffer.Get(), 0);
+            _UpdateRenderQueue(child);
+        }
     }
 }
 

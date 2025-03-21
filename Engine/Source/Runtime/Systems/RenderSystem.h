@@ -57,11 +57,12 @@ namespace Zongine {
         std::shared_ptr<StateManager> m_StateManager{};
         std::shared_ptr<EffectManager> m_EffectManager{};
 
-        std::vector<RenderEntity> m_RenderEntities{};
+        std::vector<Entity> m_RenderQueue{};
 
-        void TickEntity(ComPtr<ID3D11DeviceContext> context, ComPtr<ID3D11Buffer> cameraBuffer, const Entity& entity);
+        ComPtr<ID3D11Buffer> m_CameraBuffer{};
 
-        ComPtr<ID3D11Buffer> _GetCameraBuffer();
-        void _UpdateModelBuffer(const Entity& entity);
+        void TickEntity(ComPtr<ID3D11DeviceContext> context, const Entity& entity);
+
+        void _UpdateRenderQueue(Entity& entity);
     };
 }

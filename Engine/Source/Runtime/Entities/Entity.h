@@ -14,7 +14,7 @@ namespace Zongine {
         EntityID m_ID;
         class EntityManager* m_Manager{};
 
-        std::vector<Entity> m_Children{};
+        std::vector<EntityID> m_Children{};
 
     public:
         Entity(EntityID id, EntityManager* manager) : m_ID(id), m_Manager(manager) {}
@@ -31,6 +31,6 @@ namespace Zongine {
         EntityID GetID() const { return m_ID; }
 
         Entity& AddChild();
-        const std::vector<Entity>& GetChildren() const { return m_Children; }
+        const std::vector<EntityID>& GetChildren() const { return m_Children; }
     };
 }

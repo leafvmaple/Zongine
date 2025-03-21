@@ -6,6 +6,8 @@
 
 namespace Zongine {
     struct TransformComponent : public BaseComponent {
+        DirectX::XMMATRIX World{};
+
         DirectX::XMFLOAT3 Position{};
         DirectX::XMFLOAT3 Rotation{};
         DirectX::XMFLOAT3 Scale{ 1.0f, 1.0f, 1.0f };

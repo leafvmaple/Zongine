@@ -56,6 +56,7 @@ namespace Zongine {
                 XMLoadFloat3(&transformComponent.Position) + XMVector3Normalize(rotationMatrix.r[2]),
                 XMVector3Normalize(rotationMatrix.r[1])
             );
+
             cameraInfo.CameraProject = DirectX::XMMatrixPerspectiveFovLH(perspective.fFovAngleY, perspective.fAspectRatio, 1.0f, 1000.0f);
         }
     }

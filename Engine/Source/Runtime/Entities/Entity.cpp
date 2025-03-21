@@ -6,6 +6,7 @@
 #include "Components/TransformComponent.h"
 #include "components/ShaderComponent.h"
 #include "components/MaterialComponent.h"
+#include "Components/CameraComponent.h"
 
 namespace Zongine {
     template<typename ComponentType>
@@ -24,21 +25,26 @@ namespace Zongine {
     }
 
     Entity& Entity::AddChild() {
-        return m_Children.emplace_back(m_Manager->CreateEntity());
+        auto& entity = m_Manager->CreateEntity();
+        m_Children.push_back(entity.GetID());
+        return entity;
     }
 
     template const TransformComponent& Entity::GetComponent<TransformComponent>() const;
     template const MeshComponent& Entity::GetComponent<MeshComponent>() const;
     template const ShaderComponent& Entity::GetComponent<ShaderComponent>() const;
     template const MaterialComponent& Entity::GetComponent<MaterialComponent>() const;
+    template const CameraComponent& Entity::GetComponent<CameraComponent>() const;
 
     template TransformComponent& Entity::GetComponent<TransformComponent>();
     template MeshComponent& Entity::GetComponent<MeshComponent>();
     template ShaderComponent& Entity::GetComponent<ShaderComponent>();
     template MaterialComponent& Entity::GetComponent<MaterialComponent>();
+    template CameraComponent& Entity::GetComponent<CameraComponent>();
 
     template TransformComponent& Entity::AddComponent(const TransformComponent&);
     template MeshComponent& Entity::AddComponent(const MeshComponent&);
     template ShaderComponent& Entity::AddComponent(const ShaderComponent&);
     template MaterialComponent& Entity::AddComponent(const MaterialComponent&);
+    template CameraComponent& Entity::AddComponent(const CameraComponent&);
 }

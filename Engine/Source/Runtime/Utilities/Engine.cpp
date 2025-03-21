@@ -10,6 +10,7 @@
 #include "Systems/RenderSystem.h"
 #include "Systems/InputSystem.h"
 #include "Systems/CameraSystem.h"
+#include "Systems/TransformSystem.h"
 
 #include "Components/CameraComponent.h"
 #include "components/MaterialComponent.h"
@@ -48,20 +49,25 @@ namespace Zongine {
         renderSystem = std::make_unique<RenderSystem>();
         inputSystem = std::make_unique<InputSystem>();
         cameraSystem = std::make_unique<CameraSystem>();
+        transformSystem = std::make_unique<TransformSystem>();
 
-        auto camera = entityManager->CreateEntity();
-        auto cameraComponent = entityManager->AddComponent<CameraComponent>(camera.GetID(), CameraComponent{});
+        auto& root = entityManager->GetRootEntity();
+        entityManager->AddComponent<TransformComponent>(root.GetID(), TransformComponent{});
+
+        auto& camera = root.AddChild();
+        entityManager->AddComponent<CameraComponent>(camera.GetID(), CameraComponent{});
 
         auto& cameraTransform = entityManager->AddComponent<TransformComponent>(camera.GetID(), TransformComponent{});
         cameraTransform.Position = { 0.0f, 40.0f, -100.0f };
 
-        auto player = entityManager->CreateEntity();
+        auto& player = root.AddChild();
+        entityManager->AddComponent<TransformComponent>(player.GetID(), TransformComponent{});
 
-        auto head = player.AddChild();
-        auto body = player.AddChild();
-        auto hand = player.AddChild();
-        auto leg = player.AddChild();
-        auto belt = player.AddChild();
+        auto& head = player.AddChild();
+        auto& body = player.AddChild();
+        auto& hand = player.AddChild();
+        auto& leg = player.AddChild();
+        auto& belt = player.AddChild();
 
         resourceManager->LoadModel(head, "data/source/player/F1/部件/F1_0000_head.mesh");
         resourceManager->LoadModel(body, "data/source/player/F1/部件/F1_2206_body.mesh");
@@ -72,6 +78,7 @@ namespace Zongine {
         renderSystem->Initialize({ entityManager, deviceManager, shaderManager, stateManager, effectManager });
         inputSystem->Initialize({ windowManager });
         cameraSystem->Initialize({ entityManager, windowManager, deviceManager });
+        transformSystem->Initialize({ entityManager });
 
         m_bRunning = true;
     }
@@ -89,6 +96,7 @@ namespace Zongine {
             DispatchMessage(&msg);
         }
         inputSystem->Tick(fDeltaTime);
+        transformSystem->Tick(fDeltaTime);
         cameraSystem->Tick(fDeltaTime);
         renderSystem->Tick(fDeltaTime);
     }
