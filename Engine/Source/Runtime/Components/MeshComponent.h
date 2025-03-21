@@ -19,14 +19,14 @@ namespace Zongine {
 
         struct VERTEX_BUFFER
         {
-            ComPtr<ID3D11Buffer> piBuffer{};
+            ComPtr<ID3D11Buffer> Buffer{};
             UINT uStride{};
             UINT uOffset{};
         } VertexBuffer;
 
         struct INDEX_BUFFER
         {
-            ComPtr<ID3D11Buffer> piBuffer{};
+            ComPtr<ID3D11Buffer> Buffer{};
             DXGI_FORMAT eFormat{ DXGI_FORMAT_UNKNOWN };
             UINT uOffset{};
         } IndexBuffer;

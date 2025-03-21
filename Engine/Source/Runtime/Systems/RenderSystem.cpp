@@ -71,8 +71,8 @@ namespace Zongine {
         auto inputLayout = m_ShaderManager->GetInputLayout(INPUT_LAYOUT_CI_SKINMESH);
 
         context->IASetInputLayout(inputLayout.Get());
-        context->IASetVertexBuffers(0, 1, vertexBuffer.piBuffer.GetAddressOf(), &vertexBuffer.uStride, &vertexBuffer.uOffset);
-        context->IASetIndexBuffer(indexBuffer.piBuffer.Get(), indexBuffer.eFormat, indexBuffer.uOffset);
+        context->IASetVertexBuffers(0, 1, vertexBuffer.Buffer.GetAddressOf(), &vertexBuffer.uStride, &vertexBuffer.uOffset);
+        context->IASetIndexBuffer(indexBuffer.Buffer.Get(), indexBuffer.eFormat, indexBuffer.uOffset);
         context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         for (int i = 0; i < meshComponent.Subsets.size(); i++) {

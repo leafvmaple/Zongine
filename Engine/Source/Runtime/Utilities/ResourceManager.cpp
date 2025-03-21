@@ -43,8 +43,8 @@ namespace Zongine {
 
             ::LoadMesh(&desc, &source);
 
-            _CreateVertexBuffer(component, source);
-            _CreateIndexBuffer<WORD>(component, source, DXGI_FORMAT_R16_UINT);
+            _LoadVertexBuffer(component, source);
+            _LoadIndexBuffer(component, source);
         }
         return component;
     }
@@ -167,46 +167,40 @@ namespace Zongine {
         return texture;
     }
 
-    bool ResourceManager::_CreateVertexBuffer(MeshComponent& mesh, const MESH_SOURCE& source) {
+    bool ResourceManager::_LoadVertexBuffer(MeshComponent& mesh, const MESH_SOURCE& source) {
         D3D11_BUFFER_DESC desc{};
         D3D11_SUBRESOURCE_DATA data{};
 
         desc.ByteWidth = source.nVertexSize * source.nVerticesCount;;
         desc.Usage = D3D11_USAGE_IMMUTABLE;
         desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
         data.pSysMem = source.pVertices;
 
         mesh.VertexBuffer.uStride = source.nVertexSize;
 
-        m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh.VertexBuffer.piBuffer.GetAddressOf());
+        m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh.VertexBuffer.Buffer.GetAddressOf());
 
         return true;
     }
 
-    template<typename T>
-    bool ResourceManager::_CreateIndexBuffer(MeshComponent& mesh, const MESH_SOURCE& source, DXGI_FORMAT nFormat) {
+    bool ResourceManager::_LoadIndexBuffer(MeshComponent& mesh, const MESH_SOURCE& source) {
         D3D11_BUFFER_DESC desc{};
         D3D11_SUBRESOURCE_DATA data{};
-        std::vector<T> indices{};
         UINT nOffset{};
 
         for (int i = 0; i < source.nSubsetCount; i++) {
             mesh.Subsets.emplace_back(SubsetMesh{ nOffset, source.pSubsetVertexCount[i] });
             nOffset += source.pSubsetVertexCount[i];
         }
-        for (int i = 0; i < source.nIndexCount; i++)
-            indices.emplace_back(static_cast<T>(source.pIndices[i]));
 
-        desc.ByteWidth = sizeof(T) * (UINT)indices.size();
+        desc.ByteWidth = sizeof(source.pIndices[0]) * source.nIndexCount;
         desc.Usage = D3D11_USAGE_IMMUTABLE;
         desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+        data.pSysMem = source.pIndices;
 
-        data.pSysMem = indices.data();
+        mesh.IndexBuffer.eFormat = DXGI_FORMAT_R32_UINT;
 
-        mesh.IndexBuffer.eFormat = nFormat;
-
-        m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh.IndexBuffer.piBuffer.GetAddressOf());
+        m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh.IndexBuffer.Buffer.GetAddressOf());
 
         return true;
     }

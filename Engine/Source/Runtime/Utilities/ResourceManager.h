@@ -46,9 +46,8 @@ namespace Zongine {
         std::shared_ptr<ReferMaterial> _LoadReferMaterial(const std::string& path);
         ComPtr<ID3D11ShaderResourceView> _LoadTexture(const std::string& path);
 
-        bool _CreateVertexBuffer(MeshComponent& mesh, const MESH_SOURCE& source);
-        template<typename T>
-        bool _CreateIndexBuffer(MeshComponent& mesh, const MESH_SOURCE& source, DXGI_FORMAT eFormat);
+        bool _LoadVertexBuffer(MeshComponent& mesh, const MESH_SOURCE& source);
+        bool _LoadIndexBuffer(MeshComponent& mesh, const MESH_SOURCE& source);
 
         std::shared_ptr<DeviceManager> m_DeviceManager{};
         std::shared_ptr<EntityManager> m_EntityManager{};
