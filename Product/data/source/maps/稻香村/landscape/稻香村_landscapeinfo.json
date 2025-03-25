@@ -1,0 +1,15 @@
+{
+    "RegionSize": 512,
+    "LeafNodeSize": 64,
+    "WorldOrigin.x": 0.0,
+    "WorldOrigin.y": 0.0,
+    "UnitScale.x": 100.0,
+    "UnitScale.y": 100.0,
+    "RegionTableSize.x": 2,
+    "RegionTableSize.y": 2,
+    "HeightfieldMaximum": 80000.0,
+    "HeightfieldMinimum": -20000.0,
+    "Flags": 3,
+    "BakeVersion": 1,
+    "TriangleBuildMethod": 1
+}

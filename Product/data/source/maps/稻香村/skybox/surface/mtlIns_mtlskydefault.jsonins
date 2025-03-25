@@ -1,0 +1,28 @@
+{
+	"Info": {
+		"Version": 2,
+		"RefPath": "data\\public\\skybox\\material\\mtl_mtlskydefault.jsondef"
+	},
+	"RenderState": {
+		"bOverWriteRS": 1,
+		"nRenderState": 0,
+		"AlphaRef": 128,
+		"AlphaRef2": 0,
+		"TwoSide": 1,
+		"BlendMode": 0,
+		"OITWorkflow": 0,
+		"OITOptimiseOption": 0,
+		"DistortionMode": 0
+	},
+	"Param": [{
+			"Name": "HDRTexture",
+			"Type": "Texture",
+			"Value": "data\\material\\texture\\defaulttexturergba.tga"
+		},
+		{
+			"Name": "Brightness",
+			"Type": "Float",
+			"Value": 1.0
+		}
+	]
+}

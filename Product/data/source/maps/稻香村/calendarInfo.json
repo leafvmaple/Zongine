@@ -1,0 +1,201 @@
+{
+    "__internal_type": "CalendarInfo",
+    "calendarInfo": {
+        "_tableType": "TrueSKYCalendar",
+        "singleYear": {
+            "_tableType": "TrueSKYCalendarYear",
+            "1": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Snowy/PartialSnow_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Snowy/HeavySnow_Day_01.sq"
+                    }
+                }
+            },
+            "2": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Snowy/PartialSnow_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Snowy/SnowStorm_Day_01.sq"
+                    }
+                }
+            },
+            "3": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/PartlyCloudy/Partly_Cloudy_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Snowy/PartialSnow_Day_01.sq"
+                    }
+                }
+            },
+            "4": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Sunny/Sunny_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/PartlyCloudy/Partly_Cloudy_Day_01.sq"
+                    }
+                }
+            },
+            "5": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Sunny/Sunny_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Cloudy/Cloudy_Day_02.sq"
+                    }
+                }
+            },
+            "6": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/PartlyCloudy/Partly_Cloudy_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Sunny/Sunny_Day_01.sq"
+                    }
+                }
+            },
+            "7": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Rainy/Heavy_Rain_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/PartlyCloudy/Partly_Cloudy_Day_01.sq"
+                    }
+                }
+            },
+            "8": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/PartlySunny/Partly_Sunny_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Sunny/Sunny_Day_01.sq"
+                    }
+                }
+            },
+            "9": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Rainy/Light_Rain_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/PartlyCloudy/Partly_Cloudy_Day_01.sq"
+                    }
+                }
+            },
+            "10": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Sunny/Sunny_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/PartlySunny/Partly_Sunny_Day_01.sq"
+                    }
+                }
+            },
+            "11": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Rainy/Heavy_Rain_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Cloudy/Cloudy_Day_01.sq"
+                    }
+                }
+            },
+            "12": {
+                "_tableType": "TrueSKYCalendarMonth",
+                "days": {
+                    "_tableType": "ObjContainer",
+                    "count": 2,
+                    "id": 2,
+                    "item_0": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/Snowy/PartialSnow_Day_01.sq"
+                    },
+                    "item_1": {
+                        "_tableType": "TrueSKYCalendarDay",
+                        "sqFile": "data/public/truesky/Sequences/PartlyCloudy/Partly_Cloudy_Day_01.sq"
+                    }
+                }
+            }
+        }
+    }
+}

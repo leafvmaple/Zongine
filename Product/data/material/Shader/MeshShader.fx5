@@ -1,0 +1,143 @@
+static const int MAX_NUM_BONE_PER_SET = 158;
+
+struct MTLSYS_MESH_SHARED_CB 
+{
+    row_major float4x4 MatrixWorld;
+};
+
+cbuffer ModelSharedParam
+{
+    MTLSYS_MESH_SHARED_CB g_ModelParams;
+};
+
+cbuffer SubsetConstParam : register (b3)
+{
+    float4 ModelColor      = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    bool   EnableAlphaTest = false;
+    float  AlphaReference  = 0.f;
+    float  AlphaReference2 = 0.f;
+};
+
+cbuffer MODEL_MATRIX : register (b0)
+{
+    row_major float4x4 ZONGINE_MATRIX_M;
+};
+
+struct VertexInput
+{
+    float4 Position  : POSITION;
+    float3 Normal    : NORMAL0;
+    float4 Color     : COLOR;
+    float2 TexCoords : TEXCOORD0;
+    float4 Tangent   : TANGENT0;
+};
+
+struct VertexOutput
+{
+    float4 PosH      : SV_POSITION;
+    float4 Color     : COLOR;
+
+    float2 TexCoords      : TEXCOORD4;
+};
+
+#include "CommonParam.h"
+#include "NodeInterface.h"
+#include "UserShader.fx5"
+
+MaterialVertexParameters GetMaterialVertexParameters(VertexInput vin)
+{
+    MaterialVertexParameters Params =(MaterialVertexParameters)0;
+
+    Params.VertexPosition = vin.Position;
+    Params.VertexColor = vin.Color;
+
+    Params.TexCoords = vin.TexCoords;
+
+    Params.MatrixWorld = ZONGINE_MATRIX_M;
+
+    return Params;
+}
+
+MaterialPixelParameters GetMaterialPixelParameters(VertexOutput Input)
+{
+    MaterialPixelParameters Params = (MaterialPixelParameters) 0;
+
+    Params.TexCoords   = Input.TexCoords;
+    
+    return Params;
+}
+
+VertexOutput VertexShaderMain(VertexInput vin)
+{
+    VertexOutput vout;
+    
+    MaterialVertexParameters Params = GetMaterialVertexParameters(vin);
+
+    vout.PosH = GetDeviceCoordinate(Params.VertexPosition, Params.MatrixWorld, g_Com.Camera.CameraView, g_Com.Camera.CameraProject);
+    vout.Color = Params.VertexColor;
+    vout.TexCoords = Params.TexCoords;
+    
+    return vout;
+}
+
+float4 PixelShaderMain(VertexOutput pin, uniform bool RenderSoftMask) : SV_Target
+{
+    float4 retColor = 0;
+    float3 color = 0;
+
+    MaterialPixelParameters Params = GetMaterialPixelParameters(pin);
+
+    ParamsMainPixelNode PixelMainNode = (ParamsMainPixelNode)0;
+    CalculateMainPixelNode(Params, PixelMainNode);
+
+    if (EnableAlphaTest)
+    {
+        if (RenderSoftMask)
+        {
+            if (PixelMainNode.Opacity < AlphaReference2)
+                discard;
+        }
+        else
+        {
+            if (PixelMainNode.Opacity < AlphaReference)
+                discard;
+        }
+    }
+
+    if (RenderSoftMask)
+    {
+        PixelMainNode.Opacity = PixelMainNode.Opacity / AlphaReference;
+        PixelMainNode.Opacity = saturate(PixelMainNode.Opacity); // 限制在[0, 1]
+    }
+
+    color = PixelMainNode.Albedo;
+    color +=  PixelMainNode.Ambient;
+    color +=  PixelMainNode.Emissive;
+
+    retColor.rgb = color;
+    retColor.a = PixelMainNode.Opacity;
+
+    return retColor;
+}
+
+VertexShader MainVertexShader = CompileShader(vs_5_0, VertexShaderMain());
+
+PixelShader MainPixelShader = CompileShader(ps_5_0, PixelShaderMain(false));
+PixelShader SoftMaskShader  = CompileShader(ps_5_0, PixelShaderMain(true));
+
+technique11 Color
+{
+    pass p0
+    {
+        SetVertexShader(MainVertexShader);
+        SetPixelShader(MainPixelShader);
+    }
+}
+technique11 ColorSoftMask
+{
+    pass p0
+    {
+        SetVertexShader(MainVertexShader);
+        SetPixelShader(SoftMaskShader);
+    }
+}

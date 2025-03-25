@@ -1,0 +1,19 @@
+{
+    "FoliageVersion": 0,
+    "EnableWind": 1,
+    "EnableActor": 1,
+    "EnableMultiActor": 1,
+    "EnableBush": 1,
+    "InteractiveTime": 3.0,
+    "InteractiveRange": 180.0,
+    "ActorHeight": 180.0,
+    "TiltExtent": 50.0,
+    "SwaySpeed": 0.6000000238418579,
+    "SwayExtent": 300.0,
+    "BushTiltExtent": 1000.0,
+    "BushTiltSpeed": 0.30000001192092898,
+    "BushSwaySpeed": 0.20000000298023225,
+    "MultiActorMapSize": 384.0,
+    "MultiActorMapAccuracy": 10.0,
+    "MaxActorNum": 1000.0
+}

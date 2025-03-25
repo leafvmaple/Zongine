@@ -1,0 +1,455 @@
+{
+    "__internal_type": "JXSubSceneInfo",
+    "worldObjects": {
+        "{26014354-7345-4F23-9D27-DE77527293D2}": {
+            "Version": 1,
+            "_tableName": "Global Environment Sphere",
+            "_tableType": "GlobalEnvProbeSphere",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    51700.0,
+                    2703.6875,
+                    51700.0
+                ],
+                "actorBoundBoxMin": [
+                    50700.0,
+                    1703.6875,
+                    50700.0
+                ],
+                "actorLocalMatrix": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    51200.0,
+                    2203.6875,
+                    51200.0,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{26014354-7345-4F23-9D27-DE77527293D2}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 0,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 0,
+                "hostLayer": "ref.{ca6fca27-6d16-419c-8cbf-b40c121d67be}",
+                "isSingleton": 1,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 1,
+                "templateFile": "envprobe/envprobesphereglobal.json"
+            },
+            "comEnvProbeCommon": {
+                "_tableName": "EnvProbe Common",
+                "_tableType": "comEnvProbeCommon",
+                "diffuseFile": "data\\public\\evn\\SkyBox_SH.dds",
+                "dynamic": 0,
+                "intensity": 1.0,
+                "specularFile": "data\\public\\evn\\SkyBox.dds"
+            },
+            "comEnvProbeGlobalSpec": {
+                "_tableName": "EnvProbe Global Spec",
+                "_tableType": "comEnvProbeGlobalSpec",
+                "atmoBottomColor": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "atmoBottomColorLength": 0.0,
+                "atmoBottomColorStartY": 0.0,
+                "customAtmoBottom": 1,
+                "defaultDiffuseFile": "data\\source\\maps\\µ¾Ïã´å\\env_probe\\skybox_d.dds",
+                "defaultSpecularFile": "data\\source\\maps\\µ¾Ïã´å\\env_probe\\skybox_s.dds",
+                "nextGenDiffuseFile": "",
+                "nextGenSpecularFile": "",
+                "useDefaultFile": 1
+            },
+            "comEnvProbeSphereSpec": {
+                "_tableName": "EnvProbe Sphere Spec",
+                "_tableType": "comEnvProbeSphereSpec",
+                "radius": 500.0
+            },
+            "comGeoSphereLine": {
+                "Color": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.20000000298023225
+                ],
+                "DepthEnabled": 0,
+                "Radius": 500.0,
+                "Visible": 0,
+                "WOMatrix": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    51200.0,
+                    2203.6875,
+                    51200.0,
+                    1.0
+                ],
+                "_tableName": "GeoSphereLine",
+                "_tableType": "comGeoSphereLine"
+            },
+            "comGeoSphereMesh": {
+                "Color": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.20000000298023225
+                ],
+                "DepthEnabled": 0,
+                "MaxPosition": [
+                    51250.0,
+                    2253.6875,
+                    51250.0
+                ],
+                "MinPosition": [
+                    51150.0,
+                    2153.6875,
+                    51150.0
+                ],
+                "Radius": 50.0,
+                "Visible": 0,
+                "WOMatrix": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    51200.0,
+                    2203.6875,
+                    51200.0,
+                    1.0
+                ],
+                "_tableName": "GeoSphereMesh",
+                "_tableType": "comGeoSphereMesh"
+            }
+        },
+        "{cc35d6ea-5fa1-4041-a12d-9735704cc6f2}": {
+            "Version": 1,
+            "_tableName": "Global Wind",
+            "_tableType": "GlobalWind",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorBoundBoxMin": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorLocalMatrix": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{cc35d6ea-5fa1-4041-a12d-9735704cc6f2}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 0,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 0,
+                "hostLayer": "ref.{ca6fca27-6d16-419c-8cbf-b40c121d67be}",
+                "isSingleton": 1,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 1,
+                "templateFile": "wind/globalwindwithicon.json"
+            },
+            "comGroup": {
+                "_tableName": "Group",
+                "_tableType": "comGroup",
+                "clusterBakeAlone": 0,
+                "clusterBakeReduceTo": 0,
+                "clusterBakeTextureSize": 512,
+                "elements": {
+                    "_tableType": "ObjContainer",
+                    "count": 1,
+                    "id": 1,
+                    "item_0": {
+                        "Version": 1,
+                        "_tableName": "Icon",
+                        "_tableType": "Icon",
+                        "comBasic": {
+                            "_ignoreBatch": 0,
+                            "_tableName": "Basic",
+                            "_tableType": "comBasic",
+                            "actorBoundBoxFrequency": 1000,
+                            "actorBoundBoxMax": [
+                                50.0,
+                                100.0,
+                                50.0
+                            ],
+                            "actorBoundBoxMin": [
+                                -50.0,
+                                -0.000003814699994109105,
+                                -50.0
+                            ],
+                            "actorLocalMatrix": [
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "actorRotationCenter": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "actorScalingCenter": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "actorScalingRotation": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "actorSelectable": 1,
+                            "uniformScaling": 0,
+                            "uuid": "{3ad74b80-4d1f-431e-8e83-f1f4bf55b96a}"
+                        },
+                        "comEditor": {
+                            "SaveAsSceneNode": 0,
+                            "_tableName": "Editor",
+                            "_tableType": "comEditor",
+                            "editorDeletable": 1,
+                            "editorOnly": 0,
+                            "editorReadOnly": 0,
+                            "editorSelectable": 1,
+                            "editorVisible": 2,
+                            "enableGroup": 1,
+                            "isSingleton": 0,
+                            "listInResourcePanel": 1,
+                            "saveSeparatelyFlag": 0,
+                            "templateFile": "_editor/icon.json"
+                        },
+                        "comHitTestBox": {
+                            "_tableName": "Hit test box",
+                            "_tableType": "comHitTestBox",
+                            "hitTestBoxSelectable": 1,
+                            "hitTestBoxType": 0,
+                            "hitTestBoxUpdate": 0
+                        },
+                        "comRender": {
+                            "_operator_actorMtl": 0,
+                            "_tableName": "Render",
+                            "_tableType": "comRender",
+                            "acceptBake": 1,
+                            "acceptDecal": 1,
+                            "actorAlpha": 1.0,
+                            "actorAni": "",
+                            "actorBoundBoxColor": [
+                                1.0,
+                                1.0,
+                                0.0,
+                                1.0
+                            ],
+                            "actorBoundBoxGeometryColor": [
+                                1.0,
+                                1.0,
+                                1.0,
+                                0.10000000149011612
+                            ],
+                            "actorDetailIndex": 0,
+                            "actorEnableRender": 1,
+                            "actorModel": "data/editor/sceneEditor/Icons/Wind.pss",
+                            "actorMtl": "",
+                            "actorStateMachine": "",
+                            "actorVisible": 1,
+                            "castViceLightShadow": 0,
+                            "nvrtxCastPointLightShadow": 0,
+                            "nvrtxComputeExclusiveAnimation": 0,
+                            "nvrtxEffectiveRadius": 10000.0,
+                            "nvrtxForceOff": 0,
+                            "nvrtxForceOn": 0,
+                            "nvrtxHighPrecision": 0,
+                            "renderLevel": 1,
+                            "usedAsIcon": 1
+                        }
+                    }
+                },
+                "enableScaleDelivery": 1,
+                "selectAll": 1,
+                "userdata": ""
+            },
+            "comGroupBBox": {
+                "BBoxMax": [
+                    50.0,
+                    100.0,
+                    50.0
+                ],
+                "BBoxMin": [
+                    -50.0,
+                    -0.000003814699994109105,
+                    -50.0
+                ],
+                "_tableName": "GroupBBox",
+                "_tableType": "comGroupBBox"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comWind": {
+                "_tableName": "Wind",
+                "_tableType": "comWind",
+                "windDirectionDisturb": 20.0,
+                "windDirectionDisturbFreq": 4.289999961853027,
+                "windDirectionSphere": 0,
+                "windEnable": 1,
+                "windEnableGusting": 1,
+                "windEnableRandom": 1,
+                "windGustingLifeTime": 15.0,
+                "windGustingSpaceTime": 16.0,
+                "windParamsInited": 1,
+                "windSetDirection": [
+                    -1.0,
+                    0.0,
+                    0.0
+                ],
+                "windSetStrength": 0.30000001192092898,
+                "windStrengthDisturb": 0.5,
+                "windStrengthDisturbFreq": 5.0
+            }
+        }
+    }
+}

@@ -1,0 +1,2463 @@
+{
+    "__internal_type": "JXSubSceneInfo",
+    "worldObjects": {
+        "{0ae56cb7-a8bd-4a58-b87b-e4906a20cabf}": {
+            "Version": 1,
+            "_tableName": "ST_泉水石003.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    53663.52734375,
+                    2721.888427734375,
+                    56014.4765625
+                ],
+                "actorBoundBoxMin": [
+                    52573.140625,
+                    2543.477783203125,
+                    55310.86328125
+                ],
+                "actorLocalMatrix": [
+                    -0.5007511377334595,
+                    0.0,
+                    -1.37580406665802,
+                    0.0,
+                    0.0,
+                    1.4641001224517823,
+                    0.0,
+                    0.0,
+                    1.37580406665802,
+                    0.0,
+                    -0.5007511377334595,
+                    0.0,
+                    53119.82421875,
+                    2560.544677734375,
+                    55675.70703125,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{0ae56cb7-a8bd-4a58-b87b-e4906a20cabf}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\石头\\ST_泉水石003.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\石头\\ST_泉水石003.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        },
+        "{16b1730c-e11e-46e7-aca4-3698ac5e3b08}": {
+            "Version": 1,
+            "_tableName": "s_竹子019g1_ST.mesh.stree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    56202.9140625,
+                    6717.771484375,
+                    59811.87890625
+                ],
+                "actorBoundBoxMin": [
+                    54711.859375,
+                    2924.17919921875,
+                    58386.2890625
+                ],
+                "actorLocalMatrix": [
+                    1.0890002250671387,
+                    0.0,
+                    -0.0000011034609315174749,
+                    0.0,
+                    0.0,
+                    1.4256370067596436,
+                    0.0,
+                    0.0,
+                    0.0000011034609315174749,
+                    0.0,
+                    1.0890002250671387,
+                    0.0,
+                    55450.12890625,
+                    3255.104248046875,
+                    59442.8515625,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{16b1730c-e11e-46e7-aca4-3698ac5e3b08}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\s_竹子019g1_ST.mesh.stree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "Data\\source\\maps_source\\树\\s_竹子019g1_ST.srt"
+                }
+            }
+        },
+        "{17dc282e-efdb-469d-b4f5-3cefc92342d7}": {
+            "Version": 1,
+            "_tableName": "S_中原普通树001C1_ST.Mesh.STree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    59594.80859375,
+                    6653.66015625,
+                    58988.44140625
+                ],
+                "actorBoundBoxMin": [
+                    57857.60546875,
+                    4631.39501953125,
+                    57524.6640625
+                ],
+                "actorLocalMatrix": [
+                    -0.9396922588348389,
+                    0.0,
+                    -0.3420203626155853,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.3420203626155853,
+                    0.0,
+                    -0.9396922588348389,
+                    0.0,
+                    58791.97265625,
+                    4667.5380859375,
+                    58388.40234375,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{17dc282e-efdb-469d-b4f5-3cefc92342d7}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_中原普通树001C1_ST.Mesh.STree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "Data\\source\\maps_source\\树\\S_中原普通树001C1_ST.srt"
+                }
+            }
+        },
+        "{1caf2bb6-057f-4582-b165-39bfc4760507}": {
+            "Version": 1,
+            "_tableName": "s_竹子019g1_ST.mesh.stree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    51836.09765625,
+                    6286.693359375,
+                    58270.296875
+                ],
+                "actorBoundBoxMin": [
+                    49916.515625,
+                    2493.100830078125,
+                    56279.53515625
+                ],
+                "actorLocalMatrix": [
+                    0.5444989204406738,
+                    0.0,
+                    -0.9431025385856628,
+                    0.0,
+                    0.0,
+                    1.4256370067596436,
+                    0.0,
+                    0.0,
+                    0.9431025385856628,
+                    0.0,
+                    0.5444989204406738,
+                    0.0,
+                    51200.66015625,
+                    2824.02587890625,
+                    57459.74609375,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{1caf2bb6-057f-4582-b165-39bfc4760507}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\s_竹子019g1_ST.mesh.stree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "Data\\source\\maps_source\\树\\s_竹子019g1_ST.srt"
+                }
+            }
+        },
+        "{4b4f1e7d-4771-4254-ac11-a51bc13adaac}": {
+            "Version": 1,
+            "_tableName": "S_特色小树001_001.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    54127.2578125,
+                    3875.46630859375,
+                    59443.02734375
+                ],
+                "actorBoundBoxMin": [
+                    52960.48046875,
+                    2689.74658203125,
+                    58341.8671875
+                ],
+                "actorLocalMatrix": [
+                    -1.041953206062317,
+                    -0.011070278473198414,
+                    0.2766443192958832,
+                    0.0,
+                    -0.0190945565700531,
+                    1.0775561332702637,
+                    -0.028797928243875505,
+                    0.0,
+                    -0.2762065529823303,
+                    -0.032731831073760989,
+                    -1.0416138172149659,
+                    0.0,
+                    53553.453125,
+                    2754.54345703125,
+                    58906.5,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    -2.011239528656006,
+                    -10.243209838867188,
+                    0.18028287589550019
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{4b4f1e7d-4771-4254-ac11-a51bc13adaac}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_特色小树001_001.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\树\\S_特色小树001_001.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        },
+        "{60e457af-3802-4050-8549-07ae33cd7f59}": {
+            "Version": 1,
+            "_tableName": "S_特色小树001_003.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    58191.375,
+                    5544.2421875,
+                    59138.6484375
+                ],
+                "actorBoundBoxMin": [
+                    56646.46875,
+                    4220.06689453125,
+                    57281.7421875
+                ],
+                "actorLocalMatrix": [
+                    -0.4578322768211365,
+                    -0.011070286855101586,
+                    0.9760063886642456,
+                    0.0,
+                    -0.03433423116803169,
+                    1.0775560140609742,
+                    -0.003883635625243187,
+                    0.0,
+                    -0.9754650592803955,
+                    -0.0327318049967289,
+                    -0.4579496681690216,
+                    0.0,
+                    57437.80859375,
+                    4289.36572265625,
+                    58212.33203125,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    -0.07419556379318237,
+                    7.028454780578613,
+                    1.2081187963485718
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{60e457af-3802-4050-8549-07ae33cd7f59}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_特色小树001_003.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\树\\S_特色小树001_003.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        },
+        "{6f6cfe2e-3cd4-4368-abd8-b0d4c3f61a75}": {
+            "Version": 1,
+            "_tableName": "ST_泉水石004.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    52303.6015625,
+                    2687.280029296875,
+                    56794.0390625
+                ],
+                "actorBoundBoxMin": [
+                    51332.83984375,
+                    2516.154052734375,
+                    55992.33203125
+                ],
+                "actorLocalMatrix": [
+                    2.6180146051046906e-7,
+                    0.0,
+                    -1.4640998840332032,
+                    0.0,
+                    0.0,
+                    1.4641001224517823,
+                    0.0,
+                    0.0,
+                    1.4640998840332032,
+                    0.0,
+                    2.6180146051046906e-7,
+                    0.0,
+                    51688.23828125,
+                    2540.0,
+                    56403.19921875,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{6f6cfe2e-3cd4-4368-abd8-b0d4c3f61a75}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\石头\\ST_泉水石004.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\石头\\ST_泉水石004.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        },
+        "{6fa9682f-9ebe-42a8-bec4-b8b36655ddfd}": {
+            "Version": 1,
+            "_tableName": "ST_泉水石003.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    55251.78515625,
+                    2792.0595703125,
+                    53676.3203125
+                ],
+                "actorBoundBoxMin": [
+                    54471.58203125,
+                    2569.57421875,
+                    52589.40625
+                ],
+                "actorLocalMatrix": [
+                    1.3265668153762818,
+                    0.07523475587368012,
+                    0.6149439215660095,
+                    0.0,
+                    -0.08331545442342758,
+                    1.4617276191711426,
+                    0.0008956496603786945,
+                    0.0,
+                    -0.6139004230499268,
+                    -0.03580518811941147,
+                    1.3286961317062379,
+                    0.0,
+                    54855.50390625,
+                    2608.21435546875,
+                    53124.68359375,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.6154530644416809,
+                    -0.001459122751839459,
+                    -0.14338645339012147
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{6fa9682f-9ebe-42a8-bec4-b8b36655ddfd}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\石头\\ST_泉水石003.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\石头\\ST_泉水石003.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        },
+        "{7cdb1565-c841-447e-b1a6-2f3eeac22b72}": {
+            "Version": 1,
+            "_tableName": "S_多主干树002C1_ST.Mesh.STree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    64283.03515625,
+                    8775.419921875,
+                    58797.0859375
+                ],
+                "actorBoundBoxMin": [
+                    60910.63671875,
+                    5146.6044921875,
+                    55272.62109375
+                ],
+                "actorLocalMatrix": [
+                    0.6605998873710632,
+                    0.09274260699748993,
+                    0.8746461868286133,
+                    0.0,
+                    0.07616924494504929,
+                    1.0837253332138062,
+                    -0.17244099080562592,
+                    0.0,
+                    -0.8762446045875549,
+                    0.16412332653999329,
+                    0.6444041728973389,
+                    0.0,
+                    62368.7890625,
+                    5403.49267578125,
+                    57179.2265625,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.7813681364059448,
+                    4.746832370758057,
+                    2.2937750816345217
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{7cdb1565-c841-447e-b1a6-2f3eeac22b72}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_多主干树002C1_ST.Mesh.STree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "Data\\source\\maps_source\\树\\S_多主干树002C1_ST.srt"
+                }
+            }
+        },
+        "{7f10fe32-3780-40b9-a5e9-a48e1c547ee4}": {
+            "Version": 1,
+            "_tableName": "ST_泉水石005.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    54977.49609375,
+                    2712.14990234375,
+                    55691.890625
+                ],
+                "actorBoundBoxMin": [
+                    54205.33984375,
+                    2477.185302734375,
+                    55031.0234375
+                ],
+                "actorLocalMatrix": [
+                    0.4907863140106201,
+                    0.0,
+                    1.3484256267547608,
+                    0.0,
+                    0.0,
+                    1.6023496389389039,
+                    0.0,
+                    0.0,
+                    -1.3484256267547608,
+                    0.0,
+                    0.4907863140106201,
+                    0.0,
+                    54634.92578125,
+                    2495.804931640625,
+                    55351.31640625,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{7f10fe32-3780-40b9-a5e9-a48e1c547ee4}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\石头\\ST_泉水石005.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\石头\\ST_泉水石005.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        },
+        "{8071c8c1-056f-466d-8d0f-dcaffad51686}": {
+            "Version": 1,
+            "_tableName": "s_竹子019g1_ST.mesh.stree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    54752.10546875,
+                    6168.548828125,
+                    56295.7578125
+                ],
+                "actorBoundBoxMin": [
+                    53261.05078125,
+                    2374.95654296875,
+                    54870.16796875
+                ],
+                "actorLocalMatrix": [
+                    1.0890002250671387,
+                    0.0,
+                    -0.0000011034609315174749,
+                    0.0,
+                    0.0,
+                    1.4256370067596436,
+                    0.0,
+                    0.0,
+                    0.0000011034609315174749,
+                    0.0,
+                    1.0890002250671387,
+                    0.0,
+                    53999.3203125,
+                    2705.881591796875,
+                    55926.73046875,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{8071c8c1-056f-466d-8d0f-dcaffad51686}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\s_竹子019g1_ST.mesh.stree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "Data\\source\\maps_source\\树\\s_竹子019g1_ST.srt"
+                }
+            }
+        },
+        "{9a88e827-dcc1-495c-8a81-4543369a706f}": {
+            "Version": 1,
+            "_tableName": "s_竹子019f1_st.mesh.stree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    56179.24609375,
+                    7247.537109375,
+                    62387.328125
+                ],
+                "actorBoundBoxMin": [
+                    52276.78515625,
+                    3057.90771484375,
+                    58484.6484375
+                ],
+                "actorLocalMatrix": [
+                    0.8109603524208069,
+                    0.0,
+                    -0.5678409337997437,
+                    0.0,
+                    0.0,
+                    0.9900000095367432,
+                    0.0,
+                    0.0,
+                    0.5678409337997437,
+                    0.0,
+                    0.8109603524208069,
+                    0.0,
+                    54225.703125,
+                    3140.835693359375,
+                    60351.4921875,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{9a88e827-dcc1-495c-8a81-4543369a706f}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "data\\source\\maps_source\\树\\s_竹子019f1_st.mesh.stree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "data\\source\\maps_source\\树\\s_竹子019f1_st.srt"
+                }
+            }
+        },
+        "{a0147502-a475-41d0-a499-39ad3f1a82d7}": {
+            "Version": 1,
+            "_tableName": "S_特色小树001_003.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    53580.98046875,
+                    4771.6142578125,
+                    62411.49609375
+                ],
+                "actorBoundBoxMin": [
+                    51693.7265625,
+                    3313.095458984375,
+                    60579.0
+                ],
+                "actorLocalMatrix": [
+                    -0.8268299698829651,
+                    0.10231098532676697,
+                    0.6842557191848755,
+                    0.0,
+                    0.05568151921033859,
+                    1.072638750076294,
+                    -0.09309909492731095,
+                    0.0,
+                    -0.6896178722381592,
+                    -0.03606005012989044,
+                    -0.8279173970222473,
+                    0.0,
+                    52606.72265625,
+                    3452.271240234375,
+                    61546.46484375,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    -0.7962470054626465,
+                    -13.27199935913086,
+                    0.8992346525192261
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{a0147502-a475-41d0-a499-39ad3f1a82d7}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_特色小树001_003.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\树\\S_特色小树001_003.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        },
+        "{a3e05272-abf2-444a-97cb-ae2f34c2518c}": {
+            "Version": 1,
+            "_tableName": "s_竹子019f1_st.mesh.stree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    60997.0625,
+                    6903.501953125,
+                    57763.86328125
+                ],
+                "actorBoundBoxMin": [
+                    57273.48828125,
+                    2713.872802734375,
+                    54039.859375
+                ],
+                "actorLocalMatrix": [
+                    -0.8972447514533997,
+                    0.0,
+                    -0.4183919131755829,
+                    0.0,
+                    0.0,
+                    0.9900000095367432,
+                    0.0,
+                    0.0,
+                    0.4183919131755829,
+                    0.0,
+                    -0.8972447514533997,
+                    0.0,
+                    59063.25390625,
+                    2796.80078125,
+                    55946.109375,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{a3e05272-abf2-444a-97cb-ae2f34c2518c}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "data\\source\\maps_source\\树\\s_竹子019f1_st.mesh.stree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "data\\source\\maps_source\\树\\s_竹子019f1_st.srt"
+                }
+            }
+        },
+        "{a5f7f170-b4d3-4ccd-93cc-b835c3c04fb6}": {
+            "Version": 1,
+            "_tableName": "s_竹子019f1_st.mesh.stree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    65860.296875,
+                    8206.4228515625,
+                    54684.9921875
+                ],
+                "actorBoundBoxMin": [
+                    61567.59375,
+                    3597.830810546875,
+                    50392.04296875
+                ],
+                "actorLocalMatrix": [
+                    0.892056405544281,
+                    0.0,
+                    -0.624625027179718,
+                    0.0,
+                    0.0,
+                    1.0889999866485596,
+                    0.0,
+                    0.0,
+                    0.624625027179718,
+                    0.0,
+                    0.892056405544281,
+                    0.0,
+                    63711.40625,
+                    3689.051513671875,
+                    52445.57421875,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{a5f7f170-b4d3-4ccd-93cc-b835c3c04fb6}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "data\\source\\maps_source\\树\\s_竹子019f1_st.mesh.stree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "data\\source\\maps_source\\树\\s_竹子019f1_st.srt"
+                }
+            }
+        },
+        "{ad0312a5-ea7a-4967-9e6b-68f289cbba99}": {
+            "Version": 1,
+            "_tableName": "S_特色小树001_003.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    57067.984375,
+                    4129.34912109375,
+                    57263.05078125
+                ],
+                "actorBoundBoxMin": [
+                    55167.515625,
+                    2670.830078125,
+                    55913.0546875
+                ],
+                "actorLocalMatrix": [
+                    -1.038541316986084,
+                    0.10231099277734757,
+                    0.2707124352455139,
+                    0.0,
+                    0.08980999886989594,
+                    1.0726388692855836,
+                    -0.06084439530968666,
+                    0.0,
+                    -0.2751125395298004,
+                    -0.036060065031051639,
+                    -1.0417932271957398,
+                    0.0,
+                    56068.34375,
+                    2810.005859375,
+                    56621.5234375,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    -0.14926105737686158,
+                    -0.006996342446655035,
+                    -0.5370606184005737
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{ad0312a5-ea7a-4967-9e6b-68f289cbba99}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_特色小树001_003.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\树\\S_特色小树001_003.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        },
+        "{ba7fb641-8d3f-4e84-8b44-65ac59f5d162}": {
+            "Version": 1,
+            "_tableName": "S_特色小树001_003.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    64123.09765625,
+                    4811.119140625,
+                    54900.1640625
+                ],
+                "actorBoundBoxMin": [
+                    62243.77734375,
+                    3486.944580078125,
+                    53209.0703125
+                ],
+                "actorLocalMatrix": [
+                    -0.8844972252845764,
+                    -0.011070280335843563,
+                    0.616330087184906,
+                    0.0,
+                    -0.027792487293481828,
+                    1.0775561332702637,
+                    -0.020530452951788904,
+                    0.0,
+                    -0.6158023476600647,
+                    -0.032731793820858,
+                    -0.8843281269073486,
+                    0.0,
+                    63198.7265625,
+                    3556.242919921875,
+                    54065.91015625,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    -1.5295757055282593,
+                    13.275744438171387,
+                    -0.30130764842033389
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{ba7fb641-8d3f-4e84-8b44-65ac59f5d162}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_特色小树001_003.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\树\\S_特色小树001_003.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        },
+        "{be188aa3-c0a0-48e8-be6c-be084577858b}": {
+            "Version": 1,
+            "_tableName": "s_竹子019g1_ST.mesh.stree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    53834.0078125,
+                    6312.71630859375,
+                    57064.9375
+                ],
+                "actorBoundBoxMin": [
+                    52025.83984375,
+                    2519.1240234375,
+                    55190.6796875
+                ],
+                "actorLocalMatrix": [
+                    0.37245845794677737,
+                    0.0,
+                    -1.02332603931427,
+                    0.0,
+                    0.0,
+                    1.4256370067596436,
+                    0.0,
+                    0.0,
+                    1.02332603931427,
+                    0.0,
+                    0.37245845794677737,
+                    0.0,
+                    53271.18359375,
+                    2850.049072265625,
+                    56259.4296875,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{be188aa3-c0a0-48e8-be6c-be084577858b}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\s_竹子019g1_ST.mesh.stree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "Data\\source\\maps_source\\树\\s_竹子019g1_ST.srt"
+                }
+            }
+        },
+        "{c0eb0583-0a31-48ed-b0fc-db190e73eda5}": {
+            "Version": 1,
+            "_tableName": "S_异型树003C1_ST.Mesh.STree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    70759.515625,
+                    11733.484375,
+                    58175.93359375
+                ],
+                "actorBoundBoxMin": [
+                    62558.01953125,
+                    4946.67529296875,
+                    50008.6640625
+                ],
+                "actorLocalMatrix": [
+                    0.7761040925979614,
+                    0.41485005617141726,
+                    1.2160836458206177,
+                    0.0,
+                    -0.44444674253463747,
+                    1.419685959815979,
+                    -0.20066043734550477,
+                    0.0,
+                    -1.2055820226669312,
+                    -0.25631242990493777,
+                    0.8568394780158997,
+                    0.0,
+                    67292.953125,
+                    6125.1337890625,
+                    55102.59375,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    -0.3841061592102051,
+                    22.49730682373047,
+                    0.025577206164598466
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{c0eb0583-0a31-48ed-b0fc-db190e73eda5}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_异型树003C1_ST.Mesh.STree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "Data\\source\\maps_source\\树\\S_异型树003C1_ST.srt"
+                }
+            }
+        },
+        "{ca67e5be-1469-4d2d-ba47-aa2cfae616f9}": {
+            "Version": 1,
+            "_tableName": "S_多主干树002A1_ST.Mesh.STree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    56734.078125,
+                    10300.2216796875,
+                    66375.4140625
+                ],
+                "actorBoundBoxMin": [
+                    51937.609375,
+                    4738.2392578125,
+                    60630.38671875
+                ],
+                "actorLocalMatrix": [
+                    -0.135910302400589,
+                    -0.19079290330410005,
+                    -1.0747681856155396,
+                    0.0,
+                    -0.12710808217525483,
+                    1.0784651041030884,
+                    -0.17537571489810944,
+                    0.0,
+                    1.0841459035873414,
+                    0.10252396762371063,
+                    -0.15529629588127137,
+                    0.0,
+                    54750.15625,
+                    5215.03369140625,
+                    63282.046875,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    3.0794317722320558,
+                    -7.373845100402832,
+                    -0.19848307967185975
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{ca67e5be-1469-4d2d-ba47-aa2cfae616f9}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_多主干树002A1_ST.Mesh.STree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "Data\\source\\maps_source\\树\\S_多主干树002A1_ST.srt"
+                }
+            }
+        },
+        "{e447a7a7-2053-4746-9422-d19529851b92}": {
+            "Version": 1,
+            "_tableName": "S_中原普通树001A1_ST.Mesh.STree",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    61868.88671875,
+                    9695.505859375,
+                    62866.03125
+                ],
+                "actorBoundBoxMin": [
+                    56634.20703125,
+                    5119.67236328125,
+                    57233.59375
+                ],
+                "actorLocalMatrix": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    59011.2265625,
+                    5245.51318359375,
+                    59713.7890625,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{e447a7a7-2053-4746-9422-d19529851b92}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_中原普通树001A1_ST.Mesh.STree",
+                "actorMtl": "",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            },
+            "comUnknownDX9MapData": {
+                "extraData": {
+                    "srtFile": "Data\\source\\maps_source\\树\\S_中原普通树001A1_ST.srt"
+                }
+            }
+        },
+        "{eb5afc01-db27-4db1-b068-4023b1329e6f}": {
+            "Version": 1,
+            "_tableName": "S_特色小树001_004.Mesh",
+            "_tableType": "NPC",
+            "comBasic": {
+                "_ignoreBatch": 0,
+                "_tableName": "Basic",
+                "_tableType": "comBasic",
+                "actorBoundBoxFrequency": 1000,
+                "actorBoundBoxMax": [
+                    56658.13671875,
+                    3939.087646484375,
+                    59184.921875
+                ],
+                "actorBoundBoxMin": [
+                    54937.9140625,
+                    2771.9755859375,
+                    57511.09375
+                ],
+                "actorLocalMatrix": [
+                    0.6702061891555786,
+                    -0.008966916240751744,
+                    -0.5597695112228394,
+                    0.0,
+                    -0.013183827511966229,
+                    0.8726620674133301,
+                    -0.029763981699943544,
+                    0.0,
+                    0.559686005115509,
+                    0.031293801963329318,
+                    0.6696048974990845,
+                    0.0,
+                    55806.11328125,
+                    2820.091064453125,
+                    58366.26953125,
+                    1.0
+                ],
+                "actorRotationCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingCenter": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "actorScalingRotation": [
+                    -0.6534401178359985,
+                    -7.037176609039307,
+                    0.040179334580898288
+                ],
+                "actorSelectable": 1,
+                "uniformScaling": 0,
+                "uuid": "{eb5afc01-db27-4db1-b068-4023b1329e6f}"
+            },
+            "comEditor": {
+                "SaveAsSceneNode": 0,
+                "_tableName": "Editor",
+                "_tableType": "comEditor",
+                "editorDeletable": 1,
+                "editorOnly": 0,
+                "editorReadOnly": 0,
+                "editorSelectable": 1,
+                "editorVisible": 2,
+                "enableGroup": 1,
+                "hostLayer": "ref.{7f3ebe49-f61c-4168-b0f9-eddec2b78690}",
+                "isSingleton": 0,
+                "listInResourcePanel": 1,
+                "saveSeparatelyFlag": 0,
+                "templateFile": "npc.json"
+            },
+            "comRender": {
+                "_operator_actorMtl": 0,
+                "_tableName": "Render",
+                "_tableType": "comRender",
+                "acceptBake": 1,
+                "acceptDecal": 1,
+                "actorAlpha": 1.0,
+                "actorAni": "",
+                "actorBoundBoxColor": [
+                    1.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ],
+                "actorBoundBoxGeometryColor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    0.10000000149011612
+                ],
+                "actorDetailIndex": 0,
+                "actorEnableRender": 1,
+                "actorModel": "Data\\source\\maps_source\\树\\S_特色小树001_004.Mesh",
+                "actorMtl": "Data\\source\\maps_source\\树\\S_特色小树001_004.mtl",
+                "actorStateMachine": "",
+                "actorVisible": 1,
+                "castViceLightShadow": 0,
+                "nvrtxCastPointLightShadow": 0,
+                "nvrtxComputeExclusiveAnimation": 0,
+                "nvrtxEffectiveRadius": 10000.0,
+                "nvrtxForceOff": 0,
+                "nvrtxForceOn": 0,
+                "nvrtxHighPrecision": 0,
+                "renderLevel": 1,
+                "usedAsIcon": 0
+            }
+        }
+    }
+}

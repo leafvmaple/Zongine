@@ -1,0 +1,38 @@
+{
+    "UseDX9Detail": 0,
+    "UseDX9Lighting": 1,
+    "LOD": [
+        {
+            "Group": [
+                {
+                    "Subset": [
+                        {
+                            "Info": {
+                                "Version": 2,
+                                "RefPath": "data\\material\\material\\mtl_std.jsondef"
+                            },
+                            "RenderState": {
+                                "bOverWriteRS": 1,
+                                "nRenderState": 1,
+                                "AlphaRef": 128,
+                                "AlphaRef2": 126,
+                                "BlendMode": 1,
+                                "DistortionMode": 0,
+                                "TwoSide": 0,
+                                "OITWorkflow": 0,
+                                "OITOptimiseOption": 0
+                            },
+                            "Param": [
+                                {
+                                    "Name": "BaseColorMap",
+                                    "Type": "Texture",
+                                    "Value": "data\\source\\item\\weapon\\brush\\texture\\rh_brush_001.tga"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

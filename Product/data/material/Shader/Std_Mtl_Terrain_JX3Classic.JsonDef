@@ -1,0 +1,64 @@
+{
+    "Info": {
+        "Shader": "data\\material\\shader\\std_mtl_terrain_jx3classic.fx",
+        "DynamicEffectMark": 1
+    },
+    "RenderState": {
+        "StaticFlags": 0,
+        "DynamicFlags": 0,
+        "BlendMode": 0,
+        "LightingMode": 6,
+        "MaterialID": 1,
+        "AlphaRef": 128,
+        "AlphaRef2": 0,
+        "TwoSide": 0,
+        "DistortionMode": 0,
+        "Fur": 0
+    },
+    "Param": [
+        {
+            "Name": "Albedo Map",
+            "RegisterName": "_0_local1_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\defaulttexturergba.tga"
+        },
+        {
+            "Name": "EnvReflection",
+            "RegisterName": "local2_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "Specular",
+            "RegisterName": "local3_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "Emissive",
+            "RegisterName": "local4_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "UTransform",
+            "RegisterName": "local7_Prepare",
+            "Type": "Float3",
+            "Value": [
+                0.0024999999441206457,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "Name": "VTransform",
+            "RegisterName": "local8_Prepare",
+            "Type": "Float3",
+            "Value": [
+                0.0,
+                0.0,
+                -0.0024999999441206457
+            ]
+        }
+    ]
+}

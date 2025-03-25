@@ -1,0 +1,559 @@
+{
+    "Info": {
+        "Shader": "data\\material\\material\\mtl_face_classic.fx",
+        "DynamicEffectMark": 0
+    },
+    "RenderState": {
+        "StaticFlags": 1,
+        "DynamicFlags": 2,
+        "BlendMode": 0,
+        "LightingMode": 8,
+        "MaterialID": 1,
+        "AlphaRef": 128,
+        "AlphaRef2": 0,
+        "TwoSide": 0,
+        "DistortionMode": 0,
+        "Fur": 0
+    },
+    "Param": [
+        {
+            "Name": "BaseColorMap",
+            "RegisterName": "_3_local1_Texture",
+            "Type": "Texture",
+            "Value": "data\\source\\player\\f2\\部件\\texture\\f2_new_face.tga"
+        },
+        {
+            "Name": "唇膏 - Mask",
+            "RegisterName": "_0_local9_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\facetexture\\lipmask.tga"
+        },
+        {
+            "Name": "闪粉 - NoiseMap",
+            "RegisterName": "_2_local21_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\facetexture\\noise_mask_01.tga"
+        },
+        {
+            "Name": "eyeShadowMask",
+            "RegisterName": "_1_local50_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\facetexture\\eyeshadowmask04.tga"
+        },
+        {
+            "Name": "glitter_3_NormalUV",
+            "RegisterName": "_7_local167_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\facetexture\\glitter_normal_rgba_003.tga"
+        },
+        {
+            "Name": "glitter_4_NormalUV",
+            "RegisterName": "_4_local168_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\facetexture\\glitter_normal_rgba_004.tga"
+        },
+        {
+            "Name": "glitter_2_NormalUV",
+            "RegisterName": "_6_local169_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\facetexture\\glitter_normal_rgba_002.tga"
+        },
+        {
+            "Name": "glitter_1_NormalUV",
+            "RegisterName": "_5_local170_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\facetexture\\glitter_normal_rgba_001.tga"
+        },
+        {
+            "Name": "着色范围修正",
+            "RegisterName": "local2_Prepare",
+            "Type": "Float",
+            "Value": 0.009999999776482582
+        },
+        {
+            "Name": "着色力度",
+            "RegisterName": "local8_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "偏光 - 强度",
+            "RegisterName": "local19_Prepare",
+            "Type": "Float",
+            "Value": 0.6100000143051148
+        },
+        {
+            "Name": "闪粉 - Tiling",
+            "RegisterName": "local25_Prepare",
+            "Type": "Float",
+            "Value": 0.6499999761581421
+        },
+        {
+            "Name": "叠涂 - 强度",
+            "RegisterName": "local37_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "唇膏 - 强度",
+            "RegisterName": "local42_Prepare",
+            "Type": "Float",
+            "Value": 0.5699999928474426
+        },
+        {
+            "Name": "eyeShadow_3_switch",
+            "RegisterName": "local55_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "eyeShadow_1_switch",
+            "RegisterName": "local56_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "eyeShadow_4_switch",
+            "RegisterName": "local60_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "eyeShadow_2_switch",
+            "RegisterName": "local62_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "eyeShadowMaskUVScale",
+            "RegisterName": "local63_Prepare",
+            "Type": "Float",
+            "Value": 5.848599910736084
+        },
+        {
+            "Name": "glitter_2_switch",
+            "RegisterName": "local67_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "glitter_1_switch",
+            "RegisterName": "local69_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "maskFlip_H",
+            "RegisterName": "local71_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "glitter_3_switch",
+            "RegisterName": "local72_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "glitter_4_switch",
+            "RegisterName": "local75_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "eyeShadow_3_strength",
+            "RegisterName": "local82_Prepare",
+            "Type": "Float",
+            "Value": 0.1899999976158142
+        },
+        {
+            "Name": "eyeShadow_4_strength",
+            "RegisterName": "local84_Prepare",
+            "Type": "Float",
+            "Value": 0.27000001072883608
+        },
+        {
+            "Name": "eyeShadow_2_strength",
+            "RegisterName": "local86_Prepare",
+            "Type": "Float",
+            "Value": 0.4399999976158142
+        },
+        {
+            "Name": "eyeShadow_1_strength",
+            "RegisterName": "local87_Prepare",
+            "Type": "Float",
+            "Value": 0.25999999046325686
+        },
+        {
+            "Name": "anisoAngleMin",
+            "RegisterName": "local97_Prepare",
+            "Type": "Float",
+            "Value": 0.05000000074505806
+        },
+        {
+            "Name": "aniso强度2",
+            "RegisterName": "local99_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "anisoX<-->1-X",
+            "RegisterName": "local101_Prepare",
+            "Type": "Float",
+            "Value": 0.10999999940395355
+        },
+        {
+            "Name": "anisoAngleMax",
+            "RegisterName": "local106_Prepare",
+            "Type": "Float",
+            "Value": 0.3499999940395355
+        },
+        {
+            "Name": "aniso强度3",
+            "RegisterName": "local107_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "aniso强度4",
+            "RegisterName": "local111_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "aniso强度44",
+            "RegisterName": "local142_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "anisoY<- ->1-Y",
+            "RegisterName": "local144_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "aniso强度22",
+            "RegisterName": "local151_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "anisoAngleMin1",
+            "RegisterName": "local163_Prepare",
+            "Type": "Float",
+            "Value": 0.05000000074505806
+        },
+        {
+            "Name": "aniso强度33",
+            "RegisterName": "local164_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "anisoAngleMax1",
+            "RegisterName": "local165_Prepare",
+            "Type": "Float",
+            "Value": 0.3499999940395355
+        },
+        {
+            "Name": "glitter_1_Density",
+            "RegisterName": "local172_Prepare",
+            "Type": "Float",
+            "Value": 0.6700000166893005
+        },
+        {
+            "Name": "glitter - Tiling",
+            "RegisterName": "local182_Prepare",
+            "Type": "Float",
+            "Value": 0.2199999988079071
+        },
+        {
+            "Name": "glitter_2_Density",
+            "RegisterName": "local196_Prepare",
+            "Type": "Float",
+            "Value": 0.23999999463558198
+        },
+        {
+            "Name": "glitter_3_Density",
+            "RegisterName": "local197_Prepare",
+            "Type": "Float",
+            "Value": 0.7599999904632568
+        },
+        {
+            "Name": "glitter_4_Density",
+            "RegisterName": "local198_Prepare",
+            "Type": "Float",
+            "Value": 0.15000000596046449
+        },
+        {
+            "Name": "眼影闪片密度Max",
+            "RegisterName": "local212_Prepare",
+            "Type": "Float",
+            "Value": 30.0
+        },
+        {
+            "Name": "唇膏 - 开关（1为打开）",
+            "RegisterName": "local214_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "叠涂 - 开关（1为打开）",
+            "RegisterName": "local217_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "偏光 - 开关（1为打开）",
+            "RegisterName": "local218_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "闪粉 - 开关（1为打开）",
+            "RegisterName": "local220_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "eyeShadowMaskOffSet",
+            "RegisterName": "local78_Prepare",
+            "Type": "Float2",
+            "Value": [
+                -3.0081000328063967,
+                -3.414599895477295
+            ]
+        },
+        {
+            "Name": "偏色分量RGB",
+            "RegisterName": "local206_Prepare",
+            "Type": "Float3",
+            "Value": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "偏色颜色",
+            "RegisterName": "local4_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.7814145088195801,
+                0.7814145088195801,
+                0.7814145088195801,
+                0.4000000059604645
+            ]
+        },
+        {
+            "Name": "闪粉 - Color",
+            "RegisterName": "local33_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                0.6954759955406189,
+                0.0673075020313263,
+                1.1699999570846558
+            ]
+        },
+        {
+            "Name": "叠涂 - BaseColorTint",
+            "RegisterName": "local38_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.2571600079536438,
+                0.17308300733566285,
+                1.0,
+                1.5700000524520875
+            ]
+        },
+        {
+            "Name": "唇膏 - ColorTint",
+            "RegisterName": "local39_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.97462397813797,
+                0.00936903990805149,
+                0.20708000659942628,
+                0.6800000071525574
+            ]
+        },
+        {
+            "Name": "eyeShadow_1_color",
+            "RegisterName": "local92_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.6941180229187012,
+                0.6823530197143555,
+                0.0,
+                5.0
+            ]
+        },
+        {
+            "Name": "anisoColor3",
+            "RegisterName": "local98_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.1450980007648468,
+                0.6509799957275391,
+                0.003921569790691137,
+                1.0
+            ]
+        },
+        {
+            "Name": "anisoColor4",
+            "RegisterName": "local102_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.6509799957275391,
+                0.050980400294065478,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "eyeShadow_3_color",
+            "RegisterName": "local103_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.09019610285758972,
+                0.5372549891471863,
+                0.4313730001449585,
+                1.0
+            ]
+        },
+        {
+            "Name": "eyeShadow_4_color",
+            "RegisterName": "local104_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.5960779786109924,
+                0.21960799396038056,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "anisoColor2",
+            "RegisterName": "local105_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.2549020051956177,
+                0.5294119715690613,
+                0.6509799957275391,
+                1.0
+            ]
+        },
+        {
+            "Name": "eyeShadow_2_color",
+            "RegisterName": "local112_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.8087430000305176,
+                0.0,
+                0.15675599873065949,
+                2.6500000953674318
+            ]
+        },
+        {
+            "Name": "anisoColor44",
+            "RegisterName": "local147_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.6509799957275391,
+                0.050980400294065478,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "Name": "anisoColor22",
+            "RegisterName": "local148_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.2549020051956177,
+                0.5294119715690613,
+                0.6509799957275391,
+                1.0
+            ]
+        },
+        {
+            "Name": "anisoColor33",
+            "RegisterName": "local161_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.1450980007648468,
+                0.6509799957275391,
+                0.003921569790691137,
+                1.0
+            ]
+        },
+        {
+            "Name": "glitter_1_Color",
+            "RegisterName": "local171_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.7213090062141419,
+                0.07333490252494812,
+                0.0,
+                3.0
+            ]
+        },
+        {
+            "Name": "glitter_2_Color",
+            "RegisterName": "local188_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.8961780071258545,
+                0.05169760063290596,
+                0.49167600274086,
+                3.0
+            ]
+        },
+        {
+            "Name": "glitter_3_Color",
+            "RegisterName": "local189_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.24641799926757813,
+                0.24274100363254548,
+                0.7213090062141419,
+                3.0
+            ]
+        },
+        {
+            "Name": "glitter_4_Color",
+            "RegisterName": "local190_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.09738309681415558,
+                0.7213090062141419,
+                0.0,
+                3.0
+            ]
+        },
+        {
+            "Name": "SpecularColor",
+            "RegisterName": "local199_Prepare",
+            "Type": "Color",
+            "Value": [
+                0.7901120185852051,
+                0.413457989692688,
+                1.0,
+                0.44999998807907107
+            ]
+        },
+        {
+            "Name": "偏光 - 区域Tint",
+            "RegisterName": "local200_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                0.2518349885940552,
+                0.0,
+                0.8199999928474426
+            ]
+        }
+    ]
+}

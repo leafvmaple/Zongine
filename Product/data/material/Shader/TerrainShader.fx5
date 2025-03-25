@@ -1,0 +1,121 @@
+Texture2D g_TerrainHeightMap    : register(t1);
+Texture2D g_TerrainNormalMap    : register(t2);
+
+struct MTLSYS_TERRAIN_SHARED_CB 
+{
+    float2   UnitScaleXZ;
+    int2     RegionOffset;
+    float    HeightMapUVScale;
+    float    HeightMapUVBias;
+};
+
+cbuffer ModelSharedParam : register(b2)
+{
+    MTLSYS_TERRAIN_SHARED_CB g_ModelParams;
+};
+
+struct VertexInput
+{
+    float2 LocalPosition    : POSITION0;
+};
+
+struct InstanceInput
+{
+    // NodeOffset Components: offset x, offset z, size of node, length of node (dimension is unit for all components).
+    int4   NodeOffset       : CINSTANCE0;
+    float4 NeighborLOD      : CINSTANCE1;
+};
+
+struct VertexOutput
+{
+    float4 OutPosition      : SV_POSITION;
+    float4 WorldPosition    : TEXCOORD0;
+    float4 ScreenPosition   : TEXCOORD1;
+
+    float2 TexCoords        : TEXCOORD2;
+
+    float4 WeightHeightMapTexcoord : WEIGHTHEIGHTCOORD;
+};
+
+#include "NodeInterface.h"
+#include "CommonParam.h"
+
+float GetHeightFromMap(Texture2D TerrainHeightMap, float2 GeometryCoord)
+{
+    return TerrainHeightMap.SampleLevel(g_sPointClamp, GeometryCoord, 0.0f).r;
+}
+
+float2 GetScaleTexcoord(float2 WorldPosition)
+{
+    return WorldPosition * 0.0025f * float2(1.0f, -1.0f);
+}
+
+MaterialVertexParameters GetMaterialVertexParameters(VertexInput CommonData, InstanceInput InstanceData, out float4 WeightHeightMapTexcoord)
+{
+    MaterialVertexParameters Params = (MaterialVertexParameters)0;
+
+    int2 LocalOffset            = CommonData.LocalPosition * InstanceData.NodeOffset.w;
+    int2 WorldOffset            = LocalOffset + InstanceData.NodeOffset.xy + g_ModelParams.RegionOffset;
+
+    float2 GeometryCoord        = WorldOffset * g_ModelParams.HeightMapUVScale;
+    WeightHeightMapTexcoord.xy  = GeometryCoord + g_ModelParams.HeightMapUVBias;
+    WeightHeightMapTexcoord.zw  = GeometryCoord;
+
+    float  WorldHeight          = GetHeightFromMap(g_TerrainHeightMap, WeightHeightMapTexcoord.xy);
+
+    Params.VertexPosition.xz    = (float2)WorldOffset * g_ModelParams.UnitScaleXZ;
+    Params.VertexPosition.y     = WorldHeight;
+    Params.VertexColor          = float4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	Params.MatrixWorld[0] = float4(1, 0, 0, 0);
+	Params.MatrixWorld[1] = float4(0, 1, 0, 0);
+	Params.MatrixWorld[2] = float4(0, 0, 1, 0);
+	Params.MatrixWorld[3] = float4(0, 0, 0, 1);
+
+    return Params;
+}
+
+MaterialPixelParameters GetMaterialParameters(VertexOutput Input)
+{
+    MaterialPixelParameters Params = (MaterialPixelParameters)0;
+
+    Params.TexCoords = Input.TexCoords;
+
+    return Params;
+}
+
+VertexOutput VertexShaderMain(VertexInput CommonData, InstanceInput InstanceData)
+{
+    VertexOutput Output = (VertexOutput)0;
+    
+    MaterialVertexParameters Params = GetMaterialVertexParameters(CommonData, InstanceData, Output.WeightHeightMapTexcoord);
+
+    Output.WorldPosition    = Params.VertexPosition;
+    Output.WorldPosition.w  = 1.0f;
+    Output.OutPosition      = GetDeviceCoordinate(Output.WorldPosition, g_Com.Camera.CameraView, g_Com.Camera.CameraProject);
+    Output.ScreenPosition   = Output.OutPosition;
+    Output.TexCoords        = GetScaleTexcoord(Output.WorldPosition.xz);
+
+    return Output;
+}
+
+float4 PixelShaderMain(VertexOutput Input) : SV_Target0
+{
+    float4 OutColor = (float4)0;
+    MaterialPixelParameters Params = GetMaterialParameters(Input);
+
+    return OutColor;
+}
+
+VertexShader    MainVertexShader    = CompileShader(vs_5_0, VertexShaderMain());
+PixelShader     MainPixelShader     = CompileShader(ps_5_0, PixelShaderMain());
+
+technique11 Color
+{
+    pass p0
+    {
+        SetVertexShader(MainVertexShader);
+        SetPixelShader(MainPixelShader);
+    }
+}
+

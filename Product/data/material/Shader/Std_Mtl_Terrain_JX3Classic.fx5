@@ -1,0 +1,75 @@
+
+cbuffer MaterialLocalParams : register(b0)
+{
+	float3 local7_Prepare = float3(0.0025, 0, 0);
+	float3 local8_Prepare = float3(0, 0, -0.0025);
+	float local2_Prepare = float(0);
+	float local3_Prepare = float(0);
+	float local4_Prepare = float(0);
+}
+
+cbuffer MaterialSpecialParams : register(b1)
+{
+	// ST_TERRAIN_MATERIAL_LAYER_CONST ST_TerrainConst[9];
+}
+
+Texture2D _0_local1_Texture;
+
+SamplerState g_Sampler_0
+{
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = Wrap;
+	AddressV = Wrap;
+	MaxAnisotropy = 8;
+};
+
+Texture2DArray WeightMaskArray : register(t0);
+
+void CalculateMainVertexNode(MaterialVertexParameters Parameters, in out ParamsMainVertexNode MainNodeParam)
+{
+}
+void CalculateMainPixelNode(in out MaterialPixelParameters Parameters, in out ParamsMainPixelNode MainNodeParam)
+{
+	CalcMaterialNormalParams(Parameters, MainNodeParam); 
+	float local10 = dot(local7_Prepare, Parameters.WorldPosition);
+	float local11 = dot(Parameters.WorldPosition, local8_Prepare);
+	float2 local13 = float2(local10, local11);
+
+	float2 local1_uv = local13;
+	float4 local1 = _0_local1_Texture.Sample(g_Sampler_0, local1_uv);
+	float local14 = local1.a * local3_Prepare;
+	float local19 = float(1) - local2_Prepare;
+	float local15 = local1.a * local4_Prepare;
+	float3 local16 = local1.rgb * float3(local15, local15, local15);
+	MainNodeParam.Albedo = local1.rgb;
+	MainNodeParam.SpecularColor = float3(local14, local14, local14);
+	MainNodeParam.Fresnel = 1.0f;
+	MainNodeParam.Roughness = local19;
+	MainNodeParam.Emissive = local16;
+	MainNodeParam.AO = 1.0f;
+	MainNodeParam.Opacity = 1.0f;
+	MainNodeParam.PixelDepthOffset = 0.0f;
+	MainNodeParam.MaterialHeight = float(0.5);
+}
+void CalculateTessMultiplier(in out MaterialTessllationParameters Parameters, in out ParamsMainHullNode HullMainNode)
+{
+}
+void CalculateWorldDisplacement(in out MaterialTessllationParameters Parameters, in out ParamsMainDomainNode DomainMainNode)
+{
+}
+void CalculateMainGeometryNode(in out MaterialGeometryParameters Parameters, in out ParamsMainGeometryNode MainNodeParam)
+{
+}
+float GetOpacityColor(MaterialPixelParameters Parameters)
+{
+	float RetOpacity = 1.0f;
+	return RetOpacity;
+}
+float2 GetDistortion(MaterialPixelParameters Parameters)
+{
+	return float2(0.8f, 0.8f);
+}
+float GetDistortionPower(MaterialPixelParameters Parameters)
+{
+	return 1.0f;
+}

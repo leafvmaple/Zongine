@@ -1,0 +1,199 @@
+{
+    "foliageWorldObjectVersion": 4,
+    "worldObjects": {
+        "{97d14f8b-0503-486f-bb04-020cbca2adbc}": {
+            "comEditor": {
+                "templateFile": "foliage.json",
+                "hostLayer": "ref.{6e723b97-342a-4c75-93ab-81607390fddf}"
+            },
+            "comBasic": {
+                "uuid": "{97d14f8b-0503-486f-bb04-020cbca2adbc}",
+                "actorBoundBoxMin": [
+                    2534.9228515625,
+                    -1242.5045166015625,
+                    1115.0279541015625
+                ],
+                "actorBoundBoxMax": [
+                    74685.6328125,
+                    9664.1357421875,
+                    69465.0703125
+                ]
+            },
+            "_tableName": "Foliage",
+            "comFoliagePattern": {
+                "FoliagePatternEditTable": {
+                    "count": 6,
+                    "id": 0,
+                    "item_0": {
+                        "FoliagePatternEditID": 1,
+                        "FoliagePatternID": 1,
+                        "FoliagePatternRadius": 1.0,
+                        "FoliagePatternUniformScale": 1,
+                        "FoliagePatternNormalType": 1,
+                        "FoliagePatternRandAngle": 0.0,
+                        "FoliagePatternXZNormalMatch": 0,
+                        "FoliagePatternVisibleDensity": 1.0,
+                        "FoliagePatternScaleMin": [
+                            5.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternScaleMax": [
+                            10.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternYOffset": [
+                            0.0,
+                            0.0
+                        ],
+                        "FoliagePatternXZRotation": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    "item_1": {
+                        "FoliagePatternEditID": 3,
+                        "FoliagePatternID": 3,
+                        "FoliagePatternRadius": 1.0,
+                        "FoliagePatternUniformScale": 1,
+                        "FoliagePatternNormalType": 1,
+                        "FoliagePatternRandAngle": 0.0,
+                        "FoliagePatternXZNormalMatch": 0,
+                        "FoliagePatternVisibleDensity": 1.0,
+                        "FoliagePatternScaleMin": [
+                            5.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternScaleMax": [
+                            10.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternYOffset": [
+                            0.0,
+                            0.0
+                        ],
+                        "FoliagePatternXZRotation": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    "item_2": {
+                        "FoliagePatternEditID": 4,
+                        "FoliagePatternID": 4,
+                        "FoliagePatternRadius": 1.0,
+                        "FoliagePatternUniformScale": 1,
+                        "FoliagePatternNormalType": 1,
+                        "FoliagePatternRandAngle": 0.0,
+                        "FoliagePatternXZNormalMatch": 0,
+                        "FoliagePatternVisibleDensity": 1.0,
+                        "FoliagePatternScaleMin": [
+                            5.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternScaleMax": [
+                            10.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternYOffset": [
+                            0.0,
+                            0.0
+                        ],
+                        "FoliagePatternXZRotation": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    "item_3": {
+                        "FoliagePatternEditID": 5,
+                        "FoliagePatternID": 5,
+                        "FoliagePatternRadius": 1.0,
+                        "FoliagePatternUniformScale": 1,
+                        "FoliagePatternNormalType": 1,
+                        "FoliagePatternRandAngle": 0.0,
+                        "FoliagePatternXZNormalMatch": 0,
+                        "FoliagePatternVisibleDensity": 1.0,
+                        "FoliagePatternScaleMin": [
+                            5.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternScaleMax": [
+                            10.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternYOffset": [
+                            0.0,
+                            0.0
+                        ],
+                        "FoliagePatternXZRotation": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    "item_4": {
+                        "FoliagePatternEditID": 8,
+                        "FoliagePatternID": 8,
+                        "FoliagePatternRadius": 1.0,
+                        "FoliagePatternUniformScale": 1,
+                        "FoliagePatternNormalType": 1,
+                        "FoliagePatternRandAngle": 0.0,
+                        "FoliagePatternXZNormalMatch": 0,
+                        "FoliagePatternVisibleDensity": 1.0,
+                        "FoliagePatternScaleMin": [
+                            5.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternScaleMax": [
+                            10.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternYOffset": [
+                            0.0,
+                            0.0
+                        ],
+                        "FoliagePatternXZRotation": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    "item_5": {
+                        "FoliagePatternEditID": 10,
+                        "FoliagePatternID": 10,
+                        "FoliagePatternRadius": 1.0,
+                        "FoliagePatternUniformScale": 1,
+                        "FoliagePatternNormalType": 1,
+                        "FoliagePatternRandAngle": 0.0,
+                        "FoliagePatternXZNormalMatch": 0,
+                        "FoliagePatternVisibleDensity": 1.0,
+                        "FoliagePatternScaleMin": [
+                            5.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternScaleMax": [
+                            10.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FoliagePatternYOffset": [
+                            0.0,
+                            0.0
+                        ],
+                        "FoliagePatternXZRotation": [
+                            0.0,
+                            0.0
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
