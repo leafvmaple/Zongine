@@ -4,6 +4,9 @@
 
 namespace Zongine {
     struct AnimationComponent {
-        std::vector<DirectX::XMMATRIX> Matrix;
+        std::string Path{};
+        int nPlayTime{};
+
+        std::vector<DirectX::XMMATRIX> Matrix{};
     };
 }

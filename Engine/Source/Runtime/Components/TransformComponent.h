@@ -20,5 +20,8 @@ namespace Zongine {
 
         BIND_TYPE BindType { BIND_TYPE::Attach };
         std::string TargetName{};
+        union {
+            UINT SocketIndex{ (UINT) - 1};
+        };
     };
 }

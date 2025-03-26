@@ -11,6 +11,7 @@
 #include "Components/CameraComponent.h"
 #include "components/MaterialComponent.h"
 #include "components/TransformComponent.h"
+#include "Components/AnimationComponent.h"
 
 #include "Entities/EntityManager.h"
 
@@ -25,12 +26,13 @@ namespace Zongine {
     }
 
     void Engine::Initialize(HINSTANCE hInstance) {
+        m_nLastTime = timeGetTime();
+
         // Manager initialization
         auto entityManager = std::make_shared<EntityManager>();
         auto windowManager = std::make_shared<WindowManager>();
         auto deviceManager = std::make_shared<DeviceManager>();
         auto resourceManager = std::make_shared<ResourceManager>();
-        auto shaderManager = std::make_shared<ShaderManager>();
         auto stateManager = std::make_shared<StateManager>();
         auto effectManager = std::make_shared<EffectManager>();
 
@@ -39,7 +41,6 @@ namespace Zongine {
             windowManager,
             deviceManager,
             resourceManager,
-            shaderManager,
             stateManager,
             effectManager
         };
@@ -47,7 +48,6 @@ namespace Zongine {
         windowManager->Initialize({ hInstance, L"Zongine", L"Zongine", 0, 0, 1280, 720 });
         deviceManager->Initialize({ windowManager });
         resourceManager->Initialize({ entityManager, deviceManager, effectManager });
-        shaderManager->Initialize({ deviceManager });
         stateManager->Initialize({ deviceManager });
         effectManager->Initialize({ deviceManager });
 
@@ -59,16 +59,16 @@ namespace Zongine {
         animationSystem = std::make_unique<AnimationSystem>();
 
         auto& root = entityManager->GetRootEntity();
-        entityManager->AddComponent<TransformComponent>(root.GetID(), TransformComponent{});
+        root.AddComponent<TransformComponent>(TransformComponent{});
 
         auto& camera = root.AddChild();
-        entityManager->AddComponent<CameraComponent>(camera.GetID(), CameraComponent{});
-
-        auto& cameraTransform = entityManager->AddComponent<TransformComponent>(camera.GetID(), TransformComponent{});
+        camera.AddComponent<CameraComponent>(CameraComponent{});
+        auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
         cameraTransform.Position = { 0.0f, 40.0f, -50.0f };
 
         auto& player = root.AddChild();
         resourceManager->LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
+        player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b01ty普通待机01.ani" });
 
         auto& playerTransform = root.GetComponent<TransformComponent>();
         playerTransform.Position = { 0.0f, 0, 50.0f };
@@ -85,6 +85,12 @@ namespace Zongine {
         resourceManager->LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
         resourceManager->LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
 
+        // auto& hat = player.AddChild();
+        auto& weapon = hand.AddChild();
+
+        // resourceManager->LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
+        resourceManager->LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
+
         renderSystem->Initialize(managerList);
         inputSystem->Initialize(managerList);
         cameraSystem->Initialize(managerList);
@@ -96,11 +102,13 @@ namespace Zongine {
 
     void Engine::Run() {
         while (m_bRunning) {
-            Tick(0.0f);
+            uint64_t nTime = timeGetTime();
+            Tick(nTime - m_nLastTime);
+            m_nLastTime = nTime;
         }
     }
 
-    void Engine::Tick(float fDeltaTime) {
+    void Engine::Tick(uint64_t fDeltaTime) {
         MSG msg{};
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg);

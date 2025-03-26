@@ -6,7 +6,9 @@
 #include <memory>
 
 namespace Zongine {
-    using DirectX::XMMATRIX;
+    struct ManagerList;
+
+    class ResourceManager;
 
     struct ManagerList;
 
@@ -17,8 +19,9 @@ namespace Zongine {
         void Tick(float fDeltaTime);
 
     private:
-        void _UpdateWorldTransformRecursive(Entity entity, const XMMATRIX& parentMatrix);
+        void _UpdateWorldTransformRecursive(Entity entity, const DirectX::XMMATRIX& parentMatrix);
 
         std::shared_ptr<EntityManager> m_EntityManager{};
+        std::shared_ptr<ResourceManager> m_ResourceManger{};
     };
 }

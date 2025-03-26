@@ -29,6 +29,7 @@ namespace Zongine {
 
         void LoadVariables(ComPtr<ID3DX11Effect> effect, std::unordered_map<std::string, ID3DX11EffectShaderResourceVariable*>& Variables);
 
+        ComPtr<ID3D11InputLayout> GetInputLayout(RUNTIME_MACRO macro) { return m_InputLayouts[macro]; }
         ID3DX11EffectPass* GetEffectPass(ComPtr<ID3DX11Effect> effect, RENDER_PASS pass);
 
     private:
@@ -38,9 +39,10 @@ namespace Zongine {
         };
 
         std::shared_ptr<DeviceManager> m_DeviceManager{};
-        std::array<std::unordered_map<std::string, ComPtr<ID3DX11Effect>>, RUNTIME_MACRO_COUNT> m_Effects {};
+        std::array<std::unordered_map<std::string, ComPtr<ID3DX11Effect>>, RUNTIME_MACRO_COUNT> m_Effects{};
+        std::array<ComPtr<ID3D11InputLayout>, RUNTIME_MACRO_COUNT> m_InputLayouts{};
 
-        std::unordered_map<RENDER_PASS, RENDER_PASS_TABLE> m_RenderPassTable = {
+        std::unordered_map<RENDER_PASS, RENDER_PASS_TABLE> m_RenderPassTable {
             { RENDER_PASS::COLOR, { "Color" } },
             { RENDER_PASS::COLORSOFTMASK, { "ColorSoftMask"} }
         };

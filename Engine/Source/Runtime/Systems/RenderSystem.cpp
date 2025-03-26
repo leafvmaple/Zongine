@@ -23,7 +23,6 @@ namespace Zongine {
     bool RenderSystem::Initialize(const ManagerList& info) {
         m_EntityManager = info.entityManager;
         m_DeviceManager = info.deviceManager;
-        m_ShaderManager = info.shaderManager;
         m_StateManager = info.stateManager;
         m_EffectManager = info.effectManager;
         m_ResourceManger = info.resourceManager;
@@ -60,7 +59,12 @@ namespace Zongine {
 
         auto mesh = m_ResourceManger->GetMeshAsset(meshComponent.Path);
         auto material = m_ResourceManger->GetMaterialAsset(materialComponent.Path);
-        auto shader = m_ResourceManger->GetShaderAsset(RUNTIME_MACRO_SKIN_MESH, shaderComponent.Path);
+
+        auto runtimeMacro = RUNTIME_MACRO_MESH;
+        if (mesh->InputLayout == INPUT_LAYOUT_CI_SKINMESH)
+            runtimeMacro = RUNTIME_MACRO_SKIN_MESH;
+
+        auto shader = m_ResourceManger->GetShaderAsset(runtimeMacro, shaderComponent.Path);
 
         auto& buffer = shader->ModelBuffer;
 
@@ -71,8 +75,7 @@ namespace Zongine {
         auto& vertexBuffer = mesh->Vertex;
         auto& indexBuffer = mesh->Index;
 
-        // TODO
-        auto inputLayout = m_ShaderManager->GetInputLayout(INPUT_LAYOUT_CI_SKINMESH);
+        auto inputLayout = m_EffectManager->GetInputLayout(runtimeMacro);
 
         context->IASetInputLayout(inputLayout.Get());
         context->IASetVertexBuffers(0, 1, vertexBuffer.Buffer.GetAddressOf(), &vertexBuffer.uStride, &vertexBuffer.uOffset);

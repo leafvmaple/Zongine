@@ -1,13 +1,8 @@
 static const int MAX_NUM_BONE_PER_SET = 158;
 
-struct MTLSYS_MESH_SHARED_CB 
+cbuffer MODEL_MATRIX
 {
-    row_major float4x4 MatrixWorld;
-};
-
-cbuffer ModelSharedParam
-{
-    MTLSYS_MESH_SHARED_CB g_ModelParams;
+    row_major float4x4 ZONGINE_MATRIX_M;
 };
 
 cbuffer SubsetConstParam : register (b3)
@@ -18,18 +13,13 @@ cbuffer SubsetConstParam : register (b3)
     float  AlphaReference2 = 0.f;
 };
 
-cbuffer MODEL_MATRIX : register (b0)
-{
-    row_major float4x4 ZONGINE_MATRIX_M;
-};
-
 struct VertexInput
 {
     float4 Position  : POSITION;
     float3 Normal    : NORMAL0;
+    float4 Tangent   : TANGENT0;
     float4 Color     : COLOR;
     float2 TexCoords : TEXCOORD0;
-    float4 Tangent   : TANGENT0;
 };
 
 struct VertexOutput
@@ -50,9 +40,7 @@ MaterialVertexParameters GetMaterialVertexParameters(VertexInput vin)
 
     Params.VertexPosition = vin.Position;
     Params.VertexColor = vin.Color;
-
     Params.TexCoords = vin.TexCoords;
-
     Params.MatrixWorld = ZONGINE_MATRIX_M;
 
     return Params;
@@ -73,7 +61,7 @@ VertexOutput VertexShaderMain(VertexInput vin)
     
     MaterialVertexParameters Params = GetMaterialVertexParameters(vin);
 
-    vout.PosH = GetDeviceCoordinate(Params.VertexPosition, Params.MatrixWorld, g_Com.Camera.CameraView, g_Com.Camera.CameraProject);
+    vout.PosH = GetDeviceCoordinate(Params.VertexPosition, Params.MatrixWorld, ZONGINE_MATRIX_V, ZONGINE_MATRIX_P);
     vout.Color = Params.VertexColor;
     vout.TexCoords = Params.TexCoords;
     

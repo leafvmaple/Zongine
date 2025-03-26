@@ -1,7 +1,5 @@
 #pragma once
 
-#include "BaseComponent.h"
-
 #include <memory>
 #include <vector>
 #include <string>

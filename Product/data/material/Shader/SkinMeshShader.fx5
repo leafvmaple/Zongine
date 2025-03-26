@@ -22,11 +22,11 @@ struct VertexInput
 {
     float4 Position  : POSITION;
     float3 Normal    : NORMAL0;
+    float4 Tangent   : TANGENT0;
     float4 Color     : COLOR;
     float2 TexCoords : TEXCOORD0;
     float4 Weights   : BONEWEIGHTS0;
     uint4  Indices   : BONEINDICES0;
-    float4 Tangent   : TANGENT0;
 };
 
 struct VertexOutput

@@ -21,15 +21,6 @@ namespace Zongine {
 
     using Microsoft::WRL::ComPtr;
 
-    struct RenderSystemInfo {
-        std::shared_ptr<EntityManager> entityManager;
-        std::shared_ptr<DeviceManager> deviceManager;
-        std::shared_ptr<ShaderManager> shaderManager;
-        std::shared_ptr<StateManager> stateManager;
-        std::shared_ptr<EffectManager> effectManager;
-        std::shared_ptr<ResourceManager> resourceManager;
-    };
-
     class RenderEntity {
 
     };

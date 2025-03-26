@@ -4,6 +4,9 @@
 
 #include "StringUtils.h"
 
+#include "Include/Enums.h"
+
+#include <d3d11.h>
 #include "FX11/inc/d3dx11effect.h"
 
 #include <d3dcompiler.h>
@@ -13,10 +16,48 @@
 #define MATERIAL_SHADER_ROOT "data/material/Shader/"
 
 namespace Zongine {
-    static const char* SShaderTemplate[] = {
-        MATERIAL_SHADER_ROOT"MeshShader.fx5",
-        MATERIAL_SHADER_ROOT"SkinMeshShader.fx5",
-        MATERIAL_SHADER_ROOT"TerrainShader.fx5",
+    static struct _SHADER_TEMPLATE {
+        RUNTIME_MACRO Macro;
+        const char* szPath;
+        int nDescCount;
+        D3D11_INPUT_ELEMENT_DESC Desc[30];
+    } SShaderTemplate[] = {
+        {
+            RUNTIME_MACRO_MESH,
+            MATERIAL_SHADER_ROOT"MeshShader.fx5",
+            5,
+            {
+                {"POSITION",    0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"NORMAL",      0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"TANGENT",     0, DXGI_FORMAT_R32G32B32A32_FLOAT,  0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"COLOR",       0, DXGI_FORMAT_B8G8R8A8_UNORM,      0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"TEXCOORD",    0, DXGI_FORMAT_R32G32_FLOAT,        0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+            }
+        },
+        {
+            RUNTIME_MACRO_SKIN_MESH,
+            MATERIAL_SHADER_ROOT"SkinMeshShader.fx5",
+            7,
+            {
+                {"POSITION",    0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"NORMAL",      0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"TANGENT",     0, DXGI_FORMAT_R32G32B32A32_FLOAT,  0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"COLOR",       0, DXGI_FORMAT_B8G8R8A8_UNORM,      0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"TEXCOORD",    0, DXGI_FORMAT_R32G32_FLOAT,        0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"BONEWEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,  0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"BONEINDICES", 0, DXGI_FORMAT_R8G8B8A8_UINT,       0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+            }
+        },
+        {
+            RUNTIME_MACRO_TERRAIN,
+            MATERIAL_SHADER_ROOT"TerrainShader.fx5",
+            3,
+            {
+                {"POSITION",    0, DXGI_FORMAT_R32G32_FLOAT,        0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA,    0},
+                {"CINSTANCE",   0, DXGI_FORMAT_R32G32B32A32_SINT,   1,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_INSTANCE_DATA,  1},
+                {"CINSTANCE",   1, DXGI_FORMAT_R32G32B32A32_FLOAT,  1,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_INSTANCE_DATA,  1},
+            }
+        },
     };
 
     struct D3DInclude : public ID3DInclude
@@ -69,11 +110,12 @@ namespace Zongine {
         nShaderFlags |= D3D10_SHADER_DEBUG;
         nShaderFlags |= D3D10_SHADER_SKIP_OPTIMIZATION;
 #endif
+        auto device = m_DeviceManager->GetDevice();
 
         auto effect = m_Effects[macro][path];
         if (!effect) {
-            std::filesystem::path filePath = SShaderTemplate[macro];
-            auto device = m_DeviceManager->GetDevice();
+            std::filesystem::path filePath = SShaderTemplate[macro].szPath;
+
             char error[MAX_PATH];
 
             D3DInclude include(path);
@@ -83,6 +125,22 @@ namespace Zongine {
                 strcpy(error, (const char*)compiledMsgs->GetBufferPointer());
             }
             D3DX11CreateEffectFromMemory(compiledShader->GetBufferPointer(), compiledShader->GetBufferSize(), 0, device.Get(), effect.GetAddressOf());
+        }
+
+        auto& inputLayout = m_InputLayouts[macro];
+        if (!inputLayout) {
+            D3DX11_PASS_DESC passDesc;
+            auto& desc = SShaderTemplate[macro];
+
+            auto pass = effect->GetTechniqueByIndex(0)->GetPassByIndex(0);
+            pass->GetDesc(&passDesc);
+
+            device->CreateInputLayout(
+                desc.Desc, desc.nDescCount,
+                passDesc.pIAInputSignature,
+                passDesc.IAInputSignatureSize,
+                inputLayout.GetAddressOf()
+            );
         }
 
         return effect;
@@ -114,7 +172,7 @@ namespace Zongine {
     ID3DX11EffectPass* EffectManager::GetEffectPass(ComPtr<ID3DX11Effect> effect, RENDER_PASS pass) {
         const RENDER_PASS_TABLE& passTable = m_RenderPassTable[pass];
 
-        ID3DX11EffectTechnique* technique = effect->GetTechniqueByName(passTable.szTechniqueName);
+        auto technique = effect->GetTechniqueByName(passTable.szTechniqueName);
         return technique->GetPassByIndex(passTable.uPassSlot);
     }
 }

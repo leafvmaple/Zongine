@@ -30,8 +30,9 @@ namespace Zongine {
         std::unique_ptr<TransformSystem> transformSystem{};
         std::unique_ptr<AnimationSystem> animationSystem{};
 
-        void Tick(float fDeltaTime);
+        void Tick(uint64_t fDeltaTime);
 
         bool m_bRunning{ true };
+        uint64_t m_nLastTime{};
     };
 }

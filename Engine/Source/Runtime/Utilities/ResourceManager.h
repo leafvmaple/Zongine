@@ -11,6 +11,7 @@
 #include <string>
 #include <unordered_map>
 #include <array>
+#include <directxmath.h>
 #include <wrl/client.h>
 
 struct MESH_SOURCE;
@@ -50,24 +51,26 @@ namespace Zongine {
             ComPtr<ID3D11Buffer> Buffer{};
             UINT uStride{};
             UINT uOffset{};
-        } Vertex;
+        } Vertex{};
 
         struct INDEX_BUFFER {
             ComPtr<ID3D11Buffer> Buffer{};
             DXGI_FORMAT eFormat{ DXGI_FORMAT_UNKNOWN };
             UINT uOffset{};
-        } Index;
+        } Index{};
 
-        std::vector<SubsetMeshAsset> Subsets;
-        std::vector<BONE> Bones;
-        std::vector<SOCKET> Sockets;
+        INPUT_LAYOUT InputLayout{};
 
-        std::unordered_map<std::string, UINT> BoneMap;
+        std::vector<SubsetMeshAsset> Subsets{};
+        std::vector<BONE> Bones{};
+        std::vector<SOCKET> Sockets{};
+
+        std::unordered_map<std::string, UINT> BoneMap{};
     };
 
     struct _Texture {
-        std::string Name;
-        ComPtr<ID3D11ShaderResourceView> Texture;
+        std::string Name{};
+        ComPtr<ID3D11ShaderResourceView> Texture{};
     };
 
     struct ReferMaterial {
@@ -104,12 +107,29 @@ namespace Zongine {
     struct ShaderAsset {
         std::vector<SubsetShader> Subsets{};
 
-        RUNTIME_MACRO Macro{};
         RENDER_PASS Pass{};
 
         ComPtr<ID3D11Buffer> ModelBuffer{};
 
         std::vector<ComPtr<ID3D11Buffer>> SubsetBuffers{};
+    };
+
+    struct AnimationSRT {
+        DirectX::XMFLOAT3 Translation{ 0.f, 0.f, 0.f };
+        DirectX::XMFLOAT3 Scale{ 1.f, 1.f, 1.f };
+        DirectX::XMFLOAT4 Rotation{ 0.f, 0.f, 0.f, 1.f };
+        DirectX::XMFLOAT4 SRotation{ 0.f, 0.f, 0.f, 1.f };
+    };
+
+    struct AnimationAsset {
+        std::string Path{};
+        float FrameRate{};     // Frame per second
+        float FrameLength{};   // ms
+
+        int AnimationLength{};   // ms
+
+        std::vector<int> BoneFlag{};
+        std::vector<std::vector<AnimationSRT>> Clip{};
     };
 
     struct ResourceManagerInfo {
@@ -128,6 +148,7 @@ namespace Zongine {
 
         void LoadModel(Entity& entity, const std::string& path);
         void LoadMesh(Entity& entity, const std::string& path);
+        void LoadMesh(Entity& entity, const std::string& path, const std::string& socketName);
 
         std::shared_ptr<MeshAsset> GetMeshAsset(const std::string& path) {
             auto& mesh = m_MeshCache[path];
@@ -157,6 +178,13 @@ namespace Zongine {
             return shader;
         }
 
+        std::shared_ptr<AnimationAsset> GetAnimationAsset(const std::string& path) {
+            auto& animation = m_AnimationCache[path];
+            if (!animation)
+                animation = _LoadAnimation(path);
+            return animation;
+        }
+
     private:
         std::shared_ptr<ReferMaterial> _LoadReferMaterial(const std::string& path);
         ComPtr<ID3D11ShaderResourceView> _LoadTexture(const std::string& path);
@@ -165,6 +193,7 @@ namespace Zongine {
         std::shared_ptr<MaterialAsset> _LoadMaterial(const std::string& path);
         std::shared_ptr<SkeletonAsset> _LoadSkeleton(const std::string& path);
         std::shared_ptr<ShaderAsset> _LoadShader(RUNTIME_MACRO macro, const std::string& path);
+        std::shared_ptr<AnimationAsset> _LoadAnimation(const std::string& path);
 
         bool _LoadBone(MeshAsset* mesh, const MESH_SOURCE& source);
         bool _LoadSocket(MeshAsset* mesh, const MESH_SOURCE& source);
@@ -180,9 +209,8 @@ namespace Zongine {
         std::unordered_map<std::string, std::shared_ptr<MaterialAsset>> m_MaterialCache{};
         std::unordered_map<std::string, std::shared_ptr<SkeletonAsset>> m_SkeletonCache{};
         std::unordered_map<std::string, std::shared_ptr<ShaderAsset>> m_ShaderCache{};
+        std::unordered_map<std::string, std::shared_ptr<AnimationAsset>> m_AnimationCache{};
 
-        std::unordered_map<std::string, MaterialComponent> m_MaterialComponents{};
-        std::unordered_map<std::string, SkeletonComponent> m_SkeletonComponents{};
         std::array<std::unordered_map<std::string, SubsetShader>, RUNTIME_MACRO_COUNT> m_SubsetShaderCache{};
 
         std::unordered_map<std::string, std::shared_ptr<ReferMaterial>> m_ReferMaterial{};

@@ -10,6 +10,7 @@ namespace Zongine {
 
     bool TransformSystem::Initialize(const ManagerList& info) {
         m_EntityManager = info.entityManager;
+        m_ResourceManger = info.resourceManager;
 
         return true;
     }
@@ -40,9 +41,21 @@ namespace Zongine {
             auto targetMatrix = transformComponent.World;
 
             if (component.BindType == BIND_TYPE::Socket) {
-                auto& mesh = child.GetComponent<MeshComponent>();
-                //auto& parentBone = mesh.Bones[mesh.BoneMap[component.TargetName]]; // TODO
-                //targetMatrix = transformComponent.World * XMLoadFloat4x4(&parentBone.Offset);
+                auto& meshComponent = entity.GetComponent<MeshComponent>();
+                auto mesh = m_ResourceManger->GetMeshAsset(meshComponent.Path);
+                if (component.SocketIndex == -1) {
+                    auto it = std::lower_bound(mesh->Sockets.begin(), mesh->Sockets.end(), component.TargetName,
+                        [](const SOCKET& socket, const std::string& value) {
+                            return socket.Name < value;
+                        });
+                    if (it != mesh->Sockets.end() && it->Name == component.TargetName) {
+                        component.SocketIndex = it - mesh->Sockets.begin();
+                    }
+                }
+                auto& socket = mesh->Sockets[component.SocketIndex];
+                auto& bone = mesh->Bones[socket.nParentBoneIndex];
+
+                targetMatrix = XMLoadFloat4x4(&socket.Offset) * XMLoadFloat4x4(&bone.Offset) *  transformComponent.World;
             }
 
             _UpdateWorldTransformRecursive(child, targetMatrix);

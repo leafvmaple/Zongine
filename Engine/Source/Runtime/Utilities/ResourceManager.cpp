@@ -14,6 +14,7 @@
 #include "IModel.h"
 #include "ISkeleton.h"
 #include "IMaterial.h"
+#include "IAnimation.h"
 
 #include "DirectXTex/DirectXTex/DirectXTex.h"
 #include "FX11/inc/d3dx11effect.h"
@@ -43,6 +44,13 @@ namespace Zongine {
             entity.AddComponent<MaterialComponent>(MaterialComponent{ materialPath });
             entity.AddComponent<ShaderComponent>(ShaderComponent{ materialPath });
         }
+    }
+
+    void ResourceManager::LoadMesh(Entity& entity, const std::string& path, const std::string& socketName) {
+        LoadMesh(entity, path);
+        auto& transform = entity.GetComponent<TransformComponent>();
+        transform.BindType = BIND_TYPE::Socket;
+        transform.TargetName = socketName;
     }
 
     std::shared_ptr<ReferMaterial> ResourceManager::_LoadReferMaterial(const std::string& path) {
@@ -201,6 +209,32 @@ namespace Zongine {
         return shader;
     }
 
+    std::shared_ptr<AnimationAsset> ResourceManager::_LoadAnimation(const std::string& path) {
+        ANIMATION_DESC desc{ path.c_str() };
+        ANIMATION_SOURCE source{};
+
+        auto animation = std::make_shared<AnimationAsset>();
+        ::LoadAnimation(&desc, &source);
+
+        animation->Path = path;
+        animation->FrameLength = source.fFrameLength;
+        animation->FrameRate = 1000 / source.fFrameLength;
+        animation->AnimationLength = source.nAnimationLength;
+
+        for (int i = 0; i < source.nBonesCount; i++) {
+            const auto& boneSRT = source.pBoneRTS[i];
+            std::vector<AnimationSRT> clip;
+            for (int j = 0; j < source.nFrameCount; j++) {
+                const auto& SRT = boneSRT[j];
+                clip.emplace_back(AnimationSRT{ SRT.Translation, SRT.Scale, SRT.Rotation, SRT.SRotation });
+            }
+            animation->Clip.emplace_back(clip);
+            animation->BoneFlag.push_back(source.pFlag[i]);
+        }
+
+        return animation;
+    }
+
     bool ResourceManager::_LoadBone(MeshAsset* mesh, const MESH_SOURCE& source) {
         for (int i = 0; i < source.nBonesCount; i++) {
             const auto& boneSource = source.pBones[i];
@@ -235,6 +269,11 @@ namespace Zongine {
     bool ResourceManager::_LoadVertexBuffer(MeshAsset* mesh, const MESH_SOURCE& source) {
         D3D11_BUFFER_DESC desc{};
         D3D11_SUBRESOURCE_DATA data{};
+
+        if (source.nVertexFVF & FVF_SKIN)
+            mesh->InputLayout = INPUT_LAYOUT_CI_SKINMESH;
+        else
+            mesh->InputLayout = INPUT_LAYOUT_CI_MESH;
 
         desc.ByteWidth = source.nVertexSize * source.nVerticesCount;;
         desc.Usage = D3D11_USAGE_IMMUTABLE;

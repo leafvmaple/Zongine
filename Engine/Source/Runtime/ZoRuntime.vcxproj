@@ -31,7 +31,6 @@
     <ClCompile Include="Utilities\EffectManager.cpp" />
     <ClCompile Include="Utilities\Engine.cpp" />
     <ClCompile Include="Utilities\ResourceManager.cpp" />
-    <ClCompile Include="Utilities\ShaderManager.cpp" />
     <ClCompile Include="Utilities\StateManager.cpp" />
     <ClCompile Include="Utilities\StringUtils.cpp" />
     <ClCompile Include="Utilities\WindowManager.cpp" />
@@ -48,6 +47,7 @@
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Entities\EntityManager.h" />
     <ClInclude Include="Include\Enums.h" />
+    <ClInclude Include="Include\Maths.h" />
     <ClInclude Include="Include\Types.h" />
     <ClInclude Include="Managers\Mananger.h" />
     <ClInclude Include="Systems\AnimationSystem.h" />
@@ -59,7 +59,6 @@
     <ClInclude Include="Utilities\EffectManager.h" />
     <ClInclude Include="Utilities\Engine.h" />
     <ClInclude Include="Utilities\ResourceManager.h" />
-    <ClInclude Include="Utilities\ShaderManager.h" />
     <ClInclude Include="Utilities\StateManager.h" />
     <ClInclude Include="Utilities\StringUtils.h" />
     <ClInclude Include="Utilities\WindowManager.h" />

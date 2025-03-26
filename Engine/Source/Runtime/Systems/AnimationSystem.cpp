@@ -1,5 +1,6 @@
 #include "AnimationSystem.h"
 
+#include "Include/Maths.h"
 #include "Managers/Mananger.h"
 
 #include "Components/AnimationComponent.h"
@@ -10,38 +11,69 @@ namespace Zongine {
     bool AnimationSystem::Initialize(const ManagerList& info) {
         m_EntityManager = info.entityManager;
         m_ResourceManager = info.resourceManager;
+
         return true;
     }
 
-    void AnimationSystem::Tick(float fDeltaTime) {
+    void AnimationSystem::Tick(int nDeltaTime) {
         auto& entities = m_EntityManager->GetEntities<AnimationComponent>();
         for (auto& [entityID, animationComponent] : entities) {
             auto& entity = m_EntityManager->GetEntity(entityID);
             auto& skeletonComponent = entity.GetComponent<SkeletonComponent>();
-            auto& meshComponent = entity.GetComponent<MeshComponent>();
 
-            auto mesh = m_ResourceManager->GetMeshAsset(meshComponent.Path);
+            auto animation = m_ResourceManager->GetAnimationAsset(animationComponent.Path);
             auto skeleton = m_ResourceManager->GetSkeletonAsset(skeletonComponent.Path);
 
-            auto& skeletonMeshMap = m_SkeletonMeshMap[skeletonComponent.Path][meshComponent.Path];
-            if (skeletonMeshMap.empty()) {
-                for (const auto& bone : skeleton->Bones) {
-                    int index = mesh->BoneMap.find(bone.Name) != mesh->BoneMap.end() ? mesh->BoneMap[bone.Name] : -1;
-                    skeletonMeshMap.push_back(index);
-                }
+            animationComponent.nPlayTime += nDeltaTime;
+            uint64_t nAnimationTime = animationComponent.nPlayTime % animation->AnimationLength;
+            int nFrame = int(nAnimationTime / animation->FrameLength);
+            float fInterpolation = (nAnimationTime - nFrame * animation->FrameLength) / animation->FrameLength;
+
+            std::vector<DirectX::XMMATRIX> matrices;
+            for (int i = 0; i < skeleton->Bones.size(); i++) {
+                auto flag = animation->BoneFlag[i];
+                auto& curClip = animation->Clip[i][nFrame];
+                auto& nextClip = animation->Clip[i][(nFrame + 1) % animation->Clip[i].size()];
+
+                AnimationSRT rts{};
+
+                XMFloat4Slerp(&rts.SRotation, &curClip.SRotation, &nextClip.SRotation, fInterpolation);
+                XMFloat4Slerp(&rts.Rotation, &curClip.Rotation, &nextClip.Rotation, fInterpolation);
+                XMFloat3Slerp(&rts.Scale, &curClip.Scale, &nextClip.Scale, fInterpolation);
+                XMFloat3Slerp(&rts.Translation, &curClip.Translation, &nextClip.Translation, fInterpolation);
+
+                auto& matrix = matrices.emplace_back(DirectX::XMMatrixIdentity());
+
+                if (flag & BONE_FLAG_AFFLINE)
+                    matrix = XMMatrixAffineTransformation(
+                        XMLoadFloat3(&rts.Scale), g_XMZero, XMLoadFloat4(&rts.Rotation), XMLoadFloat3(&rts.Translation));
+                else
+                    matrix = XMMatrixTransformation(g_XMZero, XMLoadFloat4(&rts.SRotation),
+                        XMLoadFloat3(&rts.Scale), g_XMZero, XMLoadFloat4(&rts.Rotation), XMLoadFloat3(&rts.Translation));
             }
 
-            /*for (auto& [name, animation] : animationComponent.Animations) {
-                auto& skeleton = skeletonComponent.Skeleton;
-                auto& skeletonMesh = m_SkeletonMeshMap[name];
-                for (int i = 0; i < skeleton.Bones.size(); i++) {
-                    auto& bone = skeleton.Bones[i];
-                    auto& mesh = skeletonMesh[bone.Name];
-                    auto& transform = skeleton.Bones[i].Transform;
-                    auto& meshTransform = mesh.Transform;
-                    transform = meshTransform;
+            for (auto childID : entity.GetChildren()) {
+                auto& child = m_EntityManager->GetEntity(childID);
+                auto& meshComponent = child.GetComponent<MeshComponent>();
+                auto mesh = m_ResourceManager->GetMeshAsset(meshComponent.Path);
+
+                auto& skeletonMeshMap = m_SkeletonMeshMap[skeletonComponent.Path][meshComponent.Path];
+                if (skeletonMeshMap.empty()) {
+                    _InitialSkeletonMeshMap(skeletonMeshMap, skeleton.get(), mesh.get());
                 }
-            }*/
+            };
+        }
+    }
+
+    void AnimationSystem::_InitialSkeletonMeshMap(std::vector<int>& map, const SkeletonAsset* skeleton, const MeshAsset* mesh) {
+        map.resize(mesh->BoneMap.size(), -1);
+        for (auto [boneName, index] : mesh->BoneMap) {
+            auto it = std::find_if(skeleton->Bones.begin(), skeleton->Bones.end(), [boneName](const SkeletonBone& bone) {
+                return bone.Name == boneName;
+                });
+            if (it != skeleton->Bones.end()) {
+                map[index] = it - skeleton->Bones.begin();
+            }
         }
     }
 }

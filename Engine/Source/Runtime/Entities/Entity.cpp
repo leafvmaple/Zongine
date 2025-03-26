@@ -8,6 +8,7 @@
 #include "components/MaterialComponent.h"
 #include "Components/CameraComponent.h"
 #include "Components/SkeletonComponent.h"
+#include "Components/AnimationComponent.h"
 
 namespace Zongine {
     template<typename ComponentType>
@@ -37,6 +38,7 @@ namespace Zongine {
     template const MaterialComponent& Entity::GetComponent<MaterialComponent>() const;
     template const CameraComponent& Entity::GetComponent<CameraComponent>() const;
     template const SkeletonComponent& Entity::GetComponent<SkeletonComponent>() const;
+    template const AnimationComponent& Entity::GetComponent<AnimationComponent>() const;
 
     template TransformComponent& Entity::GetComponent<TransformComponent>();
     template MeshComponent& Entity::GetComponent<MeshComponent>();
@@ -44,6 +46,7 @@ namespace Zongine {
     template MaterialComponent& Entity::GetComponent<MaterialComponent>();
     template CameraComponent& Entity::GetComponent<CameraComponent>();
     template SkeletonComponent& Entity::GetComponent<SkeletonComponent>();
+    template AnimationComponent& Entity::GetComponent<AnimationComponent>();
 
     template TransformComponent& Entity::AddComponent(const TransformComponent&);
     template MeshComponent& Entity::AddComponent(const MeshComponent&);
@@ -51,4 +54,5 @@ namespace Zongine {
     template MaterialComponent& Entity::AddComponent(const MaterialComponent&);
     template CameraComponent& Entity::AddComponent(const CameraComponent&);
     template SkeletonComponent& Entity::AddComponent(const SkeletonComponent&);
+    template AnimationComponent& Entity::AddComponent(const AnimationComponent&);
 }

@@ -31,6 +31,29 @@ namespace Zongine {
         RUNTIME_MACRO_COUNT,
     };
 
+    enum INPUT_LAYOUT {
+        INPUT_LAYOUT_CI_MESH,
+        INPUT_LAYOUT_CI_SKINMESH,
+        INPUT_LAYOUT_CI_TERRAIN,
+
+        INPUT_LAYOUT_COUNT,
+    };
+
+    enum PIXEL_SHADER {
+        PIXEL_SHADER_NULL,
+        PIXEL_SHADER_UV1_NO_LIGHT,
+
+        PIXEL_SHADER_COUNT,
+    };
+
+    enum VERTEX_SHADER {
+        VERTEX_SHADER_CI_MESH,
+        VERTEX_SHADER_CI_SKINMESH,
+        VERTEX_SHADER_CI_TERRAIN,
+
+        VERTEX_SHADER_COUNT,
+    };
+
     enum class RENDER_PASS {
         COLOR,
         COLORSOFTMASK,
@@ -39,4 +62,10 @@ namespace Zongine {
     namespace Colors {
         XMGLOBALCONST DirectX::XMFLOAT4 White = { 1.0f, 1.0f, 1.0f, 1.0f };
     }
+
+    enum BONE_FLAG {
+        BONE_FLAG_NONE = 0,
+        BONE_FLAG_AFFLINE = 1 << 0,
+        BONE_FLAG_NO_UPDATE = 1 << 1,
+    };
 }
