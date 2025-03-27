@@ -66,11 +66,8 @@ namespace Zongine {
 
         auto shader = m_ResourceManger->GetShaderAsset(runtimeMacro, shaderComponent.Path);
 
-        auto& buffer = shader->ModelBuffer;
-
-        context->Map(buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-        memcpy(resource.pData, &transformComponent.World, sizeof(transformComponent.World));
-        context->Unmap(buffer.Get(), 0);
+        shader->TransformMatrix->SetMatrix(reinterpret_cast<const float*>(&transformComponent.World));
+        shader->BonesMatrix->SetMatrixArray(reinterpret_cast<const float*>(meshComponent.Offset.data()), 0, meshComponent.Offset.size());
 
         auto& vertexBuffer = mesh->Vertex;
         auto& indexBuffer = mesh->Index;

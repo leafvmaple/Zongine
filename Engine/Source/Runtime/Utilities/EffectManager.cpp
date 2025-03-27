@@ -112,7 +112,7 @@ namespace Zongine {
 #endif
         auto device = m_DeviceManager->GetDevice();
 
-        auto effect = m_Effects[macro][path];
+        auto& effect = m_Effects[macro][path];
         if (!effect) {
             std::filesystem::path filePath = SShaderTemplate[macro].szPath;
 

@@ -1,13 +1,9 @@
 static const int MAX_NUM_BONE_PER_SET = 158;
 
-cbuffer ModelSharedParam
-{
-    row_major float4x4 g_CustomMatrixBones[MAX_NUM_BONE_PER_SET];
-};
-
 cbuffer MODEL_MATRIX
 {
-    row_major float4x4 ZONGINE_MATRIX_M;
+    row_major float4x4 MATRIX_M;
+    row_major float4x4 MATRIX_BONES[MAX_NUM_BONE_PER_SET];
 };
 
 cbuffer SubsetConstParam : register (b3)
@@ -45,26 +41,21 @@ MaterialVertexParameters GetMaterialVertexParameters(VertexInput vin)
 {
     MaterialVertexParameters Params =(MaterialVertexParameters)0;
 
-    /*float4 position = mul(vin.Position, g_CustomMatrixBones[vin.Indices.x]) * vin.Weights.x;
+    float4 position = mul(vin.Position, MATRIX_BONES[vin.Indices.x]) * vin.Weights.x;
 
-    // 第二个关联的骨骼
     if (vin.Indices.y != 255)
-        position += mul(vin.Position, g_CustomMatrixBones[vin.Indices.y]) * vin.Weights.y;
+        position += mul(vin.Position, MATRIX_BONES[vin.Indices.y]) * vin.Weights.y;
 
-    // 第三个关联的骨骼
     if (vin.Indices.z != 255)                                              
-        position += mul(vin.Position, g_CustomMatrixBones[vin.Indices.z]) * vin.Weights.z;
-                                             
-    // 第四个关联的骨骼
+        position += mul(vin.Position, MATRIX_BONES[vin.Indices.z]) * vin.Weights.z;
+
     if (vin.Indices.w != 255)                                              
-        position += mul(vin.Position, g_CustomMatrixBones[vin.Indices.w]) * vin.Weights.w;
+        position += mul(vin.Position, MATRIX_BONES[vin.Indices.w]) * vin.Weights.w;
 
-    Params.VertexPosition = position;*/
-
-    Params.VertexPosition = vin.Position;
+    Params.VertexPosition = position;
     Params.VertexColor = vin.Color;
     Params.TexCoords = vin.TexCoords;
-    Params.MatrixWorld = ZONGINE_MATRIX_M;
+    Params.MatrixWorld = MATRIX_M;
 
     return Params;
 }

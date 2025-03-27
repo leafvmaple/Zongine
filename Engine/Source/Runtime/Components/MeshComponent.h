@@ -11,5 +11,8 @@
 namespace Zongine {
     struct MeshComponent {
         std::string Path{};
+
+        std::vector<DirectX::XMFLOAT4X4> Matrix{};
+        std::vector<DirectX::XMFLOAT4X4> Offset{};
     };
 }

@@ -95,6 +95,8 @@ namespace Zongine {
     struct SkeletonAsset {
         std::string Path;
         std::vector<SkeletonBone> Bones;
+
+        int nRootBoneIndex{};
     };
 
     struct SubsetShader {
@@ -109,7 +111,8 @@ namespace Zongine {
 
         RENDER_PASS Pass{};
 
-        ComPtr<ID3D11Buffer> ModelBuffer{};
+        ID3DX11EffectMatrixVariable* TransformMatrix{};
+        ID3DX11EffectMatrixVariable* BonesMatrix{};
 
         std::vector<ComPtr<ID3D11Buffer>> SubsetBuffers{};
     };
@@ -185,6 +188,24 @@ namespace Zongine {
             return animation;
         }
 
+        const std::vector<int>& GetMeshSkeletonMap(const std::string& skeletonPath, const std::string& meshPath) {
+            auto& map = m_MeshSkeletonMap[skeletonPath][meshPath];
+            if (map.empty()) {
+                auto skeleton = GetSkeletonAsset(skeletonPath);
+                auto mesh = GetMeshAsset(meshPath);
+                map.resize(mesh->BoneMap.size(), -1);
+                for (auto [boneName, index] : mesh->BoneMap) {
+                    auto it = std::find_if(skeleton->Bones.begin(), skeleton->Bones.end(), [boneName](const SkeletonBone& bone) {
+                        return bone.Name == boneName;
+                        });
+                    if (it != skeleton->Bones.end()) {
+                        map[index] = it - skeleton->Bones.begin();
+                    }
+                }
+            }
+            return map;
+        }
+
     private:
         std::shared_ptr<ReferMaterial> _LoadReferMaterial(const std::string& path);
         ComPtr<ID3D11ShaderResourceView> _LoadTexture(const std::string& path);
@@ -210,10 +231,10 @@ namespace Zongine {
         std::unordered_map<std::string, std::shared_ptr<SkeletonAsset>> m_SkeletonCache{};
         std::unordered_map<std::string, std::shared_ptr<ShaderAsset>> m_ShaderCache{};
         std::unordered_map<std::string, std::shared_ptr<AnimationAsset>> m_AnimationCache{};
+        std::unordered_map<std::string, std::shared_ptr<ReferMaterial>> m_ReferMaterialCache{};
+        std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_TextureCache{};
 
-        std::array<std::unordered_map<std::string, SubsetShader>, RUNTIME_MACRO_COUNT> m_SubsetShaderCache{};
-
-        std::unordered_map<std::string, std::shared_ptr<ReferMaterial>> m_ReferMaterial{};
-        std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_Texture{};
+        // Map
+        std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_MeshSkeletonMap{};
     };
 }

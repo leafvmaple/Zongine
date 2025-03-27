@@ -54,7 +54,7 @@ namespace Zongine {
     }
 
     std::shared_ptr<ReferMaterial> ResourceManager::_LoadReferMaterial(const std::string& path) {
-        auto& referMaterial = m_ReferMaterial[path];
+        auto& referMaterial = m_ReferMaterialCache[path];
         if (!referMaterial) {
             REFER_MATERIAL_DESC desc{ path.c_str() };
             REFER_MATERIAL_SOURCE configSource{};
@@ -76,7 +76,7 @@ namespace Zongine {
     }
 
     ComPtr<ID3D11ShaderResourceView> ResourceManager::_LoadTexture(const std::string& path) {
-        auto& texture = m_Texture[path];
+        auto& texture = m_TextureCache[path];
         if (!texture) {
             ScratchImage LoadedImage{};
             D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
@@ -171,11 +171,16 @@ namespace Zongine {
                 bone.Children.push_back(skeletonSource.pChildren[i]);
             }
         }
+
+        skeleton->nRootBoneIndex = source.pRootBoneIndies[0];
+
         return skeleton;
     }
 
     std::shared_ptr<ShaderAsset> ResourceManager::_LoadShader(RUNTIME_MACRO macro, const std::string& path) {
         D3D11_BUFFER_DESC bufferDesc{};
+        ID3DX11EffectConstantBuffer* constantBuffer{};
+
         auto shader = std::make_shared<ShaderAsset>();
 
         const auto& material = GetMaterialAsset(path);
@@ -186,25 +191,21 @@ namespace Zongine {
                 return subset.ShaderName;
             });
 
-        auto device = m_DeviceManager->GetDevice();
-
-        bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-        bufferDesc.ByteWidth = sizeof(XMMATRIX);
-        bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-        device->CreateBuffer(&bufferDesc, nullptr, shader->ModelBuffer.GetAddressOf());
-
         for (const auto& path : paths) {
-            auto& cache = m_SubsetShaderCache[macro][path];
-            if (cache.ShaderPath.empty()) {
-                cache.ShaderPath = path;
-                cache.Effect = m_EffectManager->LoadEffect(macro, path);
-                m_EffectManager->LoadVariables(cache.Effect, cache.Variables);
-            }
-            cache.Effect->GetConstantBufferByName("MODEL_MATRIX")->SetConstantBuffer(shader->ModelBuffer.Get());
-            shader->Subsets.push_back(cache);
+            SubsetShader subsetShader{};
+
+            subsetShader.ShaderPath = path;
+            subsetShader.Effect = m_EffectManager->LoadEffect(macro, path);
+            m_EffectManager->LoadVariables(subsetShader.Effect, subsetShader.Variables);
+
+            if (!constantBuffer)
+                constantBuffer = subsetShader.Effect->GetConstantBufferByName("MODEL_MATRIX");
+
+            shader->Subsets.emplace_back(subsetShader);
         }
+
+        shader->BonesMatrix = constantBuffer->GetMemberByName("MATRIX_BONES")->AsMatrix();
+        shader->TransformMatrix = constantBuffer->GetMemberByName("MATRIX_M")->AsMatrix();
 
         return shader;
     }

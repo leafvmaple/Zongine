@@ -53,9 +53,9 @@ namespace Zongine {
                     }
                 }
                 auto& socket = mesh->Sockets[component.SocketIndex];
-                auto& bone = mesh->Bones[socket.nParentBoneIndex];
+                auto& boneMatrix = meshComponent.Matrix[socket.nParentBoneIndex];
 
-                targetMatrix = XMLoadFloat4x4(&socket.Offset) * XMLoadFloat4x4(&bone.Offset) *  transformComponent.World;
+                targetMatrix = XMLoadFloat4x4(&socket.Offset) * XMLoadFloat4x4(&boneMatrix) *  transformComponent.World;
             }
 
             _UpdateWorldTransformRecursive(child, targetMatrix);

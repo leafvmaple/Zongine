@@ -1,14 +1,22 @@
 #pragma once
 
+#include "Include/Types.h"
+
 #include <string>
 #include <vector>
 #include <memory>
+#include <DirectXMath.h>
 #include <unordered_map>
+
+using DirectX::XMFLOAT4X4;
+using DirectX::XMMATRIX;
 
 namespace Zongine {
     struct ManagerList;
     struct SkeletonAsset;
     struct MeshAsset;
+    struct SkeletonComponent;
+    struct AnimationComponent;
 
     class EntityManager;
     class ResourceManager;
@@ -24,6 +32,13 @@ namespace Zongine {
 
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_SkeletonMeshMap{};
 
-        void _InitialSkeletonMeshMap(std::vector<int>& map, const SkeletonAsset* skeleton, const MeshAsset* mesh);
+        void _UpdateSkeletonTransform(
+            AnimationComponent& component,
+            std::shared_ptr<SkeletonAsset> skeleton,
+            std::vector<XMFLOAT4X4>& matrices,
+            int skeletonIndex
+        );
+
+        void _UpdateMeshBonesTransform(EntityID entityID, const SkeletonComponent& skeleton, const AnimationComponent& animation);
     };
 }

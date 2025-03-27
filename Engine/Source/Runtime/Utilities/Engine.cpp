@@ -85,10 +85,12 @@ namespace Zongine {
         resourceManager->LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
         resourceManager->LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
 
-        // auto& hat = player.AddChild();
+        auto& face = head.AddChild();
+        auto& hat = head.AddChild();
         auto& weapon = hand.AddChild();
 
-        // resourceManager->LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
+        resourceManager->LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
+        resourceManager->LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
         resourceManager->LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
 
         renderSystem->Initialize(managerList);
