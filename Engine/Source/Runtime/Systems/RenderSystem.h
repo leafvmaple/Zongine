@@ -17,7 +17,7 @@ namespace Zongine {
     class ShaderManager;
     class StateManager;
     class EffectManager;
-    class ResourceManager;
+    class AssetManager;
 
     using Microsoft::WRL::ComPtr;
 
@@ -51,7 +51,7 @@ namespace Zongine {
         std::shared_ptr<ShaderManager> m_ShaderManager{};
         std::shared_ptr<StateManager> m_StateManager{};
         std::shared_ptr<EffectManager> m_EffectManager{};
-        std::shared_ptr<ResourceManager> m_ResourceManger{};
+        std::shared_ptr<AssetManager> m_ResourceManger{};
 
         std::vector<Entity> m_RenderQueue{};
 

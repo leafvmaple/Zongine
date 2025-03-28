@@ -141,7 +141,7 @@ namespace Zongine {
         std::shared_ptr<EffectManager> effectManager{};
     };
 
-    class ResourceManager {
+    class AssetManager {
     public:
         void Initialize(const ResourceManagerInfo& info) {
             m_DeviceManager = info.windowManager;

@@ -16,6 +16,7 @@ namespace Zongine {
     class DeviceManager {
     public:
         void Initialize(const DeviceManagerDesc& desc);
+        void Resize();
 
         ComPtr<ID3D11Device> GetDevice() const { return m_piDevice; }
         ComPtr<ID3D11DeviceContext> GetImmediateContext() const { return m_piImmediateContext; }

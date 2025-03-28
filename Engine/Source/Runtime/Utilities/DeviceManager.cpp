@@ -19,9 +19,10 @@ namespace Zongine {
     void DeviceManager::Initialize(const DeviceManagerDesc& desc) {
         UINT uCreateDeviceFlag{};
 
-        auto width = desc.windowManager->GetViewportWidth();
-        auto height = desc.windowManager->GetViewportHeight();
         m_WindowManager = desc.windowManager;
+
+        auto width = m_WindowManager->GetWidth();
+        auto height = m_WindowManager->GetHeight();
 
 #if defined(DEBUG) || defined(_DEBUG)  
         uCreateDeviceFlag |= D3D11_CREATE_DEVICE_DEBUG;
@@ -33,14 +34,33 @@ namespace Zongine {
             m_piDevice.GetAddressOf(), nullptr, m_piImmediateContext.GetAddressOf()
         );
 
-        _CreateSwapChain(width, height, desc.windowManager->GetWindowHandle());
+        _CreateSwapChain(width, height, m_WindowManager->GetWindowHandle());
         _CreateViewport(width, height);
+    }
+
+    void DeviceManager::Resize() {
+        if (m_piSwapChain) {
+            ComPtr<ID3D11Texture2D> buffer{};
+
+            auto width = m_WindowManager->GetWidth();
+            auto height = m_WindowManager->GetHeight();
+
+            m_piSwapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
+
+            m_piSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer);
+            m_piDevice->CreateRenderTargetView(buffer.Get(), nullptr, m_piRenderTargetView.GetAddressOf());
+
+            _CreateStencilView(width, height);
+            _CreateSwapChainRTV();
+
+            _CreateViewport(width, height);
+        }
     }
 
     bool DeviceManager::_CreateSwapChain(unsigned uWidth, unsigned uHeight, HWND hWnd) {
         DXGI_SWAP_CHAIN_DESC desc{};
         ComPtr<IDXGIDevice> device{};
-        ComPtr<IDXGIAdapter> adpater{};
+        ComPtr<IDXGIAdapter> adapter{};
         ComPtr<IDXGIFactory> factory{};
 
         desc.BufferCount = 1;
@@ -60,8 +80,8 @@ namespace Zongine {
         desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
         m_piDevice->QueryInterface(__uuidof(IDXGIDevice), (void**)device.GetAddressOf());
-        device->GetParent(__uuidof(IDXGIAdapter), (void**)adpater.GetAddressOf());
-        adpater->GetParent(__uuidof(IDXGIFactory), (void**)factory.GetAddressOf());
+        device->GetParent(__uuidof(IDXGIAdapter), (void**)adapter.GetAddressOf());
+        adapter->GetParent(__uuidof(IDXGIFactory), (void**)factory.GetAddressOf());
         factory->CreateSwapChain(m_piDevice.Get(), &desc, m_piSwapChain.GetAddressOf());
 
         _CreateStencilView(uWidth, uHeight);

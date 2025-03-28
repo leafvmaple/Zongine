@@ -27,7 +27,7 @@ namespace Zongine {
         auto& entities = m_EntityManager->GetEntities<CameraComponent>();
         for (auto& [entityID, cameraComponent] : entities) {
             cameraComponent.Perspective.fFovAngleY = XM_PIDIV2;
-            cameraComponent.Perspective.fAspectRatio = (float)info.windowManager->GetViewportWidth() / info.windowManager->GetViewportHeight();
+            cameraComponent.Perspective.fAspectRatio = (float)info.windowManager->GetWidth() / info.windowManager->GetHeight();
             cameraComponent.Buffer = buffer;
         }
 

@@ -42,10 +42,7 @@
     <ClCompile Include="Entities\Entity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\ResourceManager.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Utilities\Engine.cpp">
+    <ClCompile Include="Utilities\AssetManager.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Entities\EntityManager.cpp">
@@ -75,6 +72,9 @@
     <ClCompile Include="Utilities\StateManager.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\RenderSystem.h">
@@ -98,10 +98,7 @@
     <ClInclude Include="Entities\Entity.h">
       <Filter>Source Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities\ResourceManager.h">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\Engine.h">
+    <ClInclude Include="Utilities\AssetManager.h">
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Entities\EntityManager.h">
@@ -154,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="Include\Maths.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

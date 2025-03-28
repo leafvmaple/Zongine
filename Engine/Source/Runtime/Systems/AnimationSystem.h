@@ -19,7 +19,7 @@ namespace Zongine {
     struct AnimationComponent;
 
     class EntityManager;
-    class ResourceManager;
+    class AssetManager;
 
     class AnimationSystem {
     public:
@@ -28,7 +28,7 @@ namespace Zongine {
 
     private:
         std::shared_ptr<EntityManager> m_EntityManager{};
-        std::shared_ptr<ResourceManager> m_ResourceManager{};
+        std::shared_ptr<AssetManager> m_ResourceManager{};
 
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_SkeletonMeshMap{};
 

@@ -8,7 +8,7 @@
 namespace Zongine {
     struct ManagerList;
 
-    class ResourceManager;
+    class AssetManager;
 
     struct ManagerList;
 
@@ -22,6 +22,6 @@ namespace Zongine {
         void _UpdateWorldTransformRecursive(Entity entity, const DirectX::XMMATRIX& parentMatrix);
 
         std::shared_ptr<EntityManager> m_EntityManager{};
-        std::shared_ptr<ResourceManager> m_ResourceManger{};
+        std::shared_ptr<AssetManager> m_ResourceManger{};
     };
 }

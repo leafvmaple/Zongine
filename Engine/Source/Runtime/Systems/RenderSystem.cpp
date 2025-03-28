@@ -25,7 +25,7 @@ namespace Zongine {
         m_DeviceManager = info.deviceManager;
         m_StateManager = info.stateManager;
         m_EffectManager = info.effectManager;
-        m_ResourceManger = info.resourceManager;
+        m_ResourceManger = info.assetManager;
 
         return true;
     }

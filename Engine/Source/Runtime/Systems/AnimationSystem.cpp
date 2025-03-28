@@ -10,7 +10,7 @@
 namespace Zongine {
     bool AnimationSystem::Initialize(const ManagerList& info) {
         m_EntityManager = info.entityManager;
-        m_ResourceManager = info.resourceManager;
+        m_ResourceManager = info.assetManager;
 
         return true;
     }

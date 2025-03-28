@@ -15,13 +15,17 @@ namespace Zongine {
     class TransformSystem;
     class AnimationSystem;
 
+    class WindowManager;
+    class DeviceManager;
+
     class Engine {
     public:
         Engine();
         ~Engine();
 
-        void Initialize(HINSTANCE hInstance);
-        void Run();
+        void Initialize(HWND wnd);
+        void Tick();
+        void Resize(int width, int height);
 
     private:
         std::unique_ptr<RenderSystem> renderSystem{};
@@ -30,7 +34,8 @@ namespace Zongine {
         std::unique_ptr<TransformSystem> transformSystem{};
         std::unique_ptr<AnimationSystem> animationSystem{};
 
-        void Tick(uint64_t fDeltaTime);
+        std::shared_ptr<WindowManager> windowManager{};
+        std::shared_ptr<DeviceManager> deviceManager{};
 
         bool m_bRunning{ true };
         uint64_t m_nLastTime{};

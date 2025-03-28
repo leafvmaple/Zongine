@@ -1,4 +1,4 @@
-#include "ResourceManager.h"
+#include "AssetManager.h"
 
 #include "Entities/EntityManager.h"
 #include "Utilities/DeviceManager.h"
@@ -20,7 +20,7 @@
 #include "FX11/inc/d3dx11effect.h"
 
 namespace Zongine {
-    void ResourceManager::LoadModel(Entity& entity, const std::string& path) {
+    void AssetManager::LoadModel(Entity& entity, const std::string& path) {
         MODEL_DESC desc{ path.c_str() };
         MODEL_SOURCE source{};
 
@@ -33,7 +33,7 @@ namespace Zongine {
         return;
     }
 
-    void ResourceManager::LoadMesh(Entity& entity, const std::string& path) {
+    void AssetManager::LoadMesh(Entity& entity, const std::string& path) {
         std::filesystem::path filePath = path;
 
         entity.AddComponent<TransformComponent>(TransformComponent{});
@@ -46,14 +46,14 @@ namespace Zongine {
         }
     }
 
-    void ResourceManager::LoadMesh(Entity& entity, const std::string& path, const std::string& socketName) {
+    void AssetManager::LoadMesh(Entity& entity, const std::string& path, const std::string& socketName) {
         LoadMesh(entity, path);
         auto& transform = entity.GetComponent<TransformComponent>();
         transform.BindType = BIND_TYPE::Socket;
         transform.TargetName = socketName;
     }
 
-    std::shared_ptr<ReferMaterial> ResourceManager::_LoadReferMaterial(const std::string& path) {
+    std::shared_ptr<ReferMaterial> AssetManager::_LoadReferMaterial(const std::string& path) {
         auto& referMaterial = m_ReferMaterialCache[path];
         if (!referMaterial) {
             REFER_MATERIAL_DESC desc{ path.c_str() };
@@ -75,7 +75,7 @@ namespace Zongine {
         return referMaterial;
     }
 
-    ComPtr<ID3D11ShaderResourceView> ResourceManager::_LoadTexture(const std::string& path) {
+    ComPtr<ID3D11ShaderResourceView> AssetManager::_LoadTexture(const std::string& path) {
         auto& texture = m_TextureCache[path];
         if (!texture) {
             ScratchImage LoadedImage{};
@@ -107,7 +107,7 @@ namespace Zongine {
         return texture;
     }
 
-    std::shared_ptr<MeshAsset> ResourceManager::_LoadMesh(const std::string& path) {
+    std::shared_ptr<MeshAsset> AssetManager::_LoadMesh(const std::string& path) {
         MESH_DESC desc{ path.c_str() };
         MESH_SOURCE source{};
         auto mesh = std::make_shared<MeshAsset>();
@@ -124,7 +124,7 @@ namespace Zongine {
         return mesh;
     }
 
-    std::shared_ptr<MaterialAsset> ResourceManager::_LoadMaterial(const std::string& path) {
+    std::shared_ptr<MaterialAsset> AssetManager::_LoadMaterial(const std::string& path) {
         MODEL_MATERIAL_DESC desc{ path.c_str() };
         MODEL_MATERIAL_SOURCE source;
         auto material = std::make_shared<MaterialAsset>();
@@ -156,7 +156,7 @@ namespace Zongine {
         return material;
     }
 
-    std::shared_ptr<SkeletonAsset> ResourceManager::_LoadSkeleton(const std::string& path) {
+    std::shared_ptr<SkeletonAsset> AssetManager::_LoadSkeleton(const std::string& path) {
         SKELETON_DESC desc{ path.c_str() };
         SKELETON_SOURCE source{};
 
@@ -177,7 +177,7 @@ namespace Zongine {
         return skeleton;
     }
 
-    std::shared_ptr<ShaderAsset> ResourceManager::_LoadShader(RUNTIME_MACRO macro, const std::string& path) {
+    std::shared_ptr<ShaderAsset> AssetManager::_LoadShader(RUNTIME_MACRO macro, const std::string& path) {
         D3D11_BUFFER_DESC bufferDesc{};
         ID3DX11EffectConstantBuffer* constantBuffer{};
 
@@ -210,7 +210,7 @@ namespace Zongine {
         return shader;
     }
 
-    std::shared_ptr<AnimationAsset> ResourceManager::_LoadAnimation(const std::string& path) {
+    std::shared_ptr<AnimationAsset> AssetManager::_LoadAnimation(const std::string& path) {
         ANIMATION_DESC desc{ path.c_str() };
         ANIMATION_SOURCE source{};
 
@@ -236,7 +236,7 @@ namespace Zongine {
         return animation;
     }
 
-    bool ResourceManager::_LoadBone(MeshAsset* mesh, const MESH_SOURCE& source) {
+    bool AssetManager::_LoadBone(MeshAsset* mesh, const MESH_SOURCE& source) {
         for (int i = 0; i < source.nBonesCount; i++) {
             const auto& boneSource = source.pBones[i];
             auto& bone = mesh->Bones.emplace_back(BONE{ (UINT)i, boneSource.szName, boneSource.mOffset });
@@ -258,7 +258,7 @@ namespace Zongine {
         return true;
     }
 
-    bool ResourceManager::_LoadSocket(MeshAsset* mesh, const MESH_SOURCE& source) {
+    bool AssetManager::_LoadSocket(MeshAsset* mesh, const MESH_SOURCE& source) {
         for (int i = 0; i < source.nSocketCount; i++) {
             const auto& socketSource = source.pSockets[i];
             mesh->Sockets.emplace_back(SOCKET{ socketSource.szName, mesh->BoneMap[socketSource.szParentName], socketSource.mOffset });
@@ -267,7 +267,7 @@ namespace Zongine {
         return true;
     }
 
-    bool ResourceManager::_LoadVertexBuffer(MeshAsset* mesh, const MESH_SOURCE& source) {
+    bool AssetManager::_LoadVertexBuffer(MeshAsset* mesh, const MESH_SOURCE& source) {
         D3D11_BUFFER_DESC desc{};
         D3D11_SUBRESOURCE_DATA data{};
 
@@ -288,7 +288,7 @@ namespace Zongine {
         return true;
     }
 
-    bool ResourceManager::_LoadIndexBuffer(MeshAsset* mesh, const MESH_SOURCE& source) {
+    bool AssetManager::_LoadIndexBuffer(MeshAsset* mesh, const MESH_SOURCE& source) {
         D3D11_BUFFER_DESC desc{};
         D3D11_SUBRESOURCE_DATA data{};
         UINT nOffset{};

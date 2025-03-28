@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
     <ClCompile Include="Entities\EntityManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -29,8 +30,7 @@
     <ClCompile Include="Systems\TransformSystem.cpp" />
     <ClCompile Include="Utilities\DeviceManager.cpp" />
     <ClCompile Include="Utilities\EffectManager.cpp" />
-    <ClCompile Include="Utilities\Engine.cpp" />
-    <ClCompile Include="Utilities\ResourceManager.cpp" />
+    <ClCompile Include="Utilities\AssetManager.cpp" />
     <ClCompile Include="Utilities\StateManager.cpp" />
     <ClCompile Include="Utilities\StringUtils.cpp" />
     <ClCompile Include="Utilities\WindowManager.cpp" />
@@ -44,6 +44,7 @@
     <ClInclude Include="Components\ShaderComponent.h" />
     <ClInclude Include="Components\SkeletonComponent.h" />
     <ClInclude Include="Components\TransformComponent.h" />
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Entities\EntityManager.h" />
     <ClInclude Include="Include\Enums.h" />
@@ -57,8 +58,7 @@
     <ClInclude Include="Systems\TransformSystem.h" />
     <ClInclude Include="Utilities\DeviceManager.h" />
     <ClInclude Include="Utilities\EffectManager.h" />
-    <ClInclude Include="Utilities\Engine.h" />
-    <ClInclude Include="Utilities\ResourceManager.h" />
+    <ClInclude Include="Utilities\AssetManager.h" />
     <ClInclude Include="Utilities\StateManager.h" />
     <ClInclude Include="Utilities\StringUtils.h" />
     <ClInclude Include="Utilities\WindowManager.h" />
@@ -80,29 +80,30 @@
     <ProjectGuid>{b3dad8f7-26b1-4f23-9f53-27a48d0ae615}</ProjectGuid>
     <RootNamespace>ZoRuntime</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Runtime</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -155,6 +156,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -186,6 +189,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

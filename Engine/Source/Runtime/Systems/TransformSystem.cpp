@@ -10,7 +10,7 @@ namespace Zongine {
 
     bool TransformSystem::Initialize(const ManagerList& info) {
         m_EntityManager = info.entityManager;
-        m_ResourceManger = info.resourceManager;
+        m_ResourceManger = info.assetManager;
 
         return true;
     }

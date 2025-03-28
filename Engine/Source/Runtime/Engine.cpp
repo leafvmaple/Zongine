@@ -25,14 +25,14 @@ namespace Zongine {
     Engine::~Engine() {
     }
 
-    void Engine::Initialize(HINSTANCE hInstance) {
+    void Engine::Initialize(HWND wnd) {
         m_nLastTime = timeGetTime();
 
         // Manager initialization
         auto entityManager = std::make_shared<EntityManager>();
-        auto windowManager = std::make_shared<WindowManager>();
-        auto deviceManager = std::make_shared<DeviceManager>();
-        auto resourceManager = std::make_shared<ResourceManager>();
+        windowManager = std::make_shared<WindowManager>();
+        deviceManager = std::make_shared<DeviceManager>();
+        auto assetManager = std::make_shared<AssetManager>();
         auto stateManager = std::make_shared<StateManager>();
         auto effectManager = std::make_shared<EffectManager>();
 
@@ -40,14 +40,14 @@ namespace Zongine {
             entityManager,
             windowManager,
             deviceManager,
-            resourceManager,
+            assetManager,
             stateManager,
             effectManager
         };
 
-        windowManager->Initialize({ hInstance, L"Zongine", L"Zongine", 0, 0, 1280, 720 });
+        windowManager->Initialize(wnd);
         deviceManager->Initialize({ windowManager });
-        resourceManager->Initialize({ entityManager, deviceManager, effectManager });
+        assetManager->Initialize({ entityManager, deviceManager, effectManager });
         stateManager->Initialize({ deviceManager });
         effectManager->Initialize({ deviceManager });
 
@@ -67,7 +67,7 @@ namespace Zongine {
         cameraTransform.Position = { 0.0f, 40.0f, -50.0f };
 
         auto& player = root.AddChild();
-        resourceManager->LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
+        assetManager->LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
         player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b01ty普通待机01.ani" });
 
         auto& playerTransform = root.GetComponent<TransformComponent>();
@@ -79,47 +79,47 @@ namespace Zongine {
         auto& leg = player.AddChild();
         auto& belt = player.AddChild();
 
-        resourceManager->LoadMesh(head, "data/source/player/F1/部件/F1_0000_head.mesh");
-        resourceManager->LoadMesh(body, "data/source/player/F1/部件/F1_2206_body.mesh");
-        resourceManager->LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
-        resourceManager->LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
-        resourceManager->LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
+        assetManager->LoadMesh(head, "data/source/player/F1/部件/F1_0000_head.mesh");
+        assetManager->LoadMesh(body, "data/source/player/F1/部件/F1_2206_body.mesh");
+        assetManager->LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
+        assetManager->LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
+        assetManager->LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
 
         auto& face = head.AddChild();
         auto& hat = head.AddChild();
         auto& weapon = hand.AddChild();
 
-        resourceManager->LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
-        resourceManager->LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
-        resourceManager->LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
+        assetManager->LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
+        assetManager->LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
+        assetManager->LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
 
         renderSystem->Initialize(managerList);
         inputSystem->Initialize(managerList);
         cameraSystem->Initialize(managerList);
         transformSystem->Initialize(managerList);
         animationSystem->Initialize(managerList);
-
-        m_bRunning = true;
     }
 
-    void Engine::Run() {
-        while (m_bRunning) {
-            uint64_t nTime = timeGetTime();
-            Tick(nTime - m_nLastTime);
-            m_nLastTime = nTime;
-        }
-    }
+    void Engine::Tick() {
+        uint64_t nTime = timeGetTime();
+        uint64_t nDeltaTime = nTime - m_nLastTime;
 
-    void Engine::Tick(uint64_t fDeltaTime) {
         MSG msg{};
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-        inputSystem->Tick(fDeltaTime);
-        animationSystem->Tick(fDeltaTime);
-        transformSystem->Tick(fDeltaTime);
-        cameraSystem->Tick(fDeltaTime);
-        renderSystem->Tick(fDeltaTime);
+        inputSystem->Tick(nDeltaTime);
+        animationSystem->Tick(nDeltaTime);
+        transformSystem->Tick(nDeltaTime);
+        cameraSystem->Tick(nDeltaTime);
+        renderSystem->Tick(nDeltaTime);
+
+        m_nLastTime = nTime;
+    }
+
+    void Engine::Resize(int width, int height) {
+        windowManager->Resize(width, height);
+        deviceManager->Resize();
     }
 }
