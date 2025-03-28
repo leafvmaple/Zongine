@@ -8,8 +8,8 @@ using namespace Zongine;
 
 int main(int argc, char *argv[])
 {
-    QWidget mainWindow;
     QApplication app(argc, argv);
+    QWidget mainWindow;
 
     app.setApplicationName("Zongine Editor");
 
