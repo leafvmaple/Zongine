@@ -27,6 +27,8 @@ namespace Zongine {
         void Tick();
         void Resize(int width, int height);
 
+        bool IsRunning() const { return m_bRunning; }
+
     private:
         std::unique_ptr<RenderSystem> renderSystem{};
         std::unique_ptr<InputSystem> inputSystem{};

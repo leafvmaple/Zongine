@@ -2,9 +2,9 @@
 
 #include "DeviceManager.h"
 
-#include "StringUtils.h"
-
 #include "Include/Enums.h"
+
+#include "Utilities/StringUtils.h"
 
 #include <d3d11.h>
 #include "FX11/inc/d3dx11effect.h"

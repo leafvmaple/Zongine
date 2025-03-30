@@ -32,6 +32,7 @@ namespace Zongine {
     }
 
     void RenderWidget::Tick() {
-        engine->Tick();
+        if (engine->IsRunning())
+            engine->Tick();
     }
 }

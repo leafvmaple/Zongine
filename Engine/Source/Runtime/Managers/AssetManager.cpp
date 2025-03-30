@@ -1,8 +1,10 @@
 #include "AssetManager.h"
 
 #include "Entities/EntityManager.h"
-#include "Utilities/DeviceManager.h"
-#include "Utilities/EffectManager.h"
+
+#include "Managers/DeviceManager.h"
+#include "Managers/EffectManager.h"
+
 #include "Utilities/StringUtils.h"
 
 #include "Components/TransformComponent.h"

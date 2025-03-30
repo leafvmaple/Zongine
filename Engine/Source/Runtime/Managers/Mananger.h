@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Entities/EntityManager.h"
-#include "Utilities/DeviceManager.h"
-#include "Utilities/EffectManager.h"
-#include "Utilities/AssetManager.h"
-#include "Utilities/StateManager.h"
-#include "Utilities/WindowManager.h"
+
+#include "Managers/DeviceManager.h"
+#include "Managers/EffectManager.h"
+#include "Managers/AssetManager.h"
+#include "Managers/StateManager.h"
+#include "Managers/WindowManager.h"
 
 namespace Zongine {
     struct ManagerList {

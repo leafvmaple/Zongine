@@ -42,26 +42,14 @@
     <ClCompile Include="Entities\Entity.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\AssetManager.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="Entities\EntityManager.cpp">
       <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Utilities\WindowManager.cpp">
-      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Systems\InputSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\DeviceManager.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="Systems\CameraSystem.cpp">
       <Filter>Source Files\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Utilities\EffectManager.cpp">
-      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Utilities\StringUtils.cpp">
       <Filter>Source Files\Utilities</Filter>
@@ -69,11 +57,23 @@
     <ClCompile Include="Systems\AnimationSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities\StateManager.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\AssetManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\DeviceManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\EffectManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\StateManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\WindowManager.cpp">
+      <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,26 +98,14 @@
     <ClInclude Include="Entities\Entity.h">
       <Filter>Source Files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities\AssetManager.h">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="Entities\EntityManager.h">
       <Filter>Source Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\WindowManager.h">
-      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Systems\InputSystem.h">
       <Filter>Source Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Include\Types.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\DeviceManager.h">
-      <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\StateManager.h">
-      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Systems\CameraSystem.h">
       <Filter>Source Files\Systems</Filter>
@@ -127,9 +115,6 @@
     </ClInclude>
     <ClInclude Include="Components\ShaderComponent.h">
       <Filter>Source Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities\EffectManager.h">
-      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Utilities\StringUtils.h">
       <Filter>Source Files\Utilities</Filter>
@@ -154,6 +139,21 @@
     </ClInclude>
     <ClInclude Include="Engine.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\AssetManager.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\DeviceManager.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\EffectManager.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\StateManager.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\WindowManager.h">
+      <Filter>Source Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

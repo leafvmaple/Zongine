@@ -23,17 +23,17 @@
     <ClCompile Include="Entities\Entity.cpp" />
     <ClCompile Include="Entities\EntityManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Managers\AssetManager.cpp" />
+    <ClCompile Include="Managers\DeviceManager.cpp" />
+    <ClCompile Include="Managers\EffectManager.cpp" />
+    <ClCompile Include="Managers\StateManager.cpp" />
+    <ClCompile Include="Managers\WindowManager.cpp" />
     <ClCompile Include="Systems\AnimationSystem.cpp" />
     <ClCompile Include="Systems\CameraSystem.cpp" />
     <ClCompile Include="Systems\InputSystem.cpp" />
     <ClCompile Include="Systems\RenderSystem.cpp" />
     <ClCompile Include="Systems\TransformSystem.cpp" />
-    <ClCompile Include="Utilities\DeviceManager.cpp" />
-    <ClCompile Include="Utilities\EffectManager.cpp" />
-    <ClCompile Include="Utilities\AssetManager.cpp" />
-    <ClCompile Include="Utilities\StateManager.cpp" />
     <ClCompile Include="Utilities\StringUtils.cpp" />
-    <ClCompile Include="Utilities\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\AnimationComponent.h" />
@@ -50,18 +50,18 @@
     <ClInclude Include="Include\Enums.h" />
     <ClInclude Include="Include\Maths.h" />
     <ClInclude Include="Include\Types.h" />
+    <ClInclude Include="Managers\AssetManager.h" />
+    <ClInclude Include="Managers\DeviceManager.h" />
+    <ClInclude Include="Managers\EffectManager.h" />
     <ClInclude Include="Managers\Mananger.h" />
+    <ClInclude Include="Managers\StateManager.h" />
+    <ClInclude Include="Managers\WindowManager.h" />
     <ClInclude Include="Systems\AnimationSystem.h" />
     <ClInclude Include="Systems\CameraSystem.h" />
     <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\RenderSystem.h" />
     <ClInclude Include="Systems\TransformSystem.h" />
-    <ClInclude Include="Utilities\DeviceManager.h" />
-    <ClInclude Include="Utilities\EffectManager.h" />
-    <ClInclude Include="Utilities\AssetManager.h" />
-    <ClInclude Include="Utilities\StateManager.h" />
     <ClInclude Include="Utilities\StringUtils.h" />
-    <ClInclude Include="Utilities\WindowManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rd\DirectXTex\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">
