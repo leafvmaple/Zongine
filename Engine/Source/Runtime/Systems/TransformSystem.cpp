@@ -5,8 +5,11 @@
 #include "Components/TransformComponent.h"
 #include "Components/MeshComponent.h"
 
+#include "Maths/Matrix.h"
+
 namespace Zongine {
     using namespace DirectX;
+    using Zongine::XMConvertToRadians;
 
     bool TransformSystem::Initialize(const ManagerList& info) {
         m_EntityManager = info.entityManager;
