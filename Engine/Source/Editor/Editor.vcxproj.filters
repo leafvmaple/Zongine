@@ -24,20 +24,14 @@
     <Filter Include="Widgets">
       <UniqueIdentifier>{d1f4a4b3-aa81-49ba-9194-fa56bd556276}</UniqueIdentifier>
     </Filter>
+    <Filter Include="QML">
+      <UniqueIdentifier>{be997ffd-be22-4fa6-9e3d-35f78ef9275e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="Editor.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
     <QtUic Include="Editor.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="Editor.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="Editor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -46,9 +40,15 @@
     <ClCompile Include="Widgets\RenderWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\EntitiesWidget.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\RenderWidget.h">
+      <Filter>Widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\EntitiesWidget.h">
       <Filter>Widgets</Filter>
     </QtMoc>
   </ItemGroup>

@@ -26,6 +26,7 @@
     <ClCompile Include="Managers\AssetManager.cpp" />
     <ClCompile Include="Managers\DeviceManager.cpp" />
     <ClCompile Include="Managers\EffectManager.cpp" />
+    <ClCompile Include="Managers\EventManager.cpp" />
     <ClCompile Include="Managers\StateManager.cpp" />
     <ClCompile Include="Managers\WindowManager.cpp" />
     <ClCompile Include="Systems\AnimationSystem.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Managers\AssetManager.h" />
     <ClInclude Include="Managers\DeviceManager.h" />
     <ClInclude Include="Managers\EffectManager.h" />
+    <ClInclude Include="Managers\EventManager.h" />
     <ClInclude Include="Managers\Mananger.h" />
     <ClInclude Include="Managers\StateManager.h" />
     <ClInclude Include="Managers\WindowManager.h" />

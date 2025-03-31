@@ -5,7 +5,7 @@
 #include <QTimer>
 
 namespace Zongine {
-    RenderWidget::RenderWidget(QWidget* parent /*= nullptr*/) {
+    RenderWidget::RenderWidget(std::shared_ptr<Engine> engine, QWidget* parent /*= nullptr*/) {
         setAttribute(Qt::WA_NativeWindow);
         setAttribute(Qt::WA_PaintOnScreen);
         setAttribute(Qt::WA_NoSystemBackground);
@@ -14,12 +14,13 @@ namespace Zongine {
         auto nWidth = width();
         auto nHeight = height();
 
-        engine = std::make_unique<Engine>();
         engine->Initialize(hwnd);
 
         QTimer* timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &RenderWidget::Tick);
         timer->start(16);
+
+        m_Engine = engine;
     }
 
     void RenderWidget::resizeEvent(QResizeEvent* event) {
@@ -32,7 +33,7 @@ namespace Zongine {
     }
 
     void RenderWidget::Tick() {
-        if (engine->IsRunning())
-            engine->Tick();
+        if (m_Engine->IsRunning())
+            m_Engine->Tick();
     }
 }

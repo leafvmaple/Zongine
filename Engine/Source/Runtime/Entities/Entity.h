@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Include/Types.h"
+#include "../Include/Types.h"
 
 namespace Zongine {
     const EntityID INVALID_ENTITY{};

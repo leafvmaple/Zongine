@@ -7,6 +7,7 @@
 #include "Managers/AssetManager.h"
 #include "Managers/StateManager.h"
 #include "Managers/WindowManager.h"
+#include "Managers/EventManager.h"
 
 namespace Zongine {
     struct ManagerList {

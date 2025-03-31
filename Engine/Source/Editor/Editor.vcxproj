@@ -37,12 +37,13 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.8.3_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;quick</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
+    <QtQMLDebugEnable>true</QtQMLDebugEnable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.8.3_msvc2022_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;qml;quick</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -97,11 +98,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Widgets\EntitiesWidget.cpp" />
     <ClCompile Include="Widgets\RenderWidget.cpp" />
-    <QtRcc Include="Editor.qrc" />
     <QtUic Include="Editor.ui" />
-    <QtMoc Include="Editor.h" />
-    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +110,9 @@
     <ProjectReference Include="..\Runtime\Runtime.vcxproj">
       <Project>{b3dad8f7-26b1-4f23-9f53-27a48d0ae615}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Widgets\EntitiesWidget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

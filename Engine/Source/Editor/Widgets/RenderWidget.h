@@ -4,13 +4,15 @@
 #include <Windows.h>
 #include <memory>
 
+#include "Runtime/Engine.h"
+
 namespace Zongine {
     class Engine;
 
     class RenderWidget : public QWidget {
         Q_OBJECT
     public:
-        explicit RenderWidget(QWidget* parent = nullptr);
+        explicit RenderWidget(std::shared_ptr<Engine> engine, QWidget* parent = nullptr);
         ~RenderWidget() = default;
 
     protected:
@@ -22,6 +24,6 @@ namespace Zongine {
 
     private:
         HWND hwnd{};
-        std::unique_ptr<Engine> engine{};
+        std::shared_ptr<Engine> m_Engine{};
     };
 }

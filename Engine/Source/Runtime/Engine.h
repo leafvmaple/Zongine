@@ -2,6 +2,8 @@
 
 #include <memory>
 #include <windows.h>
+#include <string>
+#include <functional>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "winmm.lib")
@@ -9,14 +11,18 @@
 #pragma comment(lib, "dxguid.lib")
 
 namespace Zongine {
+    struct Entity;
+
     class RenderSystem;
     class InputSystem;
     class CameraSystem;
     class TransformSystem;
     class AnimationSystem;
 
+    class EntityManager;
     class WindowManager;
     class DeviceManager;
+    class EventManager;
 
     class Engine {
     public:
@@ -29,6 +35,10 @@ namespace Zongine {
 
         bool IsRunning() const { return m_bRunning; }
 
+        Entity& GetRootEntity();
+
+        void SubscribeEvent(const std::string& eventName, const std::function<void()>& callback);
+
     private:
         std::unique_ptr<RenderSystem> renderSystem{};
         std::unique_ptr<InputSystem> inputSystem{};
@@ -36,8 +46,10 @@ namespace Zongine {
         std::unique_ptr<TransformSystem> transformSystem{};
         std::unique_ptr<AnimationSystem> animationSystem{};
 
+        std::shared_ptr<EntityManager> entityManager{};
         std::shared_ptr<WindowManager> windowManager{};
         std::shared_ptr<DeviceManager> deviceManager{};
+        std::shared_ptr<EventManager> eventManager{};
 
         bool m_bRunning{ true };
         uint64_t m_nLastTime{};

@@ -1,25 +1,33 @@
-#include "Editor.h"
 #include <QtWidgets/QApplication>
 #include <QVBoxLayout>
+#include <QSplitter>
 
 #include "Widgets/RenderWidget.h"
+#include "Widgets/EntitiesWidget.h"
+
+#include "Runtime/Engine.h"
 
 using namespace Zongine;
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
-    QWidget mainWindow;
-
     app.setApplicationName("Zongine Editor");
 
-    QVBoxLayout* layout = new QVBoxLayout(&mainWindow);
+    auto engine = std::make_shared<Engine>();
 
-    RenderWidget* renderWidget = new RenderWidget();
-    layout->addWidget(renderWidget);
+    RenderWidget* renderWidget = new RenderWidget(engine);
+    EntitiesWidget* entityTree = new EntitiesWidget(engine);
 
-    mainWindow.resize(800, 600);
-    mainWindow.show();
+    QSplitter splitter(Qt::Horizontal);
+    splitter.setGeometry(QRect(0, 0, 1280, 720));
+
+    splitter.addWidget(entityTree);
+    splitter.addWidget(renderWidget);
+
+    splitter.setSizes({ 100, 800 });
+
+    splitter.show();
 
     return app.exec();
 }

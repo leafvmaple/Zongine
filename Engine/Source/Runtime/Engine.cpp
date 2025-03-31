@@ -29,12 +29,13 @@ namespace Zongine {
         m_nLastTime = timeGetTime();
 
         // Manager initialization
-        auto entityManager = std::make_shared<EntityManager>();
+        entityManager = std::make_shared<EntityManager>();
         windowManager = std::make_shared<WindowManager>();
         deviceManager = std::make_shared<DeviceManager>();
         auto assetManager = std::make_shared<AssetManager>();
         auto stateManager = std::make_shared<StateManager>();
         auto effectManager = std::make_shared<EffectManager>();
+        eventManager = std::make_shared<EventManager>();
 
         ManagerList managerList{
             entityManager,
@@ -98,6 +99,8 @@ namespace Zongine {
         cameraSystem->Initialize(managerList);
         transformSystem->Initialize(managerList);
         animationSystem->Initialize(managerList);
+
+        // eventManager->Emit("ENTITIY_UPDATE");
     }
 
     void Engine::Tick() {
@@ -121,5 +124,13 @@ namespace Zongine {
     void Engine::Resize(int width, int height) {
         windowManager->Resize(width, height);
         deviceManager->Resize();
+    }
+
+    Entity& Engine::GetRootEntity() {
+        return entityManager->GetEntity(0);
+    }
+
+    void Engine::SubscribeEvent(const std::string& eventName, const std::function<void()>& callback) {
+        eventManager->Subscribe(eventName, callback);
     }
 }
