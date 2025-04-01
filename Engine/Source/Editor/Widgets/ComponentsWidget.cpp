@@ -82,6 +82,8 @@ namespace Zongine {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Animation");
         }
+
+        expandAll();
     }
 
     template<typename T>
@@ -117,6 +119,7 @@ namespace Zongine {
 
         QByteArray gbkBytes(path.c_str(), path.length());
         lineEdit->setText(QString::fromLocal8Bit(gbkBytes));
+        lineEdit->setCursorPosition(0);
 
         setItemWidget(parent, 1, lineEdit);
     }
