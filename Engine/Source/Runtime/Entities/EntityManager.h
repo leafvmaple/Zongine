@@ -7,7 +7,10 @@
 #include <typeindex>
 #include <cassert>
 
+#include "../Components/NameComponent.h"
+
 namespace Zongine {
+    // TODO Refactor
     class IComponentStorage {
     public:
         virtual ~IComponentStorage() = default;
@@ -16,10 +19,9 @@ namespace Zongine {
     template<typename ComponentType>
     class ComponentStorage : public IComponentStorage {
     private:
-        std::unordered_map<EntityID, ComponentType> components; // 存储实体 ID 和组件
+        std::unordered_map<EntityID, ComponentType> components;
 
     public:
-        // TODO std::move
         ComponentType& AddComponent(EntityID entity, const ComponentType& component) {
             components[entity] = component;
             return components[entity];
@@ -35,7 +37,6 @@ namespace Zongine {
             return components.at(entity);
         }
 
-        // 检查实体是否有该组件
         bool HasComponent(EntityID entity) const {
             return components.find(entity) != components.end();
         }
@@ -56,9 +57,16 @@ namespace Zongine {
             m_Entities.emplace(0, Entity(0, this)); // Root entity
         }
 
-        Entity& CreateEntity() {
+        Entity& CreateEntity(std::string name) {
             EntityID id = ++m_NextEntityID;
-            return m_Entities.emplace(id, Entity(id, this)).first->second;
+            auto& entity = m_Entities.emplace(id, Entity(id, this)).first->second;
+            entity.AddComponent<NameComponent>(NameComponent({ name }));
+
+            return entity;
+        }
+
+        Entity& CreateEntity() {
+            return CreateEntity("");
         }
 
         std::unordered_map<EntityID, Entity>& GetEntities() {
@@ -94,6 +102,8 @@ namespace Zongine {
         ComponentType& GetComponent(EntityID entity) {
             auto& storage = GetOrCreateStorage<ComponentType>();
             return storage.GetComponent(entity);
+
+            // return const_cast<ComponentType&>(static_cast<const EntityManager&>(*this).GetComponent(entity));
         }
 
         template<typename ComponentType>

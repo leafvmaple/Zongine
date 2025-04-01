@@ -14,7 +14,8 @@ namespace Zongine {
         ~EntitiesWidget() = default;
 
     private:
-        void UpdateEntity();
+        void UpdateEntities();
+        void UpdateEntity(EntityID id, QTreeWidgetItem* item);
 
         std::shared_ptr<Engine> m_Engine{};
     };

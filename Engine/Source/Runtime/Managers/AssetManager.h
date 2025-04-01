@@ -14,6 +14,8 @@
 #include <directxmath.h>
 #include <wrl/client.h>
 
+#include "FX11/inc/d3dx11effect.h"
+
 struct MESH_SOURCE;
 
 namespace Zongine {

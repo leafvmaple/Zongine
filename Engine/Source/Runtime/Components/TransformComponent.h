@@ -1,7 +1,5 @@
 #pragma once
 
-#include "BaseComponent.h"
-
 #include <string>
 #include <DirectXMath.h>
 
@@ -11,7 +9,7 @@ namespace Zongine {
         Socket,
     };
 
-    struct TransformComponent : public BaseComponent {
+    struct TransformComponent {
         DirectX::XMMATRIX World{};
 
         DirectX::XMFLOAT3 Position{};

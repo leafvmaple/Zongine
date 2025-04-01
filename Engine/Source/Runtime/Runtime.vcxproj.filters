@@ -161,5 +161,8 @@
     <ClInclude Include="Managers\EventManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Components\NameComponent.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

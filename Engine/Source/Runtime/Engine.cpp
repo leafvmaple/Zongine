@@ -62,23 +62,23 @@ namespace Zongine {
         auto& root = entityManager->GetRootEntity();
         root.AddComponent<TransformComponent>(TransformComponent{});
 
-        auto& camera = root.AddChild();
+        auto& camera = root.AddChild("Camera");
         camera.AddComponent<CameraComponent>(CameraComponent{});
         auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
         cameraTransform.Position = { 0.0f, 40.0f, -50.0f };
 
-        auto& player = root.AddChild();
+        auto& player = root.AddChild("Player");
         assetManager->LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
         player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b01ty普通待机01.ani" });
 
         auto& playerTransform = root.GetComponent<TransformComponent>();
         playerTransform.Position = { 0.0f, 0, 50.0f };
 
-        auto& head = player.AddChild();
-        auto& body = player.AddChild();
-        auto& hand = player.AddChild();
-        auto& leg = player.AddChild();
-        auto& belt = player.AddChild();
+        auto& head = player.AddChild("Head");
+        auto& body = player.AddChild("Body");
+        auto& hand = player.AddChild("Hand");
+        auto& leg = player.AddChild("Leg");
+        auto& belt = player.AddChild("Belt");
 
         assetManager->LoadMesh(head, "data/source/player/F1/部件/F1_0000_head.mesh");
         assetManager->LoadMesh(body, "data/source/player/F1/部件/F1_2206_body.mesh");
@@ -86,9 +86,9 @@ namespace Zongine {
         assetManager->LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
         assetManager->LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
 
-        auto& face = head.AddChild();
-        auto& hat = head.AddChild();
-        auto& weapon = hand.AddChild();
+        auto& face = head.AddChild("Face");
+        auto& hat = head.AddChild("Hat");
+        auto& weapon = hand.AddChild("Weapon");
 
         assetManager->LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
         assetManager->LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
@@ -128,6 +128,10 @@ namespace Zongine {
 
     Entity& Engine::GetRootEntity() {
         return entityManager->GetEntity(0);
+    }
+
+    Entity& Engine::GetEntity(EntityID id) {
+        return entityManager->GetEntity(id);
     }
 
     void Engine::SubscribeEvent(const std::string& eventName, const std::function<void()>& callback) {

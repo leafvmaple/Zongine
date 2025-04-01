@@ -5,13 +5,15 @@
 #include <string>
 #include <functional>
 
+#include "Include/Types.h"
+
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 
 namespace Zongine {
-    struct Entity;
+    class Entity;
 
     class RenderSystem;
     class InputSystem;
@@ -36,6 +38,7 @@ namespace Zongine {
         bool IsRunning() const { return m_bRunning; }
 
         Entity& GetRootEntity();
+        Entity& GetEntity(EntityID id);
 
         void SubscribeEvent(const std::string& eventName, const std::function<void()>& callback);
 

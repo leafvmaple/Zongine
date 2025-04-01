@@ -98,6 +98,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Widgets\ComponentsWidget.cpp" />
     <ClCompile Include="Widgets\EntitiesWidget.cpp" />
     <ClCompile Include="Widgets\RenderWidget.cpp" />
     <QtUic Include="Editor.ui" />
@@ -113,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\EntitiesWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Widgets\ComponentsWidget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
