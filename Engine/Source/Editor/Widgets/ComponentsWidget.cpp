@@ -26,7 +26,6 @@ namespace Zongine {
         setAlternatingRowColors(true);
 
         m_Engine = engine;
-        // UpdateComponents();
     }
     void ComponentWidget::UpdateComponents(uint64_t id) {
         auto entity = m_Engine->GetEntity(id);
@@ -57,30 +56,68 @@ namespace Zongine {
             item->setText(0, "Mesh");
 
             auto mesh = entity.GetComponent<MeshComponent>();
-            AddPathProperty(mesh.Path, item);
+            auto path = new QTreeWidgetItem(item);
+            path->setText(0, "Path");
+
+            AddPathProperty(mesh.Path, path);
         }
         if (entity.HasComponent<ShaderComponent>()) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Shader");
 
             auto shader = entity.GetComponent<ShaderComponent>();
-            AddPathProperty(shader.Path, item);
+            auto paths = new QTreeWidgetItem(item);
+            paths->setText(0, "Paths");
+
+            for (int i = 0; i < shader.Paths.size(); i++) {
+                auto path = new QTreeWidgetItem(paths);
+                path->setText(0, QString("[%1]").arg(i));
+                AddPathProperty(shader.Paths[i], path);
+            }
         }
         if (entity.HasComponent<MaterialComponent>()) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Material");
+
+            auto material = entity.GetComponent<MaterialComponent>();
+            auto path = new QTreeWidgetItem(item);
+            path->setText(0, "Path");
+
+            AddPathProperty(material.Path, path);
         }
         if (entity.HasComponent<CameraComponent>()) {
+            auto camera = entity.GetComponent<CameraComponent>();
+
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Camera");
+
+            auto perspective = new QTreeWidgetItem(item);
+            perspective->setText(0, "AspectRatio");
+            AddNumberProperty(camera.Perspective.fAspectRatio, perspective);
+
+            auto fov = new QTreeWidgetItem(item);
+            fov->setText(0, "Fov");
+            AddNumberProperty(camera.Perspective.fFovAngleY, fov);
         }
         if (entity.HasComponent<SkeletonComponent>()) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Skeleton");
+
+            auto skeleton = entity.GetComponent<SkeletonComponent>();
+            auto path = new QTreeWidgetItem(item);
+            path->setText(0, "Path");
+
+            AddPathProperty(skeleton.Path, path);
         }
         if (entity.HasComponent<AnimationComponent>()) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Animation");
+
+            auto animation = entity.GetComponent<AnimationComponent>();
+            auto path = new QTreeWidgetItem(item);
+            path->setText(0, "Path");
+
+            AddPathProperty(animation.Path, path);
         }
 
         expandAll();
@@ -92,26 +129,39 @@ namespace Zongine {
         QHBoxLayout* layout = new QHBoxLayout(widget);
         layout->setContentsMargins(0, 0, 0, 0);
 
-        QSpinBox* xBox = new QSpinBox();
-        QSpinBox* yBox = new QSpinBox();
-        QSpinBox* zBox = new QSpinBox();
+        QLineEdit* xEdit = new QLineEdit(this);
+        QLineEdit* yEdit = new QLineEdit(this);
+        QLineEdit* zEdit = new QLineEdit(this);
 
-        xBox->setRange(-1000, 1000);
-        yBox->setRange(-1000, 1000);
-        zBox->setRange(-1000, 1000);
+        QDoubleValidator* validator = new QDoubleValidator(this);
 
-        xBox->setValue(vec.x);
-        yBox->setValue(vec.y);
-        zBox->setValue(vec.z);
+        zEdit->setValidator(validator);
+        yEdit->setValidator(validator);
+        xEdit->setValidator(validator);
 
-        layout->addWidget(new QLabel("X:"));
-        layout->addWidget(xBox);
-        layout->addWidget(new QLabel("Y:"));
-        layout->addWidget(yBox);
-        layout->addWidget(new QLabel("Z:"));
-        layout->addWidget(zBox);
+        xEdit->setText(QString::number(vec.x));
+        yEdit->setText(QString::number(vec.y));
+        zEdit->setText(QString::number(vec.z));
+
+        layout->addWidget(new QLabel(" X: "));
+        layout->addWidget(xEdit);
+        layout->addWidget(new QLabel(" Y: "));
+        layout->addWidget(yEdit);
+        layout->addWidget(new QLabel(" Z: "));
+        layout->addWidget(zEdit);
 
         setItemWidget(parent, 1, widget);
+    }
+
+    template<typename T>
+    void ComponentWidget::AddNumberProperty(T value, QTreeWidgetItem* parent) {
+        QLineEdit* edit = new QLineEdit(this);
+        QDoubleValidator* validator = new QDoubleValidator(this);
+
+        edit->setValidator(validator);
+        edit->setText(QString::number(value));
+
+        setItemWidget(parent, 1, edit);
     }
 
     void ComponentWidget::AddPathProperty(std::string path, QTreeWidgetItem* parent) {

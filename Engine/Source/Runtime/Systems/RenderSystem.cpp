@@ -64,7 +64,7 @@ namespace Zongine {
         if (mesh->InputLayout == INPUT_LAYOUT_CI_SKINMESH)
             runtimeMacro = RUNTIME_MACRO_SKIN_MESH;
 
-        auto shader = m_ResourceManger->GetShaderAsset(runtimeMacro, shaderComponent.Path);
+        auto shader = m_ResourceManger->GetShaderAsset(runtimeMacro, shaderComponent.Paths);
 
         shader->TransformMatrix->SetMatrix(reinterpret_cast<const float*>(&transformComponent.World));
         shader->BonesMatrix->SetMatrixArray(reinterpret_cast<const float*>(meshComponent.Offset.data()), 0, meshComponent.Offset.size());

@@ -2,6 +2,8 @@
 
 #include "Include/Enums.h"
 
+#include "Utilities/StringUtils.h"
+
 #include "Components/MeshComponent.h"
 #include "Components/ShaderComponent.h"
 #include "Components/MaterialComponent.h"
@@ -176,10 +178,10 @@ namespace Zongine {
             return skeleton;
         }
 
-        std::shared_ptr<ShaderAsset> GetShaderAsset(RUNTIME_MACRO macro, const std::string& path) {
-            auto& shader = m_ShaderCache[path];
+        std::shared_ptr<ShaderAsset> GetShaderAsset(RUNTIME_MACRO macro, const std::vector<std::string>& paths) {
+            auto& shader = m_ShaderCache[paths];
             if (!shader)
-                shader = _LoadShader(macro, path);
+                shader = _LoadShader(macro, paths);
             return shader;
         }
 
@@ -215,7 +217,7 @@ namespace Zongine {
         std::shared_ptr<MeshAsset> _LoadMesh(const std::string& path);
         std::shared_ptr<MaterialAsset> _LoadMaterial(const std::string& path);
         std::shared_ptr<SkeletonAsset> _LoadSkeleton(const std::string& path);
-        std::shared_ptr<ShaderAsset> _LoadShader(RUNTIME_MACRO macro, const std::string& path);
+        std::shared_ptr<ShaderAsset> _LoadShader(RUNTIME_MACRO macro, const std::vector<std::string>& paths);
         std::shared_ptr<AnimationAsset> _LoadAnimation(const std::string& path);
 
         bool _LoadBone(MeshAsset* mesh, const MESH_SOURCE& source);
@@ -230,10 +232,11 @@ namespace Zongine {
         // Cache
         std::unordered_map<std::string, std::shared_ptr<MeshAsset>> m_MeshCache{};
         std::unordered_map<std::string, std::shared_ptr<MaterialAsset>> m_MaterialCache{};
-        std::unordered_map<std::string, std::shared_ptr<SkeletonAsset>> m_SkeletonCache{};
-        std::unordered_map<std::string, std::shared_ptr<ShaderAsset>> m_ShaderCache{};
-        std::unordered_map<std::string, std::shared_ptr<AnimationAsset>> m_AnimationCache{};
         std::unordered_map<std::string, std::shared_ptr<ReferMaterial>> m_ReferMaterialCache{};
+
+        std::unordered_map<std::string, std::shared_ptr<SkeletonAsset>> m_SkeletonCache{};
+        std::unordered_map<std::vector<std::string>, std::shared_ptr<ShaderAsset>> m_ShaderCache{};
+        std::unordered_map<std::string, std::shared_ptr<AnimationAsset>> m_AnimationCache{};
         std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_TextureCache{};
 
         // Map

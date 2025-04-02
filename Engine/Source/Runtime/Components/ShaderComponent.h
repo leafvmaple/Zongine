@@ -9,6 +9,6 @@
 
 namespace Zongine {
     struct ShaderComponent {
-        std::string Path;
+        std::vector<std::string> Paths;
     };
 }

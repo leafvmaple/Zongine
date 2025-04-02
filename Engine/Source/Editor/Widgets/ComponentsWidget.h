@@ -19,6 +19,8 @@ namespace Zongine {
         template<typename T>
         void AddVectorProperty(const T& vec, QTreeWidgetItem* parent);
 
+        template<typename T>
+        void AddNumberProperty(T value, QTreeWidgetItem* parent);
         void AddPathProperty(std::string path, QTreeWidgetItem* parent);
 
         std::shared_ptr<Engine> m_Engine{};

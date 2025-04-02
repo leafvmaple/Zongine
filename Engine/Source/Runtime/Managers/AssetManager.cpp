@@ -44,7 +44,14 @@ namespace Zongine {
         if (TryReplaceExtension(filePath, ".JsonInspack")) {
             auto materialPath = filePath.string();
             entity.AddComponent<MaterialComponent>(MaterialComponent{ materialPath });
-            entity.AddComponent<ShaderComponent>(ShaderComponent{ materialPath });
+
+            auto material = GetMaterialAsset(materialPath);
+            std::vector<std::string> paths;
+            std::transform(material->Subsets.begin(), material->Subsets.end(), std::back_inserter(paths),
+                [](const auto& subset) -> std::string {
+                    return subset.ShaderName;
+                });
+            entity.AddComponent<ShaderComponent>(ShaderComponent{ paths });
         }
     }
 
@@ -179,19 +186,11 @@ namespace Zongine {
         return skeleton;
     }
 
-    std::shared_ptr<ShaderAsset> AssetManager::_LoadShader(RUNTIME_MACRO macro, const std::string& path) {
+    std::shared_ptr<ShaderAsset> AssetManager::_LoadShader(RUNTIME_MACRO macro, const std::vector<std::string>& paths) {
         D3D11_BUFFER_DESC bufferDesc{};
         ID3DX11EffectConstantBuffer* constantBuffer{};
 
         auto shader = std::make_shared<ShaderAsset>();
-
-        const auto& material = GetMaterialAsset(path);
-
-        std::vector<std::string> paths;
-        std::transform(material->Subsets.begin(), material->Subsets.end(), std::back_inserter(paths),
-            [](const auto& subset) -> std::string {
-                return subset.ShaderName;
-            });
 
         for (const auto& path : paths) {
             SubsetShader subsetShader{};
