@@ -5,7 +5,7 @@ cbuffer MODEL_MATRIX
     row_major float4x4 MATRIX_M;
 };
 
-cbuffer SubsetConstParam : register (b3)
+cbuffer SUBSET_CONST
 {
     float4 ModelColor      = float4(1.0f, 1.0f, 1.0f, 1.0f);
     bool   EnableAlphaTest = false;

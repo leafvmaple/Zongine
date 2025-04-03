@@ -67,7 +67,7 @@ namespace Zongine {
         auto shader = m_ResourceManger->GetShaderAsset(runtimeMacro, shaderComponent.Paths);
 
         shader->TransformMatrix->SetMatrix(reinterpret_cast<const float*>(&transformComponent.World));
-        shader->BonesMatrix->SetMatrixArray(reinterpret_cast<const float*>(meshComponent.Offset.data()), 0, meshComponent.Offset.size());
+        shader->BonesMatrix->SetMatrixArray(reinterpret_cast<const float*>(meshComponent.SkinningTransforms.data()), 0, meshComponent.SkinningTransforms.size());
 
         auto& vertexBuffer = mesh->Vertex;
         auto& indexBuffer = mesh->Index;
@@ -96,6 +96,7 @@ namespace Zongine {
 
             if (m_CameraBuffer)
                 subsetShader.Effect->GetConstantBufferByName("CAMERA_MATRIX")->SetConstantBuffer(m_CameraBuffer.Get());
+            subsetShader.SubsetConst->SetRawValue(&subsetMaterial.Const, 0, sizeof(SKIN_SUBSET_CONST));
 
             auto effectPass = m_EffectManager->GetEffectPass(subsetShader.Effect, shader->Pass);
             effectPass->Apply(0, context.Get());

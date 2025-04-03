@@ -13,7 +13,7 @@
 #include <string>
 #include <unordered_map>
 #include <array>
-#include <directxmath.h>
+#include <DirectXMath.h>
 #include <wrl/client.h>
 
 #include "FX11/inc/d3dx11effect.h"
@@ -38,7 +38,7 @@ namespace Zongine {
     struct BONE {
         UINT nBoneIndex{};
         std::string Name{};
-        DirectX::XMFLOAT4X4 Offset{};
+        DirectX::XMFLOAT4X4 InverseBindTransforms{};
         std::vector<UINT> Children{};
     };
 
@@ -77,11 +77,22 @@ namespace Zongine {
         ComPtr<ID3D11ShaderResourceView> Texture{};
     };
 
+    __declspec(align(16)) struct SKIN_SUBSET_CONST
+    {
+        DirectX::XMFLOAT4A ModelColor;
+        BOOL        EnableAlphaTest;
+        float       AlphaReference;
+        float       AlphaReference2;
+    };
+
     struct ReferMaterial {
         std::string Path{};
         std::string ShaderName{};
 
+        uint32_t nBlendMode;
         RASTERIZER_STATE_ID Rasterizer{};
+
+        SKIN_SUBSET_CONST Const{};
 
         std::unordered_map<std::string, _Texture> Textures{};
     };
@@ -107,6 +118,7 @@ namespace Zongine {
         std::string ShaderPath{};
 
         ComPtr<ID3DX11Effect> Effect{};
+        ID3DX11EffectVariable* SubsetConst{};
         std::unordered_map<std::string, ID3DX11EffectShaderResourceVariable*> Variables{};
     };
 
@@ -179,7 +191,7 @@ namespace Zongine {
         }
 
         std::shared_ptr<ShaderAsset> GetShaderAsset(RUNTIME_MACRO macro, const std::vector<std::string>& paths) {
-            auto& shader = m_ShaderCache[paths];
+            auto& shader = m_ShaderCache[macro][paths];
             if (!shader)
                 shader = _LoadShader(macro, paths);
             return shader;
@@ -203,7 +215,7 @@ namespace Zongine {
                         return bone.Name == boneName;
                         });
                     if (it != skeleton->Bones.end()) {
-                        map[index] = it - skeleton->Bones.begin();
+                        map[index] = static_cast<int>(std::distance(skeleton->Bones.begin(), it));
                     }
                 }
             }
@@ -235,7 +247,7 @@ namespace Zongine {
         std::unordered_map<std::string, std::shared_ptr<ReferMaterial>> m_ReferMaterialCache{};
 
         std::unordered_map<std::string, std::shared_ptr<SkeletonAsset>> m_SkeletonCache{};
-        std::unordered_map<std::vector<std::string>, std::shared_ptr<ShaderAsset>> m_ShaderCache{};
+        std::array<std::unordered_map<std::vector<std::string>, std::shared_ptr<ShaderAsset>>, RUNTIME_MACRO_COUNT> m_ShaderCache{};
         std::unordered_map<std::string, std::shared_ptr<AnimationAsset>> m_AnimationCache{};
         std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_TextureCache{};
 

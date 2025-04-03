@@ -160,6 +160,12 @@ namespace Zongine {
             refer.Rasterizer = RASTERIZER_STATE_CULL_CLOCKWISE;
             if (Subset.nTwoSideFlag)
                 refer.Rasterizer = RASTERIZER_STATE_CULL_NONE;
+
+            refer.nBlendMode = Subset.nBlendMode;
+
+            refer.Const.AlphaReference = Subset.nAlphaRef / 255.f;
+            refer.Const.AlphaReference2 = Subset.nAlphaRef2 / 255.f;
+            refer.Const.EnableAlphaTest = (refer.nBlendMode == BLEND_MASKED || refer.nBlendMode == BLEND_SOFTMASKED);
         }
 
         return material;
@@ -201,6 +207,7 @@ namespace Zongine {
 
             if (!constantBuffer)
                 constantBuffer = subsetShader.Effect->GetConstantBufferByName("MODEL_MATRIX");
+            subsetShader.SubsetConst = subsetShader.Effect->GetConstantBufferByName("SUBSET_CONST");
 
             shader->Subsets.emplace_back(subsetShader);
         }

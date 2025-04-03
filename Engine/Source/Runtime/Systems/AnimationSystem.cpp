@@ -29,7 +29,7 @@ namespace Zongine {
             int nFrame = int(nAnimationTime / animation->FrameLength);
             float fInterpolation = (nAnimationTime - nFrame * animation->FrameLength) / animation->FrameLength;
 
-            std::vector<XMFLOAT4X4> matrices;
+            std::vector<XMFLOAT4X4> localTransforms;
             auto skeletonBoneCount = skeleton->Bones.size();
 
             for (int i = 0; i < skeletonBoneCount; i++) {
@@ -44,59 +44,63 @@ namespace Zongine {
                 XMFloat3Slerp(&rts.Scale, &curClip.Scale, &nextClip.Scale, fInterpolation);
                 XMFloat3Slerp(&rts.Translation, &curClip.Translation, &nextClip.Translation, fInterpolation);
 
-                auto& matrix = matrices.emplace_back();
+                auto& matrix = localTransforms.emplace_back();
 
                 XMStoreFloat4x4(&matrix, XMMatrixTransformation(g_XMZero, XMLoadFloat4(&rts.SRotation),
                         XMLoadFloat3(&rts.Scale), g_XMZero, XMLoadFloat4(&rts.Rotation), XMLoadFloat3(&rts.Translation)));
             }
 
-            if (animationComponent.Matrix.empty())
-                animationComponent.Matrix.resize(skeletonBoneCount);
+            if (animationComponent.ModelTransforms.empty())
+                animationComponent.ModelTransforms.resize(skeletonBoneCount);
 
-            animationComponent.Matrix[skeleton->nRootBoneIndex] = matrices[skeleton->nRootBoneIndex];
-            _UpdateSkeletonTransform(animationComponent, skeleton, matrices, skeleton->nRootBoneIndex);
-            _UpdateMeshBonesTransform(entityID, skeletonComponent, animationComponent);
+            animationComponent.ModelTransforms[skeleton->nRootBoneIndex] = localTransforms[skeleton->nRootBoneIndex];
+            _SkeletonSpacePropagation(animationComponent, skeleton, localTransforms, skeleton->nRootBoneIndex);
+            _MapSkeletonTransformsToMesh(entityID, skeletonComponent, animationComponent);
         }
     }
 
-    void AnimationSystem::_UpdateSkeletonTransform(
+    void AnimationSystem::_SkeletonSpacePropagation(
         AnimationComponent& component,
         std::shared_ptr<SkeletonAsset> skeleton,
-        std::vector<XMFLOAT4X4>& matrices,
+        std::vector<XMFLOAT4X4>& localTransform,
         int skeletonIndex) {
 
         auto& skeletonBone = skeleton->Bones[skeletonIndex];
         for (auto& childIndex : skeletonBone.Children) {
-            XMStoreFloat4x4(&component.Matrix[childIndex], XMLoadFloat4x4(&matrices[childIndex]) * XMLoadFloat4x4(&component.Matrix[skeletonIndex]));
-            _UpdateSkeletonTransform(component, skeleton, matrices, childIndex);
+            XMStoreFloat4x4(&component.ModelTransforms[childIndex], XMLoadFloat4x4(&localTransform[childIndex]) * XMLoadFloat4x4(&component.ModelTransforms[skeletonIndex]));
+            _SkeletonSpacePropagation(component, skeleton, localTransform, childIndex);
         }
     }
 
-    void AnimationSystem::_UpdateMeshBonesTransform(EntityID entityID, const SkeletonComponent& skeleton, const AnimationComponent& animation) {
+    void AnimationSystem::_MapSkeletonTransformsToMesh(EntityID entityID, const SkeletonComponent& skeleton, const AnimationComponent& animation) {
         auto& entity = m_EntityManager->GetEntity(entityID);
         if (m_EntityManager->HasComponent<MeshComponent>(entityID)) {
             auto& meshComponent = entity.GetComponent<MeshComponent>();
             auto mesh = m_ResourceManager->GetMeshAsset(meshComponent.Path);
 
-            if (meshComponent.Matrix.empty()) {
-                meshComponent.Matrix.resize(mesh->Bones.size());
-                meshComponent.Offset.resize(mesh->Bones.size());
+            if (meshComponent.BoneTransforms.empty()) {
+                meshComponent.BoneTransforms.resize(mesh->Bones.size());
+                meshComponent.SkinningTransforms.resize(mesh->Bones.size());
             }
 
             auto& meshSkeletonMap = m_ResourceManager->GetMeshSkeletonMap(skeleton.Path, meshComponent.Path);
 
+            assert(mesh->Bones.size() == meshSkeletonMap.size());
+
             for (int i = 0; i < meshSkeletonMap.size(); i++) {
                 auto skeletonIndex = meshSkeletonMap[i];
                 if (skeletonIndex != -1)
-                    meshComponent.Matrix[i] = animation.Matrix[skeletonIndex];
+                    meshComponent.BoneTransforms[i] = animation.ModelTransforms[skeletonIndex];
                 else
-                    XMStoreFloat4x4(&meshComponent.Matrix[i], XMMatrixInverse(nullptr, XMLoadFloat4x4(&mesh->Bones[i].Offset)));
-                XMStoreFloat4x4(&meshComponent.Offset[i], XMLoadFloat4x4(&mesh->Bones[i].Offset) * XMLoadFloat4x4(&meshComponent.Matrix[i]));
+                    XMStoreFloat4x4(&meshComponent.BoneTransforms[i], XMMatrixInverse(nullptr, XMLoadFloat4x4(&mesh->Bones[i].InverseBindTransforms)));
+
+                XMStoreFloat4x4(&meshComponent.SkinningTransforms[i],
+                    XMLoadFloat4x4(&mesh->Bones[i].InverseBindTransforms) * XMLoadFloat4x4(&meshComponent.BoneTransforms[i]));
             }
         }
 
         for (auto childID : entity.GetChildren()) {
-            _UpdateMeshBonesTransform(childID, skeleton, animation);
+            _MapSkeletonTransformsToMesh(childID, skeleton, animation);
         }
     }
 }

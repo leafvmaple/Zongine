@@ -68,4 +68,11 @@ namespace Zongine {
         BONE_FLAG_AFFLINE = 1 << 0,
         BONE_FLAG_NO_UPDATE = 1 << 1,
     };
+
+    enum BlendMode {
+        BLEND_OPAQUE,
+        BLEND_MASKED,
+        BLEND_SOFTMASKED = 5,
+    };
+
 }

@@ -12,7 +12,7 @@ namespace Zongine {
     struct MeshComponent {
         std::string Path{};
 
-        std::vector<DirectX::XMFLOAT4X4> Matrix{};
-        std::vector<DirectX::XMFLOAT4X4> Offset{};
+        std::vector<DirectX::XMFLOAT4X4> BoneTransforms{};
+        std::vector<DirectX::XMFLOAT4X4> SkinningTransforms{};
     };
 }

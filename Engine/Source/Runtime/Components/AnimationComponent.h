@@ -7,6 +7,6 @@ namespace Zongine {
         std::string Path{};
         int nPlayTime{};
 
-        std::vector<DirectX::XMFLOAT4X4> Matrix{};
+        std::vector<DirectX::XMFLOAT4X4> ModelTransforms{};
     };
 }
