@@ -8,8 +8,11 @@ namespace Zongine {
 
         ::GetClientRect(m_Wnd, &rect);
 
-        m_Width = rect.right - rect.left;
-        m_Height = rect.bottom - rect.top;
+        // m_Width = rect.right - rect.left;
+        // m_Height = rect.bottom - rect.top;
+
+        m_Width = 1182;
+        m_Height = 852;
 
         SetWindowLongPtr(m_Wnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 

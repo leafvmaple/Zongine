@@ -10,6 +10,7 @@
 #include "Components/CameraComponent.h"
 #include "Components/SkeletonComponent.h"
 #include "Components/AnimationComponent.h"
+#include "Components/FlexibleComponent.h"
 
 namespace Zongine {
     template<typename ComponentType>
@@ -43,27 +44,17 @@ namespace Zongine {
         return entity;
     }
 
-    template const TransformComponent& Entity::GetComponent<TransformComponent>() const;
-    template const MeshComponent& Entity::GetComponent<MeshComponent>() const;
-    template const ShaderComponent& Entity::GetComponent<ShaderComponent>() const;
-    template const MaterialComponent& Entity::GetComponent<MaterialComponent>() const;
-    template const CameraComponent& Entity::GetComponent<CameraComponent>() const;
-    template const SkeletonComponent& Entity::GetComponent<SkeletonComponent>() const;
-    template const AnimationComponent& Entity::GetComponent<AnimationComponent>() const;
+#define DECLARE_COMPONENT(type) \
+    template const type& Entity::GetComponent<type>() const; \
+    template bool Entity::HasComponent<type>() const; \
+    template type& Entity::AddComponent(const type&);
 
-    template bool Entity::HasComponent<TransformComponent>() const;
-    template bool Entity::HasComponent<MeshComponent>() const;
-    template bool Entity::HasComponent<ShaderComponent>() const;
-    template bool Entity::HasComponent<MaterialComponent>() const;
-    template bool Entity::HasComponent<CameraComponent>() const;
-    template bool Entity::HasComponent<SkeletonComponent>() const;
-    template bool Entity::HasComponent<AnimationComponent>() const;
-
-    template TransformComponent& Entity::AddComponent(const TransformComponent&);
-    template MeshComponent& Entity::AddComponent(const MeshComponent&);
-    template ShaderComponent& Entity::AddComponent(const ShaderComponent&);
-    template MaterialComponent& Entity::AddComponent(const MaterialComponent&);
-    template CameraComponent& Entity::AddComponent(const CameraComponent&);
-    template SkeletonComponent& Entity::AddComponent(const SkeletonComponent&);
-    template AnimationComponent& Entity::AddComponent(const AnimationComponent&);
+    DECLARE_COMPONENT(TransformComponent);
+    DECLARE_COMPONENT(MeshComponent);
+    DECLARE_COMPONENT(ShaderComponent);
+    DECLARE_COMPONENT(MaterialComponent);
+    DECLARE_COMPONENT(CameraComponent);
+    DECLARE_COMPONENT(SkeletonComponent);
+    DECLARE_COMPONENT(AnimationComponent);
+    DECLARE_COMPONENT(FlexibleComponent);
 }

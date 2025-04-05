@@ -8,7 +8,7 @@
 #include "Utilities/StringUtils.h"
 
 #include "Components/TransformComponent.h"
-
+#include "Components/FlexibleComponent.h"
 
 #include "LAssert.h"
 
@@ -20,6 +20,8 @@
 
 #include "DirectXTex/DirectXTex/DirectXTex.h"
 #include "FX11/inc/d3dx11effect.h"
+
+#include <unordered_set>
 
 namespace Zongine {
     void AssetManager::LoadModel(Entity& entity, const std::string& path) {
@@ -40,6 +42,19 @@ namespace Zongine {
 
         entity.AddComponent<TransformComponent>(TransformComponent{});
         entity.AddComponent<MeshComponent>(MeshComponent { path });
+
+        auto mesh = GetMeshAsset(path);
+        std::vector<DriverInfo> driversInfo;
+        std::unordered_set<uint32_t> drivers;
+        for (const auto& bone : mesh->Bones) {
+            if (bone.Name.starts_with("fbr") && drivers.find(bone.nParentIndex) == drivers.end()) {
+                driversInfo.push_back(DriverInfo{ bone.nParentIndex });
+                drivers.insert(bone.nParentIndex);
+            }
+        }
+        if (!driversInfo.empty()) {
+            entity.AddComponent<FlexibleComponent>(FlexibleComponent{ driversInfo });
+        }
 
         if (TryReplaceExtension(filePath, ".JsonInspack")) {
             auto materialPath = filePath.string();
@@ -247,7 +262,9 @@ namespace Zongine {
     bool AssetManager::_LoadBone(MeshAsset* mesh, const MESH_SOURCE& source) {
         for (int i = 0; i < source.nBonesCount; i++) {
             const auto& boneSource = source.pBones[i];
-            auto& bone = mesh->Bones.emplace_back(BONE{ (UINT)i, boneSource.szName, boneSource.mOffset });
+            auto& bone = mesh->Bones.emplace_back(BONE{ 0, boneSource.szName, boneSource.mOffset });
+
+            XMStoreFloat4x4(&bone.PhysicsPoseTransform, XMMatrixInverse(nullptr, XMLoadFloat4x4(&boneSource.mInvPxPose)));
 
             mesh->BoneMap[boneSource.szName] = i;
         }
@@ -258,7 +275,9 @@ namespace Zongine {
             for (int j = 0; j < boneSource.nChildCount; j++) {
                 auto it = mesh->BoneMap.find(boneSource.pChildNames[j]);
                 if (it != mesh->BoneMap.end()) {
-                    bone.Children.push_back(it->second);
+                    int childIndex = it->second;
+                    bone.Children.push_back(childIndex);
+                    mesh->Bones[childIndex].nParentIndex = i;
                 }
             }
         }

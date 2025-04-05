@@ -10,6 +10,7 @@
 #include "Runtime/Components/CameraComponent.h"
 #include "Runtime/Components/SkeletonComponent.h"
 #include "Runtime/Components/AnimationComponent.h"
+#include "Runtime/Components/FlexibleComponent.h"
 
 #include <QHBoxLayout>
 #include <QSpinBox>
@@ -118,6 +119,20 @@ namespace Zongine {
             path->setText(0, "Path");
 
             AddPathProperty(animation.Path, path);
+        }
+        if (entity.HasComponent<FlexibleComponent>()) {
+            auto item = new QTreeWidgetItem(this);
+            item->setText(0, "Flexible");
+
+            auto flexible = entity.GetComponent<FlexibleComponent>();
+            auto drivers = new QTreeWidgetItem(item);
+            drivers->setText(0, "Drivers");
+
+            for (int i = 0; i < flexible.Drivers.size(); i++) {
+                auto bone = new QTreeWidgetItem(drivers);
+                bone->setText(0, QString("[%1]").arg(i));
+                AddNumberProperty(flexible.Drivers[i].index, bone);
+            }
         }
 
         expandAll();

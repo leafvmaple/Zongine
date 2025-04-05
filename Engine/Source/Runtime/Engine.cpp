@@ -7,6 +7,7 @@
 #include "Systems/CameraSystem.h"
 #include "Systems/TransformSystem.h"
 #include "Systems/AnimationSystem.h"
+#include "Systems/PhysicsSystem.h"
 
 #include "Components/CameraComponent.h"
 #include "components/MaterialComponent.h"
@@ -58,6 +59,7 @@ namespace Zongine {
         cameraSystem = std::make_unique<CameraSystem>();
         transformSystem = std::make_unique<TransformSystem>();
         animationSystem = std::make_unique<AnimationSystem>();
+        physicsSystem = std::make_unique<PhysicsSystem>();
 
         auto& root = entityManager->GetRootEntity();
         root.AddComponent<TransformComponent>(TransformComponent{});
@@ -99,6 +101,7 @@ namespace Zongine {
         cameraSystem->Initialize(managerList);
         transformSystem->Initialize(managerList);
         animationSystem->Initialize(managerList);
+        physicsSystem->Initialize(managerList);
 
         // eventManager->Emit("ENTITIY_UPDATE");
     }
@@ -115,6 +118,7 @@ namespace Zongine {
         inputSystem->Tick(nDeltaTime);
         animationSystem->Tick(nDeltaTime);
         transformSystem->Tick(nDeltaTime);
+        physicsSystem->Tick(nDeltaTime);
         cameraSystem->Tick(nDeltaTime);
         renderSystem->Tick(nDeltaTime);
 

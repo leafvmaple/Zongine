@@ -19,10 +19,12 @@ namespace Zongine {
     }
 
     void TransformSystem::Tick(float fDeltaTime) {
-        _UpdateWorldTransformRecursive(m_EntityManager->GetRootEntity(), XMMatrixIdentity());
+        DirectX::XMFLOAT4X4 identity{};
+        XMStoreFloat4x4(&identity, XMMatrixIdentity());
+        _UpdateWorldTransformRecursive(m_EntityManager->GetRootEntity(), identity);
     }
 
-    void TransformSystem::_UpdateWorldTransformRecursive(Entity entity, const XMMATRIX& parentMatrix) {
+    void TransformSystem::_UpdateWorldTransformRecursive(Entity entity, const DirectX::XMFLOAT4X4& parentMatrix) {
         auto& transformComponent = entity.GetComponent<TransformComponent>();
         auto& rotation = transformComponent.Rotation;
 
@@ -35,7 +37,7 @@ namespace Zongine {
             XMLoadFloat3(&transformComponent.Position)
         );
 
-        transformComponent.World = parentMatrix * localMatrix;
+        XMStoreFloat4x4(&transformComponent.World, XMLoadFloat4x4(&parentMatrix) * localMatrix);
 
         for (auto& id : entity.GetChildren()) {
             auto& child = m_EntityManager->GetEntity(id);
@@ -56,9 +58,10 @@ namespace Zongine {
                     }
                 }
                 auto& socket = mesh->Sockets[component.SocketIndex];
-                auto& boneMatrix = meshComponent.BoneTransforms[socket.nParentBoneIndex];
+                auto& modelTransform = meshComponent.BoneModelTransforms[socket.nParentBoneIndex];
 
-                targetMatrix = XMLoadFloat4x4(&socket.Offset) * XMLoadFloat4x4(&boneMatrix) *  transformComponent.World;
+                XMStoreFloat4x4(&targetMatrix,
+                    XMLoadFloat4x4(&socket.Offset) * XMLoadFloat4x4(&modelTransform) * XMLoadFloat4x4(&transformComponent.World));
             }
 
             _UpdateWorldTransformRecursive(child, targetMatrix);

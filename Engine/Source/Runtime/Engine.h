@@ -20,6 +20,7 @@ namespace Zongine {
     class CameraSystem;
     class TransformSystem;
     class AnimationSystem;
+    class PhysicsSystem;
 
     class EntityManager;
     class WindowManager;
@@ -48,6 +49,7 @@ namespace Zongine {
         std::unique_ptr<CameraSystem> cameraSystem{};
         std::unique_ptr<TransformSystem> transformSystem{};
         std::unique_ptr<AnimationSystem> animationSystem{};
+        std::unique_ptr<PhysicsSystem> physicsSystem{};
 
         std::shared_ptr<EntityManager> entityManager{};
         std::shared_ptr<WindowManager> windowManager{};

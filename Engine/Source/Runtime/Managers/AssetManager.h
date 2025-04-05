@@ -36,9 +36,10 @@ namespace Zongine {
     };
 
     struct BONE {
-        UINT nBoneIndex{};
+        UINT nParentIndex{};
         std::string Name{};
-        DirectX::XMFLOAT4X4 InverseBindTransforms{};
+        DirectX::XMFLOAT4X4 InversePoseTransform{};
+        DirectX::XMFLOAT4X4 PhysicsPoseTransform{};
         std::vector<UINT> Children{};
     };
 
@@ -151,7 +152,7 @@ namespace Zongine {
         std::vector<std::vector<AnimationSRT>> Clip{};
     };
 
-    struct ResourceManagerInfo {
+    struct AssetManagerDesc {
         std::shared_ptr<EntityManager> entityManager{};
         std::shared_ptr<DeviceManager> windowManager{};
         std::shared_ptr<EffectManager> effectManager{};
@@ -159,7 +160,7 @@ namespace Zongine {
 
     class AssetManager {
     public:
-        void Initialize(const ResourceManagerInfo& info) {
+        void Initialize(const AssetManagerDesc& info) {
             m_DeviceManager = info.windowManager;
             m_EntityManager = info.entityManager;
             m_EffectManager = info.effectManager;

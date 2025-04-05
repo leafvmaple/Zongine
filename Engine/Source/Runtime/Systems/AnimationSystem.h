@@ -32,7 +32,7 @@ namespace Zongine {
 
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_SkeletonMeshMap{};
 
-        void _SkeletonSpacePropagation(
+        void _UpdateSkeletonSpaceRecursive(
             AnimationComponent& component,
             std::shared_ptr<SkeletonAsset> skeleton,
             std::vector<XMFLOAT4X4>& localTransform,

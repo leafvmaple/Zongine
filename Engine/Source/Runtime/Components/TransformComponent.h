@@ -10,7 +10,7 @@ namespace Zongine {
     };
 
     struct TransformComponent {
-        DirectX::XMMATRIX World{};
+        DirectX::XMFLOAT4X4 World{};
 
         DirectX::XMFLOAT3 Position{};
         DirectX::XMFLOAT3 Rotation{};
