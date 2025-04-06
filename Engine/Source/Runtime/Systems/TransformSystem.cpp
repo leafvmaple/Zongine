@@ -1,6 +1,7 @@
 #include "TransformSystem.h"
 
-#include "Managers/Mananger.h"
+#include "Entities/EntityManager.h"
+#include "Managers/AssetManager.h"
 
 #include "Components/TransformComponent.h"
 #include "Components/MeshComponent.h"
@@ -11,17 +12,10 @@ namespace Zongine {
     using namespace DirectX;
     using Zongine::XMConvertToRadians;
 
-    bool TransformSystem::Initialize(const ManagerList& info) {
-        m_EntityManager = info.entityManager;
-        m_ResourceManger = info.assetManager;
-
-        return true;
-    }
-
     void TransformSystem::Tick(float fDeltaTime) {
         DirectX::XMFLOAT4X4 identity{};
         XMStoreFloat4x4(&identity, XMMatrixIdentity());
-        _UpdateWorldTransformRecursive(m_EntityManager->GetRootEntity(), identity);
+        _UpdateWorldTransformRecursive(EntityManager::GetInstance().GetRootEntity(), identity);
     }
 
     void TransformSystem::_UpdateWorldTransformRecursive(Entity entity, const DirectX::XMFLOAT4X4& parentMatrix) {
@@ -40,14 +34,14 @@ namespace Zongine {
         XMStoreFloat4x4(&transformComponent.World, XMLoadFloat4x4(&parentMatrix) * localMatrix);
 
         for (auto& id : entity.GetChildren()) {
-            auto& child = m_EntityManager->GetEntity(id);
+            auto& child = EntityManager::GetInstance().GetEntity(id);
             auto& component = child.GetComponent<TransformComponent>();
 
             auto targetMatrix = transformComponent.World;
 
             if (component.BindType == BIND_TYPE::Socket) {
                 auto& meshComponent = entity.GetComponent<MeshComponent>();
-                auto mesh = m_ResourceManger->GetMeshAsset(meshComponent.Path);
+                auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
                 if (component.SocketIndex == -1) {
                     auto it = std::lower_bound(mesh->Sockets.begin(), mesh->Sockets.end(), component.TargetName,
                         [](const SOCKET& socket, const std::string& value) {

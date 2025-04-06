@@ -98,17 +98,17 @@ namespace Zongine {
         },
     };
 
-    bool StateManager::Initialize(const StateManagerDesc& desc) {
-        auto pDevice = desc.pDevice->GetDevice();
+    bool StateManager::Initialize() {
+        auto desc = DeviceManager::GetInstance().GetDevice();
 
         for (int i = 0; i < RASTERIZER_STATE_COUNT; i++)
-            CHECK_HRESULT(pDevice->CreateRasterizerState(&RASTERIZER_STATE_LIST[i].Desc, m_Rasterizers[i].GetAddressOf()));
+            CHECK_HRESULT(desc->CreateRasterizerState(&RASTERIZER_STATE_LIST[i].Desc, m_Rasterizers[i].GetAddressOf()));
 
         for (int i = 0; i < SAMPLER_STATE_COUNT; i++)
-            CHECK_HRESULT(pDevice->CreateSamplerState(&SAMPLER_STATE_LIST[i].Desc, m_Samplers[i].GetAddressOf()));
+            CHECK_HRESULT(desc->CreateSamplerState(&SAMPLER_STATE_LIST[i].Desc, m_Samplers[i].GetAddressOf()));
 
         for (int i = 0; i < DEPTH_WRITE_COUNT; i++)
-            CHECK_HRESULT(pDevice->CreateDepthStencilState(&DEPTH_STENCIL_STATE_LIST[i].Desc, m_DepthStencils[i].GetAddressOf()));
+            CHECK_HRESULT(desc->CreateDepthStencilState(&DEPTH_STENCIL_STATE_LIST[i].Desc, m_DepthStencils[i].GetAddressOf()));
 
         return true;
     }

@@ -1,6 +1,10 @@
 #include "Engine.h"
 
-#include "Managers/Mananger.h"
+#include "Managers/WindowManager.h"
+#include "Managers/DeviceManager.h"
+#include "Managers/StateManager.h"
+#include "Managers/AssetManager.h"
+#include "Managers/EventManager.h"
 
 #include "Systems/RenderSystem.h"
 #include "Systems/InputSystem.h"
@@ -29,29 +33,11 @@ namespace Zongine {
     void Engine::Initialize(HWND wnd) {
         m_nLastTime = timeGetTime();
 
-        // Manager initialization
-        entityManager = std::make_shared<EntityManager>();
-        windowManager = std::make_shared<WindowManager>();
-        deviceManager = std::make_shared<DeviceManager>();
-        auto assetManager = std::make_shared<AssetManager>();
-        auto stateManager = std::make_shared<StateManager>();
-        auto effectManager = std::make_shared<EffectManager>();
-        eventManager = std::make_shared<EventManager>();
+        auto& assetManager = AssetManager::GetInstance();
 
-        ManagerList managerList{
-            entityManager,
-            windowManager,
-            deviceManager,
-            assetManager,
-            stateManager,
-            effectManager
-        };
-
-        windowManager->Initialize(wnd);
-        deviceManager->Initialize({ windowManager });
-        assetManager->Initialize({ entityManager, deviceManager, effectManager });
-        stateManager->Initialize({ deviceManager });
-        effectManager->Initialize({ deviceManager });
+        WindowManager::GetInstance().Initialize(wnd);
+        DeviceManager::GetInstance().Initialize();
+        StateManager::GetInstance().Initialize();
 
         // System initialization
         renderSystem = std::make_unique<RenderSystem>();
@@ -61,7 +47,7 @@ namespace Zongine {
         animationSystem = std::make_unique<AnimationSystem>();
         physicsSystem = std::make_unique<PhysicsSystem>();
 
-        auto& root = entityManager->GetRootEntity();
+        auto& root = EntityManager::GetInstance().GetRootEntity();
         root.AddComponent<TransformComponent>(TransformComponent{});
 
         auto& camera = root.AddChild("Camera");
@@ -70,7 +56,7 @@ namespace Zongine {
         cameraTransform.Position = { 0.0f, 40.0f, -50.0f };
 
         auto& player = root.AddChild("Player");
-        assetManager->LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
+        assetManager.LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
         player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b01ty普通待机01.ani" });
 
         auto& playerTransform = root.GetComponent<TransformComponent>();
@@ -82,26 +68,22 @@ namespace Zongine {
         auto& leg = player.AddChild("Leg");
         auto& belt = player.AddChild("Belt");
 
-        assetManager->LoadMesh(head, "data/source/player/F1/部件/F1_0000_head.mesh");
-        assetManager->LoadMesh(body, "data/source/player/F1/部件/F1_2206_body.mesh");
-        assetManager->LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
-        assetManager->LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
-        assetManager->LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
+        assetManager.LoadMesh(head, "data/source/player/F1/部件/F1_0000_head.mesh");
+        assetManager.LoadMesh(body, "data/source/player/F1/部件/F1_2206_body.mesh");
+        assetManager.LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
+        assetManager.LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
+        assetManager.LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
 
         auto& face = head.AddChild("Face");
         auto& hat = head.AddChild("Hat");
         auto& weapon = hand.AddChild("Weapon");
 
-        assetManager->LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
-        assetManager->LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
-        assetManager->LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
+        assetManager.LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
+        assetManager.LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
+        assetManager.LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
 
-        renderSystem->Initialize(managerList);
-        inputSystem->Initialize(managerList);
-        cameraSystem->Initialize(managerList);
-        transformSystem->Initialize(managerList);
-        animationSystem->Initialize(managerList);
-        physicsSystem->Initialize(managerList);
+        inputSystem->Initialize();
+        cameraSystem->Initialize();
 
         // eventManager->Emit("ENTITIY_UPDATE");
     }
@@ -126,19 +108,19 @@ namespace Zongine {
     }
 
     void Engine::Resize(int width, int height) {
-        windowManager->Resize(width, height);
-        deviceManager->Resize();
+        WindowManager::GetInstance().Resize(width, height);
+        DeviceManager::GetInstance().Resize();
     }
 
     Entity& Engine::GetRootEntity() {
-        return entityManager->GetEntity(0);
+        return EntityManager::GetInstance().GetEntity(0);
     }
 
     Entity& Engine::GetEntity(EntityID id) {
-        return entityManager->GetEntity(id);
+        return EntityManager::GetInstance().GetEntity(id);
     }
 
     void Engine::SubscribeEvent(const std::string& eventName, const std::function<void()>& callback) {
-        eventManager->Subscribe(eventName, callback);
+        EventManager::GetInstance().Subscribe(eventName, callback);
     }
 }

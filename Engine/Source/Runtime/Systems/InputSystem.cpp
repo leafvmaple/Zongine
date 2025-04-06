@@ -1,12 +1,10 @@
 #include "InputSystem.h"
 
-#include "Managers/Mananger.h"
+#include "Managers/WindowManager.h"
 
 namespace Zongine {
-    bool InputSystem::Initialize(const ManagerList& info) {
-        info.windowManager->AddEventCallback(std::bind(&InputSystem::OnWindowEvent, this, std::placeholders::_1));
-
-        m_WindowManager = info.windowManager;
+    bool InputSystem::Initialize() {
+        WindowManager::GetInstance().AddEventCallback(std::bind(&InputSystem::OnWindowEvent, this, std::placeholders::_1));
 
         return true;
     }
@@ -21,7 +19,7 @@ namespace Zongine {
             switch (event.wParam)
             {
             case VK_ESCAPE:
-                DestroyWindow(m_WindowManager->GetWindowHandle());
+                DestroyWindow(WindowManager::GetInstance().GetWindowHandle());
                 break;
             default:
                 break;

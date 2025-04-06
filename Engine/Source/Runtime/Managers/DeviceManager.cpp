@@ -16,13 +16,11 @@ namespace Zongine {
         D3D_FEATURE_LEVEL_11_1,
     };
 
-    void DeviceManager::Initialize(const DeviceManagerDesc& desc) {
+    void DeviceManager::Initialize() {
         UINT uCreateDeviceFlag{};
 
-        m_WindowManager = desc.windowManager;
-
-        auto width = m_WindowManager->GetWidth();
-        auto height = m_WindowManager->GetHeight();
+        auto width = WindowManager::GetInstance().GetWidth();
+        auto height = WindowManager::GetInstance().GetHeight();
 
 #if defined(DEBUG) || defined(_DEBUG)  
         uCreateDeviceFlag |= D3D11_CREATE_DEVICE_DEBUG;
@@ -34,7 +32,7 @@ namespace Zongine {
             m_piDevice.GetAddressOf(), nullptr, m_piImmediateContext.GetAddressOf()
         );
 
-        _CreateSwapChain(width, height, m_WindowManager->GetWindowHandle());
+        _CreateSwapChain(width, height, WindowManager::GetInstance().GetWindowHandle());
         _CreateViewport(width, height);
     }
 
@@ -42,8 +40,8 @@ namespace Zongine {
         if (m_piSwapChain) {
             ComPtr<ID3D11Texture2D> buffer{};
 
-            auto width = m_WindowManager->GetWidth();
-            auto height = m_WindowManager->GetHeight();
+            auto width = WindowManager::GetInstance().GetWidth();
+            auto height = WindowManager::GetInstance().GetHeight();
 
             m_piSwapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
 

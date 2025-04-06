@@ -1,28 +1,23 @@
 #include "AnimationSystem.h"
 
 #include "Include/Maths.h"
-#include "Managers/Mananger.h"
+
+#include "Entities/EntityManager.h"
+#include "Managers/AssetManager.h"
 
 #include "Components/AnimationComponent.h"
 #include "Components/SkeletonComponent.h"
 #include "Components/MeshComponent.h"
 
 namespace Zongine {
-    bool AnimationSystem::Initialize(const ManagerList& info) {
-        m_EntityManager = info.entityManager;
-        m_ResourceManager = info.assetManager;
-
-        return true;
-    }
-
     void AnimationSystem::Tick(int nDeltaTime) {
-        auto& entities = m_EntityManager->GetEntities<AnimationComponent>();
+        auto& entities = EntityManager::GetInstance().GetEntities<AnimationComponent>();
         for (auto& [entityID, animationComponent] : entities) {
-            auto& entity = m_EntityManager->GetEntity(entityID);
+            auto& entity = EntityManager::GetInstance().GetEntity(entityID);
             auto& skeletonComponent = entity.GetComponent<SkeletonComponent>();
 
-            auto animation = m_ResourceManager->GetAnimationAsset(animationComponent.Path);
-            auto skeleton = m_ResourceManager->GetSkeletonAsset(skeletonComponent.Path);
+            auto animation = AssetManager::GetInstance().GetAnimationAsset(animationComponent.Path);
+            auto skeleton = AssetManager::GetInstance().GetSkeletonAsset(skeletonComponent.Path);
 
             animationComponent.nPlayTime += nDeltaTime;
             uint64_t nAnimationTime = animationComponent.nPlayTime % animation->AnimationLength;
@@ -73,17 +68,17 @@ namespace Zongine {
     }
 
     void AnimationSystem::_MapSkeletonTransformsToMesh(EntityID entityID, const SkeletonComponent& skeleton, const AnimationComponent& animation) {
-        auto& entity = m_EntityManager->GetEntity(entityID);
-        if (m_EntityManager->HasComponent<MeshComponent>(entityID)) {
+        auto& entity = EntityManager::GetInstance().GetEntity(entityID);
+        if (entity.HasComponent<MeshComponent>()) {
             auto& meshComponent = entity.GetComponent<MeshComponent>();
-            auto mesh = m_ResourceManager->GetMeshAsset(meshComponent.Path);
+            auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
 
             if (meshComponent.BoneModelTransforms.empty()) {
                 meshComponent.BoneModelTransforms.resize(mesh->Bones.size());
                 meshComponent.SkinningTransforms.resize(mesh->Bones.size());
             }
 
-            auto& meshSkeletonMap = m_ResourceManager->GetMeshSkeletonMap(skeleton.Path, meshComponent.Path);
+            auto& meshSkeletonMap = AssetManager::GetInstance().GetMeshSkeletonMap(skeleton.Path, meshComponent.Path);
 
             assert(mesh->Bones.size() == meshSkeletonMap.size());
 

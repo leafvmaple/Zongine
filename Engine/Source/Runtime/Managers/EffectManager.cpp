@@ -97,10 +97,6 @@ namespace Zongine {
         std::unique_ptr<std::vector<char>> m_pBuffer;
     };
 
-    void EffectManager::Initialize(const EffectManagerInfo& info) {
-        m_DeviceManager = info.deviceManager;
-    }
-
     ComPtr<ID3DX11Effect> EffectManager::LoadEffect(RUNTIME_MACRO macro, const std::string& path) {
         DWORD nShaderFlags = 0;
         ComPtr<ID3D10Blob> compiledShader;
@@ -110,7 +106,7 @@ namespace Zongine {
         nShaderFlags |= D3D10_SHADER_DEBUG;
         nShaderFlags |= D3D10_SHADER_SKIP_OPTIMIZATION;
 #endif
-        auto device = m_DeviceManager->GetDevice();
+        auto device = DeviceManager::GetInstance().GetDevice();
 
         auto& effect = m_Effects[macro][path];
         if (!effect) {

@@ -22,11 +22,6 @@ namespace Zongine {
     class AnimationSystem;
     class PhysicsSystem;
 
-    class EntityManager;
-    class WindowManager;
-    class DeviceManager;
-    class EventManager;
-
     class Engine {
     public:
         Engine();
@@ -50,11 +45,6 @@ namespace Zongine {
         std::unique_ptr<TransformSystem> transformSystem{};
         std::unique_ptr<AnimationSystem> animationSystem{};
         std::unique_ptr<PhysicsSystem> physicsSystem{};
-
-        std::shared_ptr<EntityManager> entityManager{};
-        std::shared_ptr<WindowManager> windowManager{};
-        std::shared_ptr<DeviceManager> deviceManager{};
-        std::shared_ptr<EventManager> eventManager{};
 
         bool m_bRunning{ true };
         uint64_t m_nLastTime{};

@@ -110,7 +110,7 @@ namespace Zongine {
             TryReplaceExtension(filePath, ".dds");
 
             auto extension = filePath.extension();
-            auto device = m_DeviceManager->GetDevice();
+            auto device = DeviceManager::GetInstance().GetDevice();
 
             if (extension == ".dds")
                 LoadFromDDSFile(filePath.wstring().c_str(), DDS_FLAGS_NONE, nullptr, LoadedImage);
@@ -217,8 +217,8 @@ namespace Zongine {
             SubsetShader subsetShader{};
 
             subsetShader.ShaderPath = path;
-            subsetShader.Effect = m_EffectManager->LoadEffect(macro, path);
-            m_EffectManager->LoadVariables(subsetShader.Effect, subsetShader.Variables);
+            subsetShader.Effect = EffectManager::GetInstance().LoadEffect(macro, path);
+            EffectManager::GetInstance().LoadVariables(subsetShader.Effect, subsetShader.Variables);
 
             if (!constantBuffer)
                 constantBuffer = subsetShader.Effect->GetConstantBufferByName("MODEL_MATRIX");
@@ -310,7 +310,7 @@ namespace Zongine {
 
         mesh->Vertex.uStride = source.nVertexSize;
 
-        m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh->Vertex.Buffer.GetAddressOf());
+        DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, &data, mesh->Vertex.Buffer.GetAddressOf());
 
         return true;
     }
@@ -332,7 +332,7 @@ namespace Zongine {
 
         mesh->Index.eFormat = DXGI_FORMAT_R32_UINT;
 
-        m_DeviceManager->GetDevice()->CreateBuffer(&desc, &data, mesh->Index.Buffer.GetAddressOf());
+        DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, &data, mesh->Index.Buffer.GetAddressOf());
 
         return true;
     }

@@ -7,6 +7,7 @@
 #include <typeindex>
 #include <cassert>
 
+#include "../Managers/Mananger.h"
 #include "../Components/NameComponent.h"
 
 namespace Zongine {
@@ -46,7 +47,7 @@ namespace Zongine {
         }
     };
 
-    class EntityManager {
+    class EntityManager : public SingleManager<EntityManager> {
     private:
         EntityID m_NextEntityID{};
         std::unordered_map<EntityID, Entity> m_Entities{};

@@ -4,6 +4,8 @@
 #include <functional>
 #include <vector>
 
+#include "Managers/Mananger.h"
+
 namespace Zongine {
     struct WindowEvent {
         HWND hWnd{};
@@ -14,9 +16,7 @@ namespace Zongine {
 
     using EventCallback = std::function<void(const WindowEvent&)>;
 
-    struct WindowDesc;
-
-    class WindowManager {
+    class WindowManager : public SingleManager<WindowManager> {
     public:
         void Initialize(HWND wnd);
         void Resize(int nWidth, int nHeight);

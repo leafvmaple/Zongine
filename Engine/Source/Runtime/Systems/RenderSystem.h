@@ -1,7 +1,6 @@
 #pragma once
 
 #include <d3d11.h>
-#include <memory>
 #include <vector>
 #include <wrl/client.h>
 
@@ -10,24 +9,10 @@
 #include "components/CameraComponent.h"
 
 namespace Zongine {
-    struct ManagerList;
-
-    class EntityManager;
-    class DeviceManager;
-    class ShaderManager;
-    class StateManager;
-    class EffectManager;
-    class AssetManager;
-
     using Microsoft::WRL::ComPtr;
-
-    class RenderEntity {
-
-    };
 
     class RenderSystem {
     public:
-        bool Initialize(const ManagerList& info);
         void Tick(float fDeltaTime);
 
     private:
@@ -45,13 +30,6 @@ namespace Zongine {
             XMMATRIX CameraView;
             XMMATRIX CameraProject;
         };
-
-        std::shared_ptr<EntityManager> m_EntityManager{};
-        std::shared_ptr<DeviceManager> m_DeviceManager{};
-        std::shared_ptr<ShaderManager> m_ShaderManager{};
-        std::shared_ptr<StateManager> m_StateManager{};
-        std::shared_ptr<EffectManager> m_EffectManager{};
-        std::shared_ptr<AssetManager> m_ResourceManger{};
 
         std::vector<Entity> m_RenderQueue{};
 

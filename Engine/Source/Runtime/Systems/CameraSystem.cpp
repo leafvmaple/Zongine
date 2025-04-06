@@ -1,6 +1,8 @@
 #include "CameraSystem.h"
 
-#include "Managers/Mananger.h"
+#include "Entities/EntityManager.h"
+#include "Managers/DeviceManager.h"
+#include "Managers/WindowManager.h"
 
 #include "Components/CameraComponent.h"
 #include "Components/TransformComponent.h"
@@ -9,13 +11,11 @@
 using namespace DirectX;
 
 namespace Zongine {
-    bool CameraSystem::Initialize(const ManagerList& info) {
+    bool CameraSystem::Initialize() {
         D3D11_BUFFER_DESC bufferDesc{};
         ComPtr<ID3D11Buffer> buffer{};
 
-        m_EntityManager = info.entityManager;
-
-        auto device = info.deviceManager->GetDevice();
+        auto device = DeviceManager::GetInstance().GetDevice();
 
         bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
         bufferDesc.ByteWidth = sizeof(CAMERA);
@@ -24,11 +24,11 @@ namespace Zongine {
 
         device->CreateBuffer(&bufferDesc, nullptr, buffer.GetAddressOf());
 
-        auto& entities = m_EntityManager->GetEntities<CameraComponent>();
+        auto& entities = EntityManager::GetInstance().GetEntities<CameraComponent>();
         for (auto& [entityID, cameraComponent] : entities) {
             // cameraComponent.Perspective.fFovAngleY = XM_PIDIV2;
             cameraComponent.Perspective.fFovAngleY = XMConvertToRadians(30);
-            cameraComponent.Perspective.fAspectRatio = (float)info.windowManager->GetWidth() / info.windowManager->GetHeight();
+            cameraComponent.Perspective.fAspectRatio = (float)WindowManager::GetInstance().GetWidth() / WindowManager::GetInstance().GetHeight();
             cameraComponent.Buffer = buffer;
         }
 
@@ -36,9 +36,9 @@ namespace Zongine {
     }
 
     void CameraSystem::Tick(float fDeltaTime) {
-        auto& entities = m_EntityManager->GetEntities<CameraComponent>();
+        auto& entities = EntityManager::GetInstance().GetEntities<CameraComponent>();
         for (auto& [entityID, cameraComponent] : entities) {
-            auto& entity = m_EntityManager->GetEntity(entityID);
+            auto& entity = EntityManager::GetInstance().GetEntity(entityID);
             auto& transformComponent = entity.GetComponent<TransformComponent>();
 
             auto& cameraInfo = cameraComponent.Camera;

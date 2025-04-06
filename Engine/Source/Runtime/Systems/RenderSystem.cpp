@@ -1,6 +1,10 @@
 #include "RenderSystem.h"
 
-#include "Managers/Mananger.h"
+#include "Entities/EntityManager.h"
+#include "Managers/DeviceManager.h"
+#include "Managers/AssetManager.h"
+#include "Managers/EffectManager.h"
+#include "Managers/StateManager.h"
 
 #include "Components/ShaderComponent.h"
 #include "Components/MeshComponent.h"
@@ -20,27 +24,17 @@ using namespace DirectX;
 constexpr int SHARED_BUFFER_SLOT = 13;
 
 namespace Zongine {
-    bool RenderSystem::Initialize(const ManagerList& info) {
-        m_EntityManager = info.entityManager;
-        m_DeviceManager = info.deviceManager;
-        m_StateManager = info.stateManager;
-        m_EffectManager = info.effectManager;
-        m_ResourceManger = info.assetManager;
-
-        return true;
-    }
-
     void RenderSystem::Tick(float fDeltaTime) {
-        auto swapChain = m_DeviceManager->GetSwapChain();
-        auto context = m_DeviceManager->GetImmediateContext();
-        auto renderTargetView = m_DeviceManager->GetRenderTargetView();
-        auto depthStencilView = m_DeviceManager->GetDepthStencilView();
+        auto swapChain = DeviceManager::GetInstance().GetSwapChain();
+        auto context = DeviceManager::GetInstance().GetImmediateContext();
+        auto renderTargetView = DeviceManager::GetInstance().GetRenderTargetView();
+        auto depthStencilView = DeviceManager::GetInstance().GetDepthStencilView();
 
         context->ClearRenderTargetView(renderTargetView.Get(), reinterpret_cast<const float*>(&Colors::White));
         context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
         m_RenderQueue.clear();
-        _UpdateRenderQueue(m_EntityManager->GetRootEntity());
+        _UpdateRenderQueue(EntityManager::GetInstance().GetRootEntity());
 
         for (auto& entity: m_RenderQueue) {
             TickEntity(context, entity);
@@ -57,14 +51,14 @@ namespace Zongine {
         auto& shaderComponent = entity.GetComponent<ShaderComponent>();
         auto& materialComponent = entity.GetComponent<MaterialComponent>();
 
-        auto mesh = m_ResourceManger->GetMeshAsset(meshComponent.Path);
-        auto material = m_ResourceManger->GetMaterialAsset(materialComponent.Path);
+        auto mesh =  AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
+        auto material = AssetManager::GetInstance().GetMaterialAsset(materialComponent.Path);
 
         auto runtimeMacro = RUNTIME_MACRO_MESH;
         if (mesh->InputLayout == INPUT_LAYOUT_CI_SKINMESH)
             runtimeMacro = RUNTIME_MACRO_SKIN_MESH;
 
-        auto shader = m_ResourceManger->GetShaderAsset(runtimeMacro, shaderComponent.Paths);
+        auto shader = AssetManager::GetInstance().GetShaderAsset(runtimeMacro, shaderComponent.Paths);
 
         shader->TransformMatrix->SetMatrix(reinterpret_cast<const float*>(&transformComponent.World));
         shader->BonesMatrix->SetMatrixArray(reinterpret_cast<const float*>(meshComponent.SkinningTransforms.data()), 0, meshComponent.SkinningTransforms.size());
@@ -72,7 +66,7 @@ namespace Zongine {
         auto& vertexBuffer = mesh->Vertex;
         auto& indexBuffer = mesh->Index;
 
-        auto inputLayout = m_EffectManager->GetInputLayout(runtimeMacro);
+        auto inputLayout = EffectManager::GetInstance().GetInputLayout(runtimeMacro);
 
         context->IASetInputLayout(inputLayout.Get());
         context->IASetVertexBuffers(0, 1, vertexBuffer.Buffer.GetAddressOf(), &vertexBuffer.uStride, &vertexBuffer.uOffset);
@@ -91,14 +85,14 @@ namespace Zongine {
                 it->second->SetResource(texture.Texture.Get());
             }
 
-            auto rasterizerState = m_StateManager->GetRasterizerState(subsetMaterial.Rasterizer);
+            auto rasterizerState = StateManager::GetInstance().GetRasterizerState(subsetMaterial.Rasterizer);
             context->RSSetState(rasterizerState.Get());
 
             if (m_CameraBuffer)
                 subsetShader.Effect->GetConstantBufferByName("CAMERA_MATRIX")->SetConstantBuffer(m_CameraBuffer.Get());
             subsetShader.SubsetConst->SetRawValue(&subsetMaterial.Const, 0, sizeof(SKIN_SUBSET_CONST));
 
-            auto effectPass = m_EffectManager->GetEffectPass(subsetShader.Effect, shader->Pass);
+            auto effectPass = EffectManager::GetInstance().GetEffectPass(subsetShader.Effect, shader->Pass);
             effectPass->Apply(0, context.Get());
 
             context->DrawIndexed(subsetMesh.uIndexCount, subsetMesh.uStartIndex, 0);
@@ -106,13 +100,13 @@ namespace Zongine {
     }
 
     void RenderSystem::_UpdateRenderQueue(Entity& entity) {
-        if (m_EntityManager->HasComponent<MeshComponent>(entity.GetID())) {
+        if (EntityManager::GetInstance().HasComponent<MeshComponent>(entity.GetID())) {
             m_RenderQueue.push_back(entity);
         }
 
-        if (m_EntityManager->HasComponent<CameraComponent>(entity.GetID())) {
+        if (EntityManager::GetInstance().HasComponent<CameraComponent>(entity.GetID())) {
             D3D11_MAPPED_SUBRESOURCE resource{};
-            auto context = m_DeviceManager->GetImmediateContext();
+            auto context = DeviceManager::GetInstance().GetImmediateContext();
 
             auto& cameraComponent = entity.GetComponent<CameraComponent>();
             m_CameraBuffer = cameraComponent.Buffer;
@@ -123,7 +117,7 @@ namespace Zongine {
         }
 
         for (auto& id : entity.GetChildren()) {
-            auto& child = m_EntityManager->GetEntity(id);
+            auto& child = EntityManager::GetInstance().GetEntity(id);
 
             _UpdateRenderQueue(child);
         }

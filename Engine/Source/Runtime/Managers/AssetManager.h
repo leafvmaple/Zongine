@@ -2,6 +2,8 @@
 
 #include "Include/Enums.h"
 
+#include "Mananger.h"
+
 #include "Utilities/StringUtils.h"
 
 #include "Components/MeshComponent.h"
@@ -9,7 +11,6 @@
 #include "Components/MaterialComponent.h"
 #include "Components/SkeletonComponent.h"
 
-#include <memory>
 #include <string>
 #include <unordered_map>
 #include <array>
@@ -22,9 +23,6 @@ struct MESH_SOURCE;
 
 namespace Zongine {
     class Entity;
-    class EntityManager;
-    class DeviceManager;
-    class EffectManager;
 
     using Microsoft::WRL::ComPtr;
 
@@ -152,20 +150,8 @@ namespace Zongine {
         std::vector<std::vector<AnimationSRT>> Clip{};
     };
 
-    struct AssetManagerDesc {
-        std::shared_ptr<EntityManager> entityManager{};
-        std::shared_ptr<DeviceManager> windowManager{};
-        std::shared_ptr<EffectManager> effectManager{};
-    };
-
-    class AssetManager {
+    class AssetManager : public SingleManager<AssetManager> {
     public:
-        void Initialize(const AssetManagerDesc& info) {
-            m_DeviceManager = info.windowManager;
-            m_EntityManager = info.entityManager;
-            m_EffectManager = info.effectManager;
-        };
-
         void LoadModel(Entity& entity, const std::string& path);
         void LoadMesh(Entity& entity, const std::string& path);
         void LoadMesh(Entity& entity, const std::string& path, const std::string& socketName);
@@ -237,10 +223,6 @@ namespace Zongine {
         bool _LoadSocket(MeshAsset* mesh, const MESH_SOURCE& source);
         bool _LoadVertexBuffer(MeshAsset* mesh, const MESH_SOURCE& source);
         bool _LoadIndexBuffer(MeshAsset* mesh, const MESH_SOURCE& source);
-
-        std::shared_ptr<DeviceManager> m_DeviceManager{};
-        std::shared_ptr<EntityManager> m_EntityManager{};
-        std::shared_ptr<EffectManager> m_EffectManager{};
 
         // Cache
         std::unordered_map<std::string, std::shared_ptr<MeshAsset>> m_MeshCache{};

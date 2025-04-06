@@ -1,12 +1,14 @@
 #pragma once
 
+#include "Mananger.h"
+
 #include <unordered_map>
 #include <string>
 #include <vector>
 #include <functional>
 
 namespace Zongine {
-    class EventManager {
+    class EventManager : public SingleManager<EventManager> {
     public:
         EventManager() = default;
         ~EventManager() = default;

@@ -3,8 +3,8 @@
 #include "Include/Types.h"
 
 #include <string>
-#include <vector>
 #include <memory>
+#include <vector>
 #include <DirectXMath.h>
 #include <unordered_map>
 
@@ -18,18 +18,11 @@ namespace Zongine {
     struct SkeletonComponent;
     struct AnimationComponent;
 
-    class EntityManager;
-    class AssetManager;
-
     class AnimationSystem {
     public:
-        bool Initialize(const ManagerList& info);
         void Tick(int nDeltaTime);
 
     private:
-        std::shared_ptr<EntityManager> m_EntityManager{};
-        std::shared_ptr<AssetManager> m_ResourceManager{};
-
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_SkeletonMeshMap{};
 
         void _UpdateSkeletonSpaceRecursive(

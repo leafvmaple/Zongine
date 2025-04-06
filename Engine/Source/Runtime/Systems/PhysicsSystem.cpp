@@ -1,25 +1,23 @@
 #include "PhysicsSystem.h"
 
+#include "Entities/EntityManager.h"
+#include "Managers/AssetManager.h"
+
 #include "Components/FlexibleComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/MeshComponent.h"
 
 namespace Zongine {
-    bool PhysicsSystem::Initialize(const ManagerList& info) {
-        m_EntityManager = info.entityManager;
-        m_AssetManager = info.assetManager;
-        return true;
-    }
     void PhysicsSystem::Tick(float fDeltaTime) {
         // Physics simulation logic goes here
 
-        auto& entities = m_EntityManager->GetEntities<FlexibleComponent>();
+        auto& entities = EntityManager::GetInstance().GetEntities<FlexibleComponent>();
         for (auto& [entityID, flexibleComponent] : entities) {
-            auto& entity = m_EntityManager->GetEntity(entityID);
+            auto& entity = EntityManager::GetInstance().GetEntity(entityID);
             auto& transformComponent = entity.GetComponent<TransformComponent>();
             auto& meshComponent = entity.GetComponent<MeshComponent>();
 
-            auto mesh = m_AssetManager->GetMeshAsset(meshComponent.Path);
+            auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
 
             for (auto& driver : flexibleComponent.Drivers) {
                 if (driver.driven.empty())
