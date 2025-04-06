@@ -18,7 +18,7 @@ namespace Zongine {
         auto device = DeviceManager::GetInstance().GetDevice();
 
         bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-        bufferDesc.ByteWidth = sizeof(CAMERA);
+        bufferDesc.ByteWidth = sizeof(CAMERA_CONST);
         bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
@@ -41,8 +41,8 @@ namespace Zongine {
             auto& entity = EntityManager::GetInstance().GetEntity(entityID);
             auto& transformComponent = entity.GetComponent<TransformComponent>();
 
-            auto& cameraInfo = cameraComponent.Camera;
             auto& perspective = cameraComponent.Perspective;
+            auto& matrix = cameraComponent.Matrix;
 
             XMMATRIX rotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(
                 XMConvertToRadians(transformComponent.Rotation.x), // Pitch
@@ -50,13 +50,13 @@ namespace Zongine {
                 XMConvertToRadians(transformComponent.Rotation.z)  // Roll
             );
 
-            cameraInfo.CameraView = XMMatrixLookAtLH(
+            XMStoreFloat4x4(&matrix.CameraView, XMMatrixLookAtLH(
                 XMLoadFloat3(&transformComponent.Position),
                 XMLoadFloat3(&transformComponent.Position) + XMVector3Normalize(rotationMatrix.r[2]),
-                XMVector3Normalize(rotationMatrix.r[1])
+                XMVector3Normalize(rotationMatrix.r[1]))
             );
 
-            cameraInfo.CameraProject = DirectX::XMMatrixPerspectiveFovLH(perspective.fFovAngleY, perspective.fAspectRatio, 1.0f, 1000.0f);
+            XMStoreFloat4x4(&matrix.CameraProject, DirectX::XMMatrixPerspectiveFovLH(perspective.fFovAngleY, perspective.fAspectRatio, 1.0f, 1000.0f));
         }
     }
 }

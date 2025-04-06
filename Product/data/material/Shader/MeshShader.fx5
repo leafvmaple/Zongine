@@ -1,6 +1,6 @@
 static const int MAX_NUM_BONE_PER_SET = 158;
 
-cbuffer MODEL_MATRIX
+cbuffer MODEL_CONST
 {
     row_major float4x4 MATRIX_M;
 };

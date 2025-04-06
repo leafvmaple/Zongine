@@ -9,8 +9,6 @@
 
 namespace Zongine {
     void PhysicsSystem::Tick(float fDeltaTime) {
-        // Physics simulation logic goes here
-
         auto& entities = EntityManager::GetInstance().GetEntities<FlexibleComponent>();
         for (auto& [entityID, flexibleComponent] : entities) {
             auto& entity = EntityManager::GetInstance().GetEntity(entityID);
@@ -26,6 +24,7 @@ namespace Zongine {
                 auto driverInverseTransform = XMLoadFloat4x4(&mesh->Bones[driver.index].InversePoseTransform);
                 auto driverModelTransform = XMLoadFloat4x4(&meshComponent.BoneModelTransforms[driver.index]);
 
+                // TODO: Use World Transform
                 for (auto drivenIndex : driver.driven) {
                     auto& driven = mesh->Bones[drivenIndex];
 

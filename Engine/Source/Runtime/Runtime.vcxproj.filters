@@ -173,5 +173,14 @@
     <ClInclude Include="Systems\PhysicsSystem.h">
       <Filter>Source Files\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="Include\AssetData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Const.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\LandscapeComponent.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

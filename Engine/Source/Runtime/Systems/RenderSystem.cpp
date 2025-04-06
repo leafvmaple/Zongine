@@ -52,7 +52,7 @@ namespace Zongine {
         auto& materialComponent = entity.GetComponent<MaterialComponent>();
 
         auto mesh =  AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
-        auto material = AssetManager::GetInstance().GetMaterialAsset(materialComponent.Path);
+        auto material = AssetManager::GetInstance().GetModelMaterialAsset(materialComponent.Path);
 
         auto runtimeMacro = RUNTIME_MACRO_MESH;
         if (mesh->InputLayout == INPUT_LAYOUT_CI_SKINMESH)
@@ -106,13 +106,14 @@ namespace Zongine {
 
         if (EntityManager::GetInstance().HasComponent<CameraComponent>(entity.GetID())) {
             D3D11_MAPPED_SUBRESOURCE resource{};
+
             auto context = DeviceManager::GetInstance().GetImmediateContext();
 
             auto& cameraComponent = entity.GetComponent<CameraComponent>();
             m_CameraBuffer = cameraComponent.Buffer;
 
             context->Map(m_CameraBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-            memcpy(resource.pData, &cameraComponent.Camera, sizeof(CAMERA));
+            memcpy(resource.pData, &cameraComponent.Matrix, sizeof(CAMERA_CONST));
             context->Unmap(m_CameraBuffer.Get(), 0);
         }
 

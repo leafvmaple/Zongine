@@ -9,14 +9,17 @@
 
 #include "Components/TransformComponent.h"
 #include "Components/FlexibleComponent.h"
+#include "Components/LandscapeComponent.h"
 
 #include "LAssert.h"
 
 #include "IMesh.h"
 #include "IModel.h"
+#include "IScene.h"
 #include "ISkeleton.h"
 #include "IMaterial.h"
 #include "IAnimation.h"
+#include "ILandScape.h"
 
 #include "DirectXTex/DirectXTex/DirectXTex.h"
 #include "FX11/inc/d3dx11effect.h"
@@ -60,7 +63,7 @@ namespace Zongine {
             auto materialPath = filePath.string();
             entity.AddComponent<MaterialComponent>(MaterialComponent{ materialPath });
 
-            auto material = GetMaterialAsset(materialPath);
+            auto material = GetModelMaterialAsset(materialPath);
             std::vector<std::string> paths;
             std::transform(material->Subsets.begin(), material->Subsets.end(), std::back_inserter(paths),
                 [](const auto& subset) -> std::string {
@@ -77,26 +80,76 @@ namespace Zongine {
         transform.TargetName = socketName;
     }
 
-    std::shared_ptr<ReferMaterial> AssetManager::_LoadReferMaterial(const std::string& path) {
-        auto& referMaterial = m_ReferMaterialCache[path];
-        if (!referMaterial) {
-            REFER_MATERIAL_DESC desc{ path.c_str() };
-            REFER_MATERIAL_SOURCE configSource{};
+    void AssetManager::LoadScene(Entity& entity, const std::string& path) {
+        SCENE_DESC desc{ path.c_str() };
+        SCENE_SOURCE source{};
+        entity.AddComponent<TransformComponent>(TransformComponent{});
+        ::LoadScene(&desc, &source);
 
-            referMaterial = std::make_shared<ReferMaterial>();
+        // Test
+        GetLandscapeAsset(source.szDir, source.szMapName);
 
-            LoadReferMaterial(&desc, &configSource);
+        entity.AddComponent<LandscapeComponent>(LandscapeComponent{ source.szLandscape });
+    }
 
-            referMaterial->Path = path;
-            referMaterial->ShaderName = configSource.szShaderName;
+    std::shared_ptr<MeshAsset> AssetManager::GetMeshAsset(const std::string& path) {
+        auto& mesh = m_MeshCache[path];
+        if (!mesh)
+            mesh = _LoadMesh(path);
+        return mesh;
+    }
 
-            for (int i = 0; i < configSource.nParam; i++) {
-                const auto& param = configSource.pParam[i];
-                referMaterial->Textures[param.szRegister] = { param.szName, _LoadTexture(param.szValue) };
+    std::shared_ptr<MaterialAsset> AssetManager::GetModelMaterialAsset(const std::string& path) {
+        auto& material = m_MaterialCache[path];
+        if (!material)
+            material = _LoadModelMaterial(path);
+        return material;
+    }
+
+    std::shared_ptr<SkeletonAsset> AssetManager::GetSkeletonAsset(const std::string& path) {
+        auto& skeleton = m_SkeletonCache[path];
+        if (!skeleton)
+            skeleton = _LoadSkeleton(path);
+        return skeleton;
+    }
+
+    std::shared_ptr<ShaderAsset> AssetManager::GetShaderAsset(RUNTIME_MACRO macro, const std::vector<std::string>& paths) {
+        auto& shader = m_ShaderCache[macro][paths];
+        if (!shader)
+            shader = _LoadShader(macro, paths);
+        return shader;
+    }
+
+    std::shared_ptr<AnimationAsset> AssetManager::GetAnimationAsset(const std::string& path) {
+        auto& animation = m_AnimationCache[path];
+        if (!animation)
+            animation = _LoadAnimation(path);
+        return animation;
+    }
+
+    std::shared_ptr<LandscapeAsset> AssetManager::GetLandscapeAsset(const std::string& dir, const std::string name) {
+        auto& landscape = m_LandScapeCache[dir];
+        if (!landscape)
+            landscape = _LoadLandscape(dir, name);
+        return landscape;
+    }
+
+    const std::vector<int>& AssetManager::GetMeshSkeletonMap(const std::string& skeletonPath, const std::string& meshPath) {
+        auto& map = m_MeshSkeletonMap[skeletonPath][meshPath];
+        if (map.empty()) {
+            auto skeleton = AssetManager::GetSkeletonAsset(skeletonPath);
+            auto mesh = GetMeshAsset(meshPath);
+            map.resize(mesh->BoneMap.size(), -1);
+            for (auto [boneName, index] : mesh->BoneMap) {
+                auto it = std::find_if(skeleton->Bones.begin(), skeleton->Bones.end(), [boneName](const SkeletonBone& bone) {
+                    return bone.Name == boneName;
+                    });
+                if (it != skeleton->Bones.end()) {
+                    map[index] = static_cast<int>(std::distance(skeleton->Bones.begin(), it));
+                }
             }
         }
-
-        return referMaterial;
+        return map;
     }
 
     ComPtr<ID3D11ShaderResourceView> AssetManager::_LoadTexture(const std::string& path) {
@@ -131,6 +184,59 @@ namespace Zongine {
         return texture;
     }
 
+    template<typename T>
+    ComPtr<ID3D11ShaderResourceView> AssetManager::_LoadTexture(T* pData, UINT nWidth, UINT nHeight) {
+        ComPtr<ID3D11Texture2D> texture{};
+        ComPtr<ID3D11ShaderResourceView> shaderResourceView{};
+        D3D11_TEXTURE2D_DESC desc{};
+        D3D11_SUBRESOURCE_DATA data{};
+
+        desc.ArraySize = 1;
+        desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+        desc.CPUAccessFlags = 0;
+        desc.Format = DXGI_FORMAT_R32_FLOAT;
+        desc.Width = nWidth;
+        desc.Height = nHeight;
+        desc.MipLevels = 1;
+        desc.MiscFlags = 0;
+        desc.SampleDesc.Count = 1;
+        desc.SampleDesc.Quality = 0;
+        desc.Usage = D3D11_USAGE_DEFAULT;
+
+        data.pSysMem = pData;
+        data.SysMemPitch = nWidth * sizeof(T);
+        data.SysMemSlicePitch = 0;
+
+        auto device = DeviceManager::GetInstance().GetDevice();
+
+        device->CreateTexture2D(&desc, &data, texture.GetAddressOf());
+        device->CreateShaderResourceView(texture.Get(), nullptr, shaderResourceView.GetAddressOf());
+
+        return shaderResourceView;
+    }
+
+    std::shared_ptr<ReferenceMaterialAsset> AssetManager::_LoadReferenceMaterial(const std::string& path) {
+        auto& referMaterial = m_ReferMaterialCache[path];
+        if (!referMaterial) {
+            REFER_MATERIAL_DESC desc{ path.c_str() };
+            REFER_MATERIAL_SOURCE configSource{};
+
+            referMaterial = std::make_shared<ReferenceMaterialAsset>();
+
+            LoadReferMaterial(&desc, &configSource);
+
+            referMaterial->Path = path;
+            referMaterial->ShaderName = configSource.szShaderName;
+
+            for (int i = 0; i < configSource.nParam; i++) {
+                const auto& param = configSource.pParam[i];
+                referMaterial->Textures[param.szRegister] = { param.szName, _LoadTexture(param.szValue) };
+            }
+        }
+
+        return referMaterial;
+    }
+
     std::shared_ptr<MeshAsset> AssetManager::_LoadMesh(const std::string& path) {
         MESH_DESC desc{ path.c_str() };
         MESH_SOURCE source{};
@@ -148,7 +254,7 @@ namespace Zongine {
         return mesh;
     }
 
-    std::shared_ptr<MaterialAsset> AssetManager::_LoadMaterial(const std::string& path) {
+    std::shared_ptr<MaterialAsset> AssetManager::_LoadModelMaterial(const std::string& path) {
         MODEL_MATERIAL_DESC desc{ path.c_str() };
         MODEL_MATERIAL_SOURCE source;
         auto material = std::make_shared<MaterialAsset>();
@@ -157,31 +263,7 @@ namespace Zongine {
 
         const auto& Group = source.pLOD[0].pGroup[0];
         for (int i = 0; i < Group.nSubset; i++)
-        {
-            const auto& Subset = Group.pSubset[i];
-
-            auto referMaterial = _LoadReferMaterial(Subset.Define.szName);
-            auto& refer = material->Subsets.emplace_back(*referMaterial);
-
-            for (int j = 0; j < Subset.nTexture; j++)
-            {
-                const auto& texture = Subset.pTexture[j];
-
-                for (auto& [key, value] : refer.Textures)
-                    if (value.Name == texture.szName)
-                        value.Texture = _LoadTexture(texture.szValue);
-            }
-
-            refer.Rasterizer = RASTERIZER_STATE_CULL_CLOCKWISE;
-            if (Subset.nTwoSideFlag)
-                refer.Rasterizer = RASTERIZER_STATE_CULL_NONE;
-
-            refer.nBlendMode = Subset.nBlendMode;
-
-            refer.Const.AlphaReference = Subset.nAlphaRef / 255.f;
-            refer.Const.AlphaReference2 = Subset.nAlphaRef2 / 255.f;
-            refer.Const.EnableAlphaTest = (refer.nBlendMode == BLEND_MASKED || refer.nBlendMode == BLEND_SOFTMASKED);
-        }
+            _LoadMaterial(material.get(), Group.pSubset[i]);
 
         return material;
     }
@@ -221,7 +303,7 @@ namespace Zongine {
             EffectManager::GetInstance().LoadVariables(subsetShader.Effect, subsetShader.Variables);
 
             if (!constantBuffer)
-                constantBuffer = subsetShader.Effect->GetConstantBufferByName("MODEL_MATRIX");
+                constantBuffer = subsetShader.Effect->GetConstantBufferByName("MODEL_CONST");
             subsetShader.SubsetConst = subsetShader.Effect->GetConstantBufferByName("SUBSET_CONST");
 
             shader->Subsets.emplace_back(subsetShader);
@@ -257,6 +339,63 @@ namespace Zongine {
         }
 
         return animation;
+    }
+
+    std::shared_ptr<LandscapeAsset> AssetManager::_LoadLandscape(const std::string& dir, const std::string name) {
+        LANDSCAPE_DESC desc{ dir.c_str(), name.c_str() };
+        LANDSCAPE_SOURCE source{};
+        MaterialAsset material{};
+
+        auto landscape = std::make_shared<LandscapeAsset>();
+        ::LoadLandscape(&desc, &source);
+
+        landscape->Dir = dir;
+        landscape->Name = name;
+
+        for (int i = 0; i < source.nMaterialCount; i++) {
+            assert(source.pMaterials[i].nLODCount > 0);
+            _LoadMaterial(&material, source.pMaterials[i].pLOD[0]);
+        }
+
+        for (int y = 0; y < source.RegionTableSize.y; y++) {
+            auto& regions = landscape->Regions.emplace_back();
+            for (int x = 0; x < source.RegionTableSize.x; x++) {
+                auto& region = regions.emplace_back();
+                auto& sourceRegion = source.pRegionTable[y * source.RegionTableSize.x + x];
+
+                _LoadLandscapeRegion(&region, &material, sourceRegion);
+
+                region.Terrain.Origin = { x * (int)source.RegionSize, y * (int)source.RegionSize };
+            }
+        }
+
+        return landscape;
+    }
+
+    bool AssetManager::_LoadMaterial(MaterialAsset* material, const MATERIAL_SOURCE& source) {
+        auto referMaterial = _LoadReferenceMaterial(source.Define.szName);
+        auto& refer = material->Subsets.emplace_back(*referMaterial);
+
+        for (int j = 0; j < source.nTexture; j++)
+        {
+            const auto& texture = source.pTexture[j];
+
+            for (auto& [key, value] : refer.Textures)
+                if (value.Name == texture.szName)
+                    value.Texture = _LoadTexture(texture.szValue);
+        }
+
+        refer.Rasterizer = RASTERIZER_STATE_CULL_CLOCKWISE;
+        if (source.nTwoSideFlag)
+            refer.Rasterizer = RASTERIZER_STATE_CULL_NONE;
+
+        refer.nBlendMode = source.nBlendMode;
+
+        refer.Const.AlphaReference = source.nAlphaRef / 255.f;
+        refer.Const.AlphaReference2 = source.nAlphaRef2 / 255.f;
+        refer.Const.EnableAlphaTest = (refer.nBlendMode == BLEND_MASKED || refer.nBlendMode == BLEND_SOFTMASKED);
+
+        return true;
     }
 
     bool AssetManager::_LoadBone(MeshAsset* mesh, const MESH_SOURCE& source) {
@@ -333,6 +472,22 @@ namespace Zongine {
         mesh->Index.eFormat = DXGI_FORMAT_R32_UINT;
 
         DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, &data, mesh->Index.Buffer.GetAddressOf());
+
+        return true;
+    }
+
+    bool AssetManager::_LoadLandscapeRegion(LandscapeRegionAsset* region, MaterialAsset* material, const LANDSCAPE_REGION& source) {
+
+        for (int i = 0; i < source.nHeightData; i++) {
+            auto& row = region->HeightData.emplace_back();
+            for (int j = 0; j < source.nHeightData; j++)
+                row.push_back(source.pHeightData[i * source.nHeightData + j]);
+        }
+
+        region->HeightTexture = _LoadTexture(source.pHeightData, source.nHeightData, source.nHeightData);
+
+        for (int k = 0; k < source.nMaterial; k++)
+            region->Materials.push_back(material->Subsets[source.pMaterialIDs[k]]);
 
         return true;
     }

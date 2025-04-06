@@ -1,7 +1,7 @@
 Texture2D g_TerrainHeightMap    : register(t1);
 Texture2D g_TerrainNormalMap    : register(t2);
 
-struct MTLSYS_TERRAIN_SHARED_CB 
+struct TERRAIN_CONST
 {
     float2   UnitScaleXZ;
     int2     RegionOffset;
@@ -9,9 +9,9 @@ struct MTLSYS_TERRAIN_SHARED_CB
     float    HeightMapUVBias;
 };
 
-cbuffer ModelSharedParam : register(b2)
+cbuffer MODEL_CONST
 {
-    MTLSYS_TERRAIN_SHARED_CB g_ModelParams;
+    TERRAIN_CONST TerrainParam;
 };
 
 struct VertexInput

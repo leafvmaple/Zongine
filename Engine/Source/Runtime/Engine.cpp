@@ -50,12 +50,16 @@ namespace Zongine {
         auto& root = EntityManager::GetInstance().GetRootEntity();
         root.AddComponent<TransformComponent>(TransformComponent{});
 
+        auto& scene = root.AddChild("Scene");
         auto& camera = root.AddChild("Camera");
+        auto& player = root.AddChild("Player");
+
+        assetManager.LoadScene(scene, "data/source/maps/稻香村/稻香村.jsonmap");
+
         camera.AddComponent<CameraComponent>(CameraComponent{});
         auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
         cameraTransform.Position = { 0.0f, 40.0f, -50.0f };
 
-        auto& player = root.AddChild("Player");
         assetManager.LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
         player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b01ty普通待机01.ani" });
 
