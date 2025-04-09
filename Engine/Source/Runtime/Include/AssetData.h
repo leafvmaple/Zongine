@@ -64,7 +64,9 @@ namespace Zongine {
         std::string ShaderPath{};
 
         ComPtr<ID3DX11Effect> Effect{};
-        ID3DX11EffectVariable* SubsetConst{};
+        ID3DX11EffectConstantBuffer* ModelConst{};
+        ID3DX11EffectConstantBuffer* SubsetConst{};
+        ID3DX11EffectConstantBuffer* CameraConst{};
         std::unordered_map<std::string, ID3DX11EffectShaderResourceVariable*> Variables{};
     };
 
@@ -72,9 +74,6 @@ namespace Zongine {
         std::vector<SubsetShader> Subsets{};
 
         RENDER_PASS Pass{};
-
-        ID3DX11EffectMatrixVariable* TransformMatrix{};
-        ID3DX11EffectMatrixVariable* BonesMatrix{};
 
         std::vector<ComPtr<ID3D11Buffer>> SubsetBuffers{};
     };
@@ -137,9 +136,12 @@ namespace Zongine {
 
     struct LandscapeRegionAsset {
         TerrainAsset Terrain{};
-        std::vector<ReferenceMaterialAsset> Materials{};
+        // TODO
+        // std::vector<ReferenceMaterialAsset> Materials{};
+        ReferenceMaterialAsset Material{};
         std::vector<std::vector<float>> HeightData;
         ComPtr<ID3D11ShaderResourceView> HeightTexture{};
+        ID3DX11EffectVariable* TerrainParam{};
     };
 
     struct LandscapeAsset {

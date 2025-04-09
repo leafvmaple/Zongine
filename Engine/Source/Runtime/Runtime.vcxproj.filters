@@ -180,7 +180,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Components\LandscapeComponent.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\LandscapeRegionComponent.h">
+      <Filter>Source Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

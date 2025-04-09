@@ -75,4 +75,11 @@ namespace Zongine {
         BLEND_SOFTMASKED = 5,
     };
 
+    enum FLEX_OBJECT_TYPE
+    {
+        FLEX_OBJECT_NONE,
+        FLEX_OBJECT_CLOTH,
+        FLEX_OBJECT_SOFTBODY,
+        FLEX_OBJECT_DYNAMIC_MESH
+    };
 }

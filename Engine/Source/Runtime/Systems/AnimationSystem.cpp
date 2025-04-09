@@ -28,7 +28,7 @@ namespace Zongine {
             auto skeletonBoneCount = skeleton->Bones.size();
 
             for (int i = 0; i < skeletonBoneCount; i++) {
-                auto flag = animation->BoneFlag[i];
+                // auto flag = animation->BoneFlag[i];
                 auto& curClip = animation->Clip[i][nFrame];
                 auto& nextClip = animation->Clip[i][(nFrame + 1) % animation->Clip[i].size()];
 

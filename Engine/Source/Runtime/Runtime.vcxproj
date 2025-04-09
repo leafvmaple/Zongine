@@ -43,6 +43,7 @@
     <ClInclude Include="Components\CameraComponent.h" />
     <ClInclude Include="Components\FlexibleComponent.h" />
     <ClInclude Include="Components\LandscapeComponent.h" />
+    <ClInclude Include="Components\LandscapeRegionComponent.h" />
     <ClInclude Include="Components\MaterialComponent.h" />
     <ClInclude Include="Components\MeshComponent.h" />
     <ClInclude Include="Components\NameComponent.h" />

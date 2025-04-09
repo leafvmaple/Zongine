@@ -48,22 +48,20 @@ namespace Zongine {
         physicsSystem = std::make_unique<PhysicsSystem>();
 
         auto& root = EntityManager::GetInstance().GetRootEntity();
+        assetManager.LoadScene(root, "data/source/maps/稻香村/稻香村.jsonmap");
         root.AddComponent<TransformComponent>(TransformComponent{});
 
-        auto& scene = root.AddChild("Scene");
         auto& camera = root.AddChild("Camera");
         auto& player = root.AddChild("Player");
 
-        assetManager.LoadScene(scene, "data/source/maps/稻香村/稻香村.jsonmap");
-
         camera.AddComponent<CameraComponent>(CameraComponent{});
         auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
-        cameraTransform.Position = { 0.0f, 40.0f, -50.0f };
+        cameraTransform.Position = { 0.0f, 0, -50.0f };
 
         assetManager.LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
-        player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b01ty普通待机01.ani" });
+        player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b02dj打坐b.ani" });
 
-        auto& playerTransform = root.GetComponent<TransformComponent>();
+        auto& playerTransform = player.GetComponent<TransformComponent>();
         playerTransform.Position = { 0.0f, 0, 50.0f };
 
         auto& head = player.AddChild("Head");

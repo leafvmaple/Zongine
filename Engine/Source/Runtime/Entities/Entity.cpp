@@ -12,6 +12,7 @@
 #include "Components/AnimationComponent.h"
 #include "Components/FlexibleComponent.h"
 #include "Components/LandscapeComponent.h"
+#include "Components/LandscapeRegionComponent.h"
 
 namespace Zongine {
     template<typename ComponentType>
@@ -59,4 +60,5 @@ namespace Zongine {
     DECLARE_COMPONENT(AnimationComponent);
     DECLARE_COMPONENT(FlexibleComponent);
     DECLARE_COMPONENT(LandscapeComponent);
+    DECLARE_COMPONENT(LandscapeRegionComponent);
 }

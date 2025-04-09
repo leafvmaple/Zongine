@@ -10,6 +10,7 @@
 #include "Components/MeshComponent.h"
 #include "components/MaterialComponent.h"
 #include "Components/TransformComponent.h"
+#include "Components/LandscapeRegionComponent.h"
 
 #include <d3d11.h>
 #include <DirectXMath.h>
@@ -33,10 +34,10 @@ namespace Zongine {
         context->ClearRenderTargetView(renderTargetView.Get(), reinterpret_cast<const float*>(&Colors::White));
         context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-        m_RenderQueue.clear();
+        m_ActorRenderQueue.clear();
         _UpdateRenderQueue(EntityManager::GetInstance().GetRootEntity());
 
-        for (auto& entity: m_RenderQueue) {
+        for (auto& entity: m_ActorRenderQueue) {
             TickEntity(context, entity);
         }
 
@@ -59,9 +60,6 @@ namespace Zongine {
             runtimeMacro = RUNTIME_MACRO_SKIN_MESH;
 
         auto shader = AssetManager::GetInstance().GetShaderAsset(runtimeMacro, shaderComponent.Paths);
-
-        shader->TransformMatrix->SetMatrix(reinterpret_cast<const float*>(&transformComponent.World));
-        shader->BonesMatrix->SetMatrixArray(reinterpret_cast<const float*>(meshComponent.SkinningTransforms.data()), 0, meshComponent.SkinningTransforms.size());
 
         auto& vertexBuffer = mesh->Vertex;
         auto& indexBuffer = mesh->Index;
@@ -89,7 +87,13 @@ namespace Zongine {
             context->RSSetState(rasterizerState.Get());
 
             if (m_CameraBuffer)
-                subsetShader.Effect->GetConstantBufferByName("CAMERA_MATRIX")->SetConstantBuffer(m_CameraBuffer.Get());
+                subsetShader.CameraConst->SetConstantBuffer(m_CameraBuffer.Get());
+
+            // TODO
+            subsetShader.ModelConst->GetMemberByName("MATRIX_M")->SetRawValue(&transformComponent.World, 0, sizeof(transformComponent.World));
+            subsetShader.ModelConst->GetMemberByName("MATRIX_BONES")->SetRawValue(
+                meshComponent.SkinningTransforms.data(), 0, meshComponent.SkinningTransforms.size() * sizeof(DirectX::XMFLOAT4X4));
+
             subsetShader.SubsetConst->SetRawValue(&subsetMaterial.Const, 0, sizeof(SKIN_SUBSET_CONST));
 
             auto effectPass = EffectManager::GetInstance().GetEffectPass(subsetShader.Effect, shader->Pass);
@@ -99,12 +103,19 @@ namespace Zongine {
         }
     }
 
+    void RenderSystem::TickTerrain(ComPtr<ID3D11DeviceContext> context, const Entity& entity) {
+
+    }
+
     void RenderSystem::_UpdateRenderQueue(Entity& entity) {
-        if (EntityManager::GetInstance().HasComponent<MeshComponent>(entity.GetID())) {
-            m_RenderQueue.push_back(entity);
+        if (entity.HasComponent<MeshComponent>()) {
+            m_ActorRenderQueue.push_back(entity);
+        }
+        if (entity.HasComponent<LandscapeRegionComponent>()) {
+            m_TerrainRenderQueue.push_back(entity);
         }
 
-        if (EntityManager::GetInstance().HasComponent<CameraComponent>(entity.GetID())) {
+        if (entity.HasComponent<CameraComponent>()) {
             D3D11_MAPPED_SUBRESOURCE resource{};
 
             auto context = DeviceManager::GetInstance().GetImmediateContext();

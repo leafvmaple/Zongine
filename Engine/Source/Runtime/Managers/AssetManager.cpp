@@ -10,6 +10,7 @@
 #include "Components/TransformComponent.h"
 #include "Components/FlexibleComponent.h"
 #include "Components/LandscapeComponent.h"
+#include "Components/LandscapeRegionComponent.h"
 
 #include "LAssert.h"
 
@@ -83,13 +84,22 @@ namespace Zongine {
     void AssetManager::LoadScene(Entity& entity, const std::string& path) {
         SCENE_DESC desc{ path.c_str() };
         SCENE_SOURCE source{};
-        entity.AddComponent<TransformComponent>(TransformComponent{});
+
         ::LoadScene(&desc, &source);
 
-        // Test
-        GetLandscapeAsset(source.szDir, source.szMapName);
+        auto& landscape = entity.AddChild("Landscape");
+        landscape.AddComponent<TransformComponent>(TransformComponent{});
+        landscape.AddComponent<LandscapeComponent>(LandscapeComponent{ source.szLandscape });
 
-        entity.AddComponent<LandscapeComponent>(LandscapeComponent{ source.szLandscape });
+        auto landscapeAsset = GetLandscapeAsset(source.szDir, source.szMapName);
+        for (auto& row : landscapeAsset->Regions) {
+            for (auto& region : row) {
+                auto& regionEntity = landscape.AddChild("Region");
+                regionEntity.AddComponent<TransformComponent>(TransformComponent{});
+                regionEntity.AddComponent<LandscapeRegionComponent>(LandscapeRegionComponent{});
+                regionEntity.AddComponent<ShaderComponent>(ShaderComponent{ { region.Material.ShaderName } });
+            }
+        }
     }
 
     std::shared_ptr<MeshAsset> AssetManager::GetMeshAsset(const std::string& path) {
@@ -290,9 +300,6 @@ namespace Zongine {
     }
 
     std::shared_ptr<ShaderAsset> AssetManager::_LoadShader(RUNTIME_MACRO macro, const std::vector<std::string>& paths) {
-        D3D11_BUFFER_DESC bufferDesc{};
-        ID3DX11EffectConstantBuffer* constantBuffer{};
-
         auto shader = std::make_shared<ShaderAsset>();
 
         for (const auto& path : paths) {
@@ -302,15 +309,13 @@ namespace Zongine {
             subsetShader.Effect = EffectManager::GetInstance().LoadEffect(macro, path);
             EffectManager::GetInstance().LoadVariables(subsetShader.Effect, subsetShader.Variables);
 
-            if (!constantBuffer)
-                constantBuffer = subsetShader.Effect->GetConstantBufferByName("MODEL_CONST");
+            // TODO
+            subsetShader.ModelConst = subsetShader.Effect->GetConstantBufferByName("MODEL_CONST");
             subsetShader.SubsetConst = subsetShader.Effect->GetConstantBufferByName("SUBSET_CONST");
+            subsetShader.CameraConst = subsetShader.Effect->GetConstantBufferByName("CAMERA_MATRIX");
 
             shader->Subsets.emplace_back(subsetShader);
         }
-
-        shader->BonesMatrix = constantBuffer->GetMemberByName("MATRIX_BONES")->AsMatrix();
-        shader->TransformMatrix = constantBuffer->GetMemberByName("MATRIX_M")->AsMatrix();
 
         return shader;
     }
@@ -335,7 +340,7 @@ namespace Zongine {
                 clip.emplace_back(AnimationSRT{ SRT.Translation, SRT.Scale, SRT.Rotation, SRT.SRotation });
             }
             animation->Clip.emplace_back(clip);
-            animation->BoneFlag.push_back(source.pFlag[i]);
+            // animation->BoneFlag.push_back(source.pFlag[i]);
         }
 
         return animation;
@@ -486,8 +491,11 @@ namespace Zongine {
 
         region->HeightTexture = _LoadTexture(source.pHeightData, source.nHeightData, source.nHeightData);
 
-        for (int k = 0; k < source.nMaterial; k++)
-            region->Materials.push_back(material->Subsets[source.pMaterialIDs[k]]);
+        /*for (int k = 0; k < source.nMaterial; k++)
+            region->Materials.push_back(material->Subsets[source.pMaterialIDs[k]]);*/
+
+        // TODO: Add support for multiple materials
+        region->Material = material->Subsets[source.pMaterialIDs[0]];
 
         return true;
     }
