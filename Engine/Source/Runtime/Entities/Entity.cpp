@@ -11,6 +11,7 @@
 #include "Components/SkeletonComponent.h"
 #include "Components/AnimationComponent.h"
 #include "Components/FlexibleComponent.h"
+#include "Components/NVFlexComponent.h"
 #include "Components/LandscapeComponent.h"
 #include "Components/LandscapeRegionComponent.h"
 
@@ -61,4 +62,5 @@ namespace Zongine {
     DECLARE_COMPONENT(FlexibleComponent);
     DECLARE_COMPONENT(LandscapeComponent);
     DECLARE_COMPONENT(LandscapeRegionComponent);
+    DECLARE_COMPONENT(NVFlexComponent);
 }

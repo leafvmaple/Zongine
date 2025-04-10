@@ -41,6 +41,7 @@
     <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\BaseComponent.h" />
     <ClInclude Include="Components\CameraComponent.h" />
+    <ClInclude Include="Components\NVFlexComponent.h" />
     <ClInclude Include="Components\FlexibleComponent.h" />
     <ClInclude Include="Components\LandscapeComponent.h" />
     <ClInclude Include="Components\LandscapeRegionComponent.h" />

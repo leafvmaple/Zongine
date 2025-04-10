@@ -1,0 +1,49 @@
+{
+    "Info": {
+        "Shader": "data\\material\\material\\mtl_sss_colorcast_lerp.fx",
+        "DynamicEffectMark": 0
+    },
+    "RenderState": {
+        "StaticFlags": 1,
+        "DynamicFlags": 2,
+        "BlendMode": 0,
+        "LightingMode": 8,
+        "MaterialID": 5,
+        "AlphaRef": 128,
+        "AlphaRef2": 0,
+        "TwoSide": 0,
+        "DistortionMode": 0,
+        "Fur": 0
+    },
+    "Param": [
+        {
+            "Name": "BaseColorMap",
+            "RegisterName": "_0_local43_Texture",
+            "Type": "Texture",
+            "Value": "data\\material\\texture\\defaultwhite.tga"
+        },
+        {
+            "Name": "着色力度",
+            "RegisterName": "local45_Prepare",
+            "Type": "Float",
+            "Value": 0.0
+        },
+        {
+            "Name": "着色范围修正",
+            "RegisterName": "local96_Prepare",
+            "Type": "Float",
+            "Value": 1.0
+        },
+        {
+            "Name": "偏色颜色",
+            "RegisterName": "local44_Prepare",
+            "Type": "Color",
+            "Value": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ]
+}

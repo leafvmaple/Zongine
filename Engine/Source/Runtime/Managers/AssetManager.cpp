@@ -11,6 +11,7 @@
 #include "Components/FlexibleComponent.h"
 #include "Components/LandscapeComponent.h"
 #include "Components/LandscapeRegionComponent.h"
+#include "Components/NVFlexComponent.h"
 
 #include "LAssert.h"
 
@@ -21,6 +22,7 @@
 #include "IMaterial.h"
 #include "IAnimation.h"
 #include "ILandScape.h"
+#include "IFlex.h"
 
 #include "DirectXTex/DirectXTex/DirectXTex.h"
 #include "FX11/inc/d3dx11effect.h"
@@ -71,6 +73,15 @@ namespace Zongine {
                     return subset.ShaderName;
                 });
             entity.AddComponent<ShaderComponent>(ShaderComponent{ paths });
+        }
+        if (TryReplaceExtension(filePath, ".mesh.flx")) {
+            auto flexPath = filePath.string();
+            FLEX_DESC desc{ flexPath.c_str() };
+            FLEX_SOURCE source{};
+            entity.AddComponent<NVFlexComponent>(NVFlexComponent{ flexPath });
+
+            // TODO
+            ::LoadFlex(&desc, &source);
         }
     }
 

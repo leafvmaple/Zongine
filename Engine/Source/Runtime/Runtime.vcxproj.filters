@@ -185,5 +185,8 @@
     <ClInclude Include="Components\LandscapeRegionComponent.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Components\NVFlexComponent.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,61 @@
+#define LM_JX3_CLASSICPLAYER
+#define SM_Reflection 2
+#define SM_MaterialID MATERIALID_STANDARD
+
+cbuffer MaterialLocalParams : register(b0)
+{
+	float4 local44_Prepare = float4(1, 1, 1, 1);
+	float local45_Prepare = float(0);
+	float local96_Prepare = float(1);
+}
+
+Texture2D _0_local43_Texture;
+
+SamplerState g_Sampler_0
+{
+	Filter = MIN_MAG_MIP_LINEAR;
+	AddressU = Wrap;
+	AddressV = Wrap;
+};
+
+void CalculateMainVertexNode(MaterialVertexParameters Parameters, in out ParamsMainVertexNode MainNodeParam)
+{
+}
+
+void CalcMaterialNormalParams(in out MaterialPixelParameters Parameters, in out ParamsMainPixelNode MainPixelNode)
+{
+    float3 normal = MainPixelNode.Normal;
+    if(!any(normal))
+    {
+    	normal = Parameters.WorldNormal;
+    }
+	Parameters.WorldNormal = normalize(normal);
+}
+
+void CalculateMainPixelNode(in out MaterialPixelParameters Parameters, in out ParamsMainPixelNode MainNodeParam)
+{
+	MainNodeParam.Normal = Parameters.WorldNormal;
+
+	CalcMaterialNormalParams(Parameters, MainNodeParam); 
+	float4 local43 = _0_local43_Texture.Sample(g_Sampler_0, Parameters.TexCoords.xy);
+	float3 local44 = local44_Prepare.rgb * local44_Prepare.a;
+	float local88 = local43.a * local45_Prepare;
+	float local95 = pow(local88, local96_Prepare);
+	float3 local46 = lerp(local43.rgb, local44, local95);
+	MainNodeParam.Albedo = local46;
+	MainNodeParam.Fresnel = 0.5f;
+	MainNodeParam.Opacity = 1.0f;
+}
+float GetOpacityColor(MaterialPixelParameters Parameters)
+{
+	float RetOpacity = 1.0f;
+	return RetOpacity;
+}
+float2 GetDistortion(MaterialPixelParameters Parameters)
+{
+	return float2(0.8f, 0.8f);
+}
+float GetDistortionPower(MaterialPixelParameters Parameters)
+{
+	return 1.0f;
+}

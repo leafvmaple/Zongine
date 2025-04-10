@@ -51,15 +51,6 @@ void CalculateMainPixelNode(in out MaterialPixelParameters Parameters, in out Pa
 	MainNodeParam.PixelDepthOffset = 0.0f;
 	MainNodeParam.MaterialHeight = float(0.5);
 }
-void CalculateTessMultiplier(in out MaterialTessllationParameters Parameters, in out ParamsMainHullNode HullMainNode)
-{
-}
-void CalculateWorldDisplacement(in out MaterialTessllationParameters Parameters, in out ParamsMainDomainNode DomainMainNode)
-{
-}
-void CalculateMainGeometryNode(in out MaterialGeometryParameters Parameters, in out ParamsMainGeometryNode MainNodeParam)
-{
-}
 float GetOpacityColor(MaterialPixelParameters Parameters)
 {
 	float RetOpacity = 1.0f;

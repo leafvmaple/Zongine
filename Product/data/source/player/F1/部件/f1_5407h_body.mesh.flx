@@ -1,0 +1,37 @@
+[HEAD]
+dwVersion = 241231
+
+[TYPE]
+eFlexObjectType = 1
+
+[CLOTH_PARAMS]
+fStretchStiffness = 1.000000
+fBendStiffness = 1.000000
+fTetherStifness = 0.900000
+fTetherGive = 0.100000
+fPressure = 0.000000
+fTessellationPrecision = 5.000000
+nSmoothLevel = 30
+bAutoLink = 0
+fSmoothScaleFactor = 2.100000
+fRScaleFactor = 1.000000
+fRMaxValue = 255.000000
+fRScaleFactorOnHorse = 0.000000
+
+[SOFTBODY_PARAMS]
+fparticleSpacing = 0.000000
+fVolumeSampling = 0.000000
+fSurfaceSampling = 0.000000
+fClusterSpacing = 0.000000
+fClusterRadius = 0.000000
+fClusterStiffness = 0.000000
+fLinkRadius = 0.000000
+fLinkStiffness = 0.000000
+fGlobalStiffness = 0.000000
+fClusterPlasticThreshold = 0.000000
+fClusterPlasticCreep = 0.000000
+fSkinningFalloff = 0.000000
+fSkinningMaxDistance = 0.000000
+fTetherGive = 0.000000
+nSmoothLevel = 0
+bAutoLink = 0

@@ -56,7 +56,7 @@ namespace Zongine {
 
         camera.AddComponent<CameraComponent>(CameraComponent{});
         auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
-        cameraTransform.Position = { 0.0f, 0, -50.0f };
+        cameraTransform.Position = { 0.0f, 0, -100.0f };
 
         assetManager.LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
         player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b02dj打坐b.ani" });
@@ -66,23 +66,23 @@ namespace Zongine {
 
         auto& head = player.AddChild("Head");
         auto& body = player.AddChild("Body");
-        auto& hand = player.AddChild("Hand");
-        auto& leg = player.AddChild("Leg");
-        auto& belt = player.AddChild("Belt");
+        //auto& hand = player.AddChild("Hand");
+        //auto& leg = player.AddChild("Leg");
+        //auto& belt = player.AddChild("Belt");
 
-        assetManager.LoadMesh(head, "data/source/player/F1/部件/F1_0000_head.mesh");
-        assetManager.LoadMesh(body, "data/source/player/F1/部件/F1_2206_body.mesh");
-        assetManager.LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
-        assetManager.LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
-        assetManager.LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
+        assetManager.LoadMesh(head, "data/source/player/F1/部件/F1_5407h_a_head.mesh");
+        assetManager.LoadMesh(body, "data/source/player/F1/部件/F1_5407h_body.mesh");
+        //assetManager.LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
+        //assetManager.LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
+        //assetManager.LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
 
         auto& face = head.AddChild("Face");
-        auto& hat = head.AddChild("Hat");
-        auto& weapon = hand.AddChild("Weapon");
+        //auto& hat = head.AddChild("Hat");
+        //auto& weapon = hand.AddChild("Weapon");
 
         assetManager.LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
-        assetManager.LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
-        assetManager.LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
+        //assetManager.LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
+        //assetManager.LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
 
         inputSystem->Initialize();
         cameraSystem->Initialize();

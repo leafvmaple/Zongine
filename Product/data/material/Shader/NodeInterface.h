@@ -14,11 +14,19 @@ struct MaterialVertexParameters
 struct MaterialPixelParameters
 {
     float2 TexCoords;
+    float3 WorldNormal;
+};
+
+struct ParamsMainVertexNode
+{
+    float3  WorldPositionOffset;
 };
 
 struct ParamsMainPixelNode
 {
     float3  Albedo;
+    float   Fresnel;
+    float3  Normal;
     float3  Emissive;
     float   Opacity; // 透明度
     float3  Ambient;
