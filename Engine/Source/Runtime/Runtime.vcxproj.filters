@@ -81,6 +81,9 @@
     <ClCompile Include="Systems\PhysicsSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Components\NVFlexComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\RenderSystem.h">

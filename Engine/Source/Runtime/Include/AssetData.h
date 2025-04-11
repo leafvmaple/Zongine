@@ -9,6 +9,7 @@
 #include <vector>
 #include <memory>
 #include <DirectXMath.h>
+#include <DirectXPackedVector.h>
 #include <unordered_map>
 #include <wrl/client.h>
 
@@ -16,6 +17,7 @@
 
 namespace Zongine {
     using Microsoft::WRL::ComPtr;
+    using DirectX::PackedVector::XMCOLOR;
 
     struct SubsetMeshAsset {
         UINT uStartIndex{};
@@ -34,6 +36,16 @@ namespace Zongine {
         std::string Name{};
         UINT nParentBoneIndex{};
         DirectX::XMFLOAT4X4 Offset{};
+    };
+
+    struct VERTEX {
+        DirectX::XMFLOAT3 Position{ 0.f, 0.f, 0.f };
+        DirectX::XMFLOAT3 Normal{ 0.f, 0.f, 0.f };
+        DirectX::XMFLOAT4 Tangent{ 0.0f, 1.0f, 0.0f, 1.0f };
+        XMCOLOR Color{ 0, 0, 0, 0 };
+        DirectX::XMFLOAT2 TexCoords{ 0.f, 0.f };
+        float BoneWeights[4]{ 0.f };
+        BYTE BoneIndices[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
     };
 
     struct MeshAsset {
@@ -56,6 +68,7 @@ namespace Zongine {
         std::vector<SubsetMeshAsset> Subsets{};
         std::vector<BONE> Bones{};
         std::vector<SOCKET> Sockets{};
+        std::vector<VERTEX> Vertices{};
 
         std::unordered_map<std::string, UINT> BoneMap{};
     };
@@ -110,6 +123,10 @@ namespace Zongine {
         std::vector<SkeletonBone> Bones;
 
         int nRootBoneIndex{};
+    };
+
+    struct NVFlexAsset {
+        std::vector<float> InvMass;
     };
 
     struct AnimationSRT {

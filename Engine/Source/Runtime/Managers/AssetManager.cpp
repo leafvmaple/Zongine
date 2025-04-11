@@ -78,10 +78,12 @@ namespace Zongine {
             auto flexPath = filePath.string();
             FLEX_DESC desc{ flexPath.c_str() };
             FLEX_SOURCE source{};
-            entity.AddComponent<NVFlexComponent>(NVFlexComponent{ flexPath });
+            auto& flexComponent = entity.AddComponent<NVFlexComponent>(NVFlexComponent{ flexPath });
 
             // TODO
             ::LoadFlex(&desc, &source);
+
+            Initialize(flexComponent, path);
         }
     }
 
@@ -271,6 +273,9 @@ namespace Zongine {
 
         _LoadVertexBuffer(mesh.get(), source);
         _LoadIndexBuffer(mesh.get(), source);
+
+        mesh->Vertices.resize(source.nVerticesCount);
+        memcpy(mesh->Vertices.data(), source.pVertices, sizeof(VERTEX) * source.nVerticesCount);
 
         return mesh;
     }

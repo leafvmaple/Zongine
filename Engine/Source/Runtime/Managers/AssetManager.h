@@ -72,6 +72,7 @@ namespace Zongine {
         std::unordered_map<std::string, std::shared_ptr<AnimationAsset>> m_AnimationCache{};
         std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_TextureCache{};
         std::unordered_map<std::string, std::shared_ptr<LandscapeAsset>> m_LandScapeCache{};
+        std::unordered_map<std::string, std::shared_ptr<NVFlexAsset>> m_NVFlexCache{};
 
         // Map
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_MeshSkeletonMap{};
