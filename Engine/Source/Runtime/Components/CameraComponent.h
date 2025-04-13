@@ -7,7 +7,6 @@
 #include <wrl/client.h>
 
 using DirectX::XMMATRIX;
-using DirectX::XMVECTOR;
 
 namespace Zongine {
     using Microsoft::WRL::ComPtr;

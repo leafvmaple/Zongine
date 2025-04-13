@@ -11,8 +11,9 @@
 
 namespace Zongine {
     void AnimationSystem::Tick(int nDeltaTime) {
-        auto& entities = EntityManager::GetInstance().GetEntities<AnimationComponent>();
-        for (auto& [entityID, animationComponent] : entities) {
+        EntityManager::GetInstance().ForEach<AnimationComponent>(
+            [this, nDeltaTime](auto entityID, auto& animationComponent) {
+
             auto& entity = EntityManager::GetInstance().GetEntity(entityID);
             auto& skeletonComponent = entity.GetComponent<SkeletonComponent>();
 
@@ -42,7 +43,7 @@ namespace Zongine {
                 auto& matrix = localTransforms.emplace_back();
 
                 XMStoreFloat4x4(&matrix, XMMatrixTransformation(g_XMZero, XMLoadFloat4(&rts.SRotation),
-                        XMLoadFloat3(&rts.Scale), g_XMZero, XMLoadFloat4(&rts.Rotation), XMLoadFloat3(&rts.Translation)));
+                    XMLoadFloat3(&rts.Scale), g_XMZero, XMLoadFloat4(&rts.Rotation), XMLoadFloat3(&rts.Translation)));
             }
 
             if (animationComponent.ModelTransforms.empty())
@@ -51,7 +52,8 @@ namespace Zongine {
             animationComponent.ModelTransforms[skeleton->nRootBoneIndex] = localTransforms[skeleton->nRootBoneIndex];
             _UpdateSkeletonSpaceRecursive(animationComponent, skeleton, localTransforms, skeleton->nRootBoneIndex);
             _MapSkeletonTransformsToMesh(entityID, skeletonComponent, animationComponent);
-        }
+            }
+        );
     }
 
     void AnimationSystem::_UpdateSkeletonSpaceRecursive(

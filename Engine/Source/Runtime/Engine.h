@@ -21,6 +21,7 @@ namespace Zongine {
     class TransformSystem;
     class AnimationSystem;
     class PhysicsSystem;
+    class NvFlexSystem;
 
     class Engine {
     public:
@@ -28,6 +29,8 @@ namespace Zongine {
         ~Engine();
 
         void Initialize(HWND wnd);
+        void Uninitialize();
+
         void Tick();
         void Resize(int width, int height);
 
@@ -45,6 +48,7 @@ namespace Zongine {
         std::unique_ptr<TransformSystem> transformSystem{};
         std::unique_ptr<AnimationSystem> animationSystem{};
         std::unique_ptr<PhysicsSystem> physicsSystem{};
+        std::unique_ptr<NvFlexSystem> nvFlexSystem{};
 
         bool m_bRunning{ true };
         uint64_t m_nLastTime{};

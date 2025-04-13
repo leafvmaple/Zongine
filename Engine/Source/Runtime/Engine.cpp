@@ -12,6 +12,7 @@
 #include "Systems/TransformSystem.h"
 #include "Systems/AnimationSystem.h"
 #include "Systems/PhysicsSystem.h"
+#include "Systems/NVFlexSystem.h"
 
 #include "Components/CameraComponent.h"
 #include "components/MaterialComponent.h"
@@ -46,6 +47,7 @@ namespace Zongine {
         transformSystem = std::make_unique<TransformSystem>();
         animationSystem = std::make_unique<AnimationSystem>();
         physicsSystem = std::make_unique<PhysicsSystem>();
+        nvFlexSystem = std::make_unique<NvFlexSystem>();
 
         auto& root = EntityManager::GetInstance().GetRootEntity();
         assetManager.LoadScene(root, "data/source/maps/µ¾Ïã´å/µ¾Ïã´å.jsonmap");
@@ -86,8 +88,13 @@ namespace Zongine {
 
         inputSystem->Initialize();
         cameraSystem->Initialize();
+        nvFlexSystem->Initialize();
 
         // eventManager->Emit("ENTITIY_UPDATE");
+    }
+
+    void Engine::Uninitialize() {
+        nvFlexSystem->Uninitialize();
     }
 
     void Engine::Tick() {
@@ -103,6 +110,7 @@ namespace Zongine {
         animationSystem->Tick(nDeltaTime);
         transformSystem->Tick(nDeltaTime);
         physicsSystem->Tick(nDeltaTime);
+        nvFlexSystem->Tick(nDeltaTime);
         cameraSystem->Tick(nDeltaTime);
         renderSystem->Tick(nDeltaTime);
 

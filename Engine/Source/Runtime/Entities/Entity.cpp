@@ -62,5 +62,5 @@ namespace Zongine {
     DECLARE_COMPONENT(FlexibleComponent);
     DECLARE_COMPONENT(LandscapeComponent);
     DECLARE_COMPONENT(LandscapeRegionComponent);
-    DECLARE_COMPONENT(NVFlexComponent);
+    DECLARE_COMPONENT(NvFlexComponent);
 }

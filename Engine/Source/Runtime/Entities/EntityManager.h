@@ -84,6 +84,14 @@ namespace Zongine {
             return storage.GetComponents();
         }
 
+        template<typename ComponentType, typename Func>
+        void ForEach(Func&& func) {
+            auto& storage = GetOrCreateStorage<ComponentType>();
+            for (auto& [entityID, component] : storage.GetComponents()) {
+                func(entityID, component);
+            }
+        }
+
         Entity& GetEntity(EntityID entity) {
             assert(m_Entities.find(entity) != m_Entities.end() && "Entity not found.");
             return m_Entities.at(entity);

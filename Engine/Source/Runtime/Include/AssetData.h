@@ -42,10 +42,11 @@ namespace Zongine {
         DirectX::XMFLOAT3 Position{ 0.f, 0.f, 0.f };
         DirectX::XMFLOAT3 Normal{ 0.f, 0.f, 0.f };
         DirectX::XMFLOAT4 Tangent{ 0.0f, 1.0f, 0.0f, 1.0f };
-        XMCOLOR Color{ 0, 0, 0, 0 };
+        XMCOLOR Color{ 0xFF, 0xFF, 0xFF, 0xFF };
         DirectX::XMFLOAT2 TexCoords{ 0.f, 0.f };
         float BoneWeights[4]{ 0.f };
         BYTE BoneIndices[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
+        XMCOLOR Emissive{ 0xFF, 0xFF, 0xFF, 0xFF };
     };
 
     struct MeshAsset {
@@ -148,7 +149,7 @@ namespace Zongine {
     };
 
     struct TerrainAsset {
-        DirectX::XMINT2 Origin;
+        DirectX::XMUINT2 Origin;
     };
 
     struct LandscapeRegionAsset {

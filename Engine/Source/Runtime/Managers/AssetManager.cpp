@@ -78,7 +78,7 @@ namespace Zongine {
             auto flexPath = filePath.string();
             FLEX_DESC desc{ flexPath.c_str() };
             FLEX_SOURCE source{};
-            auto& flexComponent = entity.AddComponent<NVFlexComponent>(NVFlexComponent{ flexPath });
+            auto& flexComponent = entity.AddComponent<NvFlexComponent>(NvFlexComponent{ flexPath });
 
             // TODO
             ::LoadFlex(&desc, &source);
@@ -251,7 +251,7 @@ namespace Zongine {
             referMaterial->Path = path;
             referMaterial->ShaderName = configSource.szShaderName;
 
-            for (int i = 0; i < configSource.nParam; i++) {
+            for (unsigned int i = 0; i < configSource.nParam; i++) {
                 const auto& param = configSource.pParam[i];
                 referMaterial->Textures[param.szRegister] = { param.szName, _LoadTexture(param.szValue) };
             }
@@ -288,7 +288,7 @@ namespace Zongine {
         LoadModelMaterial(&desc, &source);
 
         const auto& Group = source.pLOD[0].pGroup[0];
-        for (int i = 0; i < Group.nSubset; i++)
+        for (unsigned int i = 0; i < Group.nSubset; i++)
             _LoadMaterial(material.get(), Group.pSubset[i]);
 
         return material;
@@ -302,7 +302,7 @@ namespace Zongine {
         ::LoadSkeleton(&desc, &source);
         skeleton->Path = path;
 
-        for (int i = 0; i < source.nBoneCount; i++) {
+        for (unsigned int i = 0; i < source.nBoneCount; i++) {
             const auto& skeletonSource = source.pBones[i];
             auto& bone = skeleton->Bones.emplace_back(SkeletonBone{ skeletonSource.szBoneName });
             for (int i = 0; i < skeletonSource.nChildCount; i++) {
@@ -378,15 +378,15 @@ namespace Zongine {
             _LoadMaterial(&material, source.pMaterials[i].pLOD[0]);
         }
 
-        for (int y = 0; y < source.RegionTableSize.y; y++) {
+        for (unsigned int y = 0; y < source.RegionTableSize.y; y++) {
             auto& regions = landscape->Regions.emplace_back();
-            for (int x = 0; x < source.RegionTableSize.x; x++) {
+            for (uint32_t x = 0; x < source.RegionTableSize.x; x++) {
                 auto& region = regions.emplace_back();
                 auto& sourceRegion = source.pRegionTable[y * source.RegionTableSize.x + x];
 
                 _LoadLandscapeRegion(&region, &material, sourceRegion);
 
-                region.Terrain.Origin = { x * (int)source.RegionSize, y * (int)source.RegionSize };
+                region.Terrain.Origin = { x * source.RegionSize, y * source.RegionSize };
             }
         }
 
@@ -397,7 +397,7 @@ namespace Zongine {
         auto referMaterial = _LoadReferenceMaterial(source.Define.szName);
         auto& refer = material->Subsets.emplace_back(*referMaterial);
 
-        for (int j = 0; j < source.nTexture; j++)
+        for (unsigned int j = 0; j < source.nTexture; j++)
         {
             const auto& texture = source.pTexture[j];
 
