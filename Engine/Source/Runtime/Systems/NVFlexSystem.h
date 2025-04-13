@@ -4,10 +4,14 @@
 
 struct NvFlexLibrary;
 struct NvFlexSolver;
+struct NvFlexParams;
 
 namespace Zongine {
     class NvFlexSystem {
     public:
+        NvFlexSystem();
+        ~NvFlexSystem();
+
         void Initialize();
         void Uninitialize();
 
@@ -17,7 +21,11 @@ namespace Zongine {
             float x, y, z, w;
         };
 
+        void _InitializeParams();
+
         NvFlexLibrary* m_FlexLib{};
         NvFlexSolver* m_Solver{};
+
+        std::unique_ptr<NvFlexParams> m_FlexParams{};
     };
 }
