@@ -5,8 +5,6 @@
 
 #include "../Components/NVFlexComponent.h"
 
-#include "NVFlex/include/NvFlexExt.h"
-
 #pragma comment(lib, "NvFlexDebugD3D_x64.lib")
 #pragma comment(lib, "NvFlexExtDebugD3D_x64.lib")
 
@@ -18,9 +16,6 @@ void FlexErorCallback(NvFlexErrorSeverity type, const char* msg, const char* fil
 }
 
 namespace Zongine {
-    NvFlexSystem::NvFlexSystem() {}
-    NvFlexSystem::~NvFlexSystem() {}
-
     void NvFlexSystem::Initialize() {
         NvFlexInitDesc initDesc{};
         NvFlexSolverDesc solverDesc{};
@@ -39,6 +34,27 @@ namespace Zongine {
 
         m_Solver = NvFlexCreateSolver(m_FlexLib, &solverDesc);
         _InitializeParams();
+
+        EntityManager::GetInstance().ForEach<NvFlexComponent>([this](auto entityID, auto& flexComponent) {
+            flexComponent.Content = std::make_unique<NvFlexContent>();
+            flexComponent.Content->Particles = std::make_unique<NvFlexVector<DirectX::XMFLOAT4>>(m_FlexLib, flexComponent.Particles.size());
+            flexComponent.Content->Phases = std::make_unique<NvFlexVector<int>>(m_FlexLib, flexComponent.Phases.size());
+
+            auto particles = flexComponent.Content->Particles;
+            auto phases = flexComponent.Content->Phases;
+
+            particles->map();
+            phases->map();
+
+            for (auto& particle : flexComponent.Particles)
+                particles->push_back(particle);
+
+            for (auto& phase : flexComponent.Phases)
+                phases->push_back(phase);
+
+            particles->unmap();
+            phases->unmap();
+        });
     }
 
     void NvFlexSystem::Uninitialize() {
@@ -50,25 +66,14 @@ namespace Zongine {
     }
 
     void NvFlexSystem::Tick(int nDeltaTime) {
-        EntityManager::GetInstance().ForEach<NvFlexComponent>([this](auto entityID, auto& flexComponent) {
-            NvFlexVector<DirectX::XMFLOAT4> particles(m_FlexLib, flexComponent.Particles.size());
-            NvFlexVector<int> phases(m_FlexLib, flexComponent.Phases.size());
-
-            particles.map();
-            phases.map();
-
-            for (auto& particle : flexComponent.Particles)
-                particles.push_back(particle);
-
-            for (auto& phase : flexComponent.Phases)
-                phases.push_back(phase);
-
-            particles.unmap();
-            phases.unmap();
-
+        EntityManager::GetInstance().ForEach<NvFlexComponent>([this, nDeltaTime](auto entityID, auto& flexComponent) {
+            NvFlexSetParticles(m_Solver, flexComponent.Content->Particles->buffer, nullptr);
+            NvFlexSetPhases(m_Solver, flexComponent.Content->Phases->buffer, nullptr);
             NvFlexSetParams(m_Solver, m_FlexParams.get());
-            NvFlexSetParticles(m_Solver, particles.buffer, nullptr);
-            NvFlexSetPhases(m_Solver, phases.buffer, nullptr);
+
+            NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f, 1, false);
+
+            NvFlexGetParticles(m_Solver, flexComponent.Content->Particles->buffer, nullptr);
         });
     }
 
