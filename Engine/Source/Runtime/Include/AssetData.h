@@ -130,6 +130,7 @@ namespace Zongine {
         std::string Path;
 
         std::vector<float> InvMass;
+        std::vector<int> VertexParticleMap;
 
         ComPtr<ID3D11Buffer> Buffers[2]{};
         UINT uStride[2]{};

@@ -33,8 +33,8 @@ struct VertexOutput
     float2 TexCoords : TEXCOORD4;
 };
 
-#include "CommonParam.h"
-#include "NodeInterface.h"
+#include "CommonParam.fx5"
+#include "NodeInterface.fx5"
 #include "UserShader.fx5"
 
 MaterialVertexParameters GetMaterialVertexParameters(VertexInput vin)
@@ -75,7 +75,7 @@ VertexOutput VertexShaderMain(VertexInput vin)
     
     MaterialVertexParameters Params = GetMaterialVertexParameters(vin);
 
-    vout.PosH = GetDeviceCoordinate(Params.VertexPosition, Params.MatrixWorld, ZONGINE_MATRIX_V, ZONGINE_MATRIX_P);
+    vout.PosH = GetDeviceCoordinate(Params.VertexPosition, Params.MatrixWorld, MATRIX_V, MATRIX_P);
     vout.Color = Params.VertexColor;
     vout.TexCoords = Params.TexCoords;
     

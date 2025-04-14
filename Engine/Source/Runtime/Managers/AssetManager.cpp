@@ -76,9 +76,7 @@ namespace Zongine {
         }
         if (TryReplaceExtension(filePath, ".mesh.flx")) {
             auto flexPath = filePath.string();
-            auto& flexComponent = entity.AddComponent<NvFlexComponent>(NvFlexComponent{ flexPath });
-
-            Initialize(flexComponent, path);
+            auto& flexComponent = entity.AddComponent<NvFlexComponent>(NvFlexComponent{ flexPath, path });
         }
     }
 
@@ -532,6 +530,27 @@ namespace Zongine {
 
         flex->uStride[1] = sizeof(FLEX_VERTEX_EXT);
         DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, nullptr, flex->Buffers[1].GetAddressOf());
+
+        for (int i = 0; i < source.nVerticesCount; i++) {
+            const auto& vertex = source.pVertices[i];
+            const auto& diffuse = vertex.Color;
+
+            float invMass = 0.f;
+            if (diffuse.a >= 255)
+                invMass = 0.f;
+            else if (diffuse.a == 0)
+                invMass = 1.f;
+            else if (diffuse.a >= 100)
+                invMass = std::pow(1.10f, 100.f - diffuse.a);
+            else
+                invMass = std::pow(1.025f, 100.f - diffuse.a);
+
+            if (invMass != 0) {
+                flex->VertexParticleMap.emplace_back((int)flex->VertexParticleMap.size());
+            }
+
+            flex->InvMass.emplace_back(invMass);
+        }
 
         return true;
     }

@@ -37,8 +37,8 @@ struct VertexOutput
     float4 WeightHeightMapTexcoord : WEIGHTHEIGHTCOORD;
 };
 
-#include "NodeInterface.h"
-#include "CommonParam.h"
+#include "NodeInterface.fx5"
+#include "CommonParam.fx5"
 
 float GetHeightFromMap(Texture2D TerrainHeightMap, float2 GeometryCoord)
 {

@@ -5,6 +5,8 @@
 #include <memory>
 #include <DirectXMath.h>
 
+#include "../Include/const.h"
+
 #include "NVFlex/include/NvFlexExt.h"
 
 namespace Zongine {
@@ -15,13 +17,15 @@ namespace Zongine {
 
     struct NvFlexComponent {
         std::string Path{};
+        std::string MeshPath{};
 
-        std::shared_ptr<NvFlexExtAsset> asset{};
         std::vector<DirectX::XMFLOAT4> Particles{};
         std::vector<int> Phases{};
 
         std::shared_ptr<NvFlexContent> Content{};
-    };
 
-    void Initialize(NvFlexComponent& flexComponent, const std::string& path);
+        std::vector<FLEX_VERTEX_EXT> Vertices{};
+
+        void Initialize();
+    };
 }

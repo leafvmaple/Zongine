@@ -36,6 +36,7 @@ namespace Zongine {
         _InitializeParams();
 
         EntityManager::GetInstance().ForEach<NvFlexComponent>([this](auto entityID, auto& flexComponent) {
+            flexComponent.Initialize();
             flexComponent.Content = std::make_unique<NvFlexContent>();
             flexComponent.Content->Particles = std::make_unique<NvFlexVector<DirectX::XMFLOAT4>>(m_FlexLib, flexComponent.Particles.size());
             flexComponent.Content->Phases = std::make_unique<NvFlexVector<int>>(m_FlexLib, flexComponent.Phases.size());

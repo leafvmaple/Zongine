@@ -6,26 +6,19 @@
 #include "NVFlex/include/NvFlexExt.h"
 
 namespace Zongine {
-    void Initialize(NvFlexComponent& flexComponent, const std::string& path) {
-        auto mesh = AssetManager::GetInstance().GetMeshAsset(path);
+    void NvFlexComponent::Initialize() {
+        auto flex = AssetManager::GetInstance().GetNvFlexAsset(Path);
+        auto mesh = AssetManager::GetInstance().GetMeshAsset(MeshPath);
 
-        flexComponent.asset = std::make_shared<NvFlexExtAsset>();
+        for (int i = 0; i < mesh->Vertices.size(); i++) {
+            const auto& vertex = mesh->Vertices[i];
+            auto invMass = flex->InvMass[i];
 
-        for (const auto& vertex : mesh->Vertices) {
-            const auto& diffuse = vertex.Color;
-            float invMass = 0.f;
-            if (diffuse.a >= 255)
-                invMass = 0.f;
-            else if (diffuse.a == 0)
-                invMass = 1.f;
-            else if (diffuse.a >= 100)
-                invMass = std::pow(1.10f, 100.f - diffuse.a);
-            else
-                invMass = std::pow(1.025f, 100.f - diffuse.a);
+            Vertices.emplace_back(FLEX_VERTEX_EXT{ {vertex.Position.x, vertex.Position.y, vertex.Position.z, 1.f}, invMass });
 
             if (invMass != 0) {
-                flexComponent.Particles.emplace_back(DirectX::XMFLOAT4(vertex.Position.x, vertex.Position.y, vertex.Position.z, invMass));
-                flexComponent.Phases.emplace_back(NvFlexMakePhase(0, eNvFlexPhaseSelfCollide | eNvFlexPhaseSelfCollideFilter));
+                Particles.emplace_back(DirectX::XMFLOAT4(vertex.Position.x, vertex.Position.y, vertex.Position.z, invMass));
+                Phases.emplace_back(NvFlexMakePhase(0, eNvFlexPhaseSelfCollide | eNvFlexPhaseSelfCollideFilter));
             }
         }
     }

@@ -13,8 +13,8 @@ struct SWITCH
 
 cbuffer CAMERA_MATRIX
 {
-    row_major matrix ZONGINE_MATRIX_V;
-    row_major matrix ZONGINE_MATRIX_P;
+    row_major matrix MATRIX_V;
+    row_major matrix MATRIX_P;
 };
 
 struct COMMON_PARAM
