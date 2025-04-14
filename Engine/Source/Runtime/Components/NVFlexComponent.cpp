@@ -14,10 +14,14 @@ namespace Zongine {
             const auto& vertex = mesh->Vertices[i];
             auto invMass = flex->InvMass[i];
 
-            Vertices.emplace_back(FLEX_VERTEX_EXT{ {vertex.Position.x, vertex.Position.y, vertex.Position.z, 1.f}, invMass });
+            FlexVertices.emplace_back(FLEX_VERTEX_EXT{ {
+                    vertex.Position.x,
+                    vertex.Position.y,
+                    vertex.Position.z,
+                    1.f}, invMass });
 
             if (invMass != 0) {
-                Particles.emplace_back(DirectX::XMFLOAT4(vertex.Position.x, vertex.Position.y, vertex.Position.z, invMass));
+                ParticleVertices.push_back(i);
                 Phases.emplace_back(NvFlexMakePhase(0, eNvFlexPhaseSelfCollide | eNvFlexPhaseSelfCollideFilter));
             }
         }

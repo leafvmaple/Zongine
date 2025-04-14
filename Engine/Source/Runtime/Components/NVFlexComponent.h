@@ -10,6 +10,8 @@
 #include "NVFlex/include/NvFlexExt.h"
 
 namespace Zongine {
+    constexpr int FLEX_NORMALIZE_SCLAE = 100;
+
     struct NvFlexContent {
         std::shared_ptr<NvFlexVector<DirectX::XMFLOAT4>> Particles;
         std::shared_ptr<NvFlexVector<int>> Phases;
@@ -19,12 +21,12 @@ namespace Zongine {
         std::string Path{};
         std::string MeshPath{};
 
-        std::vector<DirectX::XMFLOAT4> Particles{};
+        std::vector<int> ParticleVertices{};
         std::vector<int> Phases{};
 
         std::shared_ptr<NvFlexContent> Content{};
 
-        std::vector<FLEX_VERTEX_EXT> Vertices{};
+        std::vector<FLEX_VERTEX_EXT> FlexVertices{};
 
         void Initialize();
     };

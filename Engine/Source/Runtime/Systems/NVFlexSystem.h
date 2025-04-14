@@ -17,6 +17,8 @@ namespace Zongine {
         NvFlexLibrary* m_FlexLib{};
         NvFlexSolver* m_Solver{};
 
+        bool Init{};
+
         std::unique_ptr<NvFlexParams> m_FlexParams{};
     };
 }

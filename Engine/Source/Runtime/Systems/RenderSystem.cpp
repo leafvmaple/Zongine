@@ -65,7 +65,7 @@ namespace Zongine {
             auto flex = AssetManager::GetInstance().GetNvFlexAsset(flexComponent.Path);
 
             HRESULT hr = context->Map(flex->Buffers[1].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-            memcpy(resource.pData, flexComponent.Vertices.data(), sizeof(FLEX_VERTEX_EXT) * flexComponent.Vertices.size());
+            memcpy(resource.pData, flexComponent.FlexVertices.data(), sizeof(FLEX_VERTEX_EXT) * flexComponent.FlexVertices.size());
             context->Unmap(flex->Buffers[1].Get(), 0);
         }
 

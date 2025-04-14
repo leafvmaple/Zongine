@@ -43,18 +43,26 @@ MaterialVertexParameters GetMaterialVertexParameters(VertexInput vin)
 {
     MaterialVertexParameters Params = (MaterialVertexParameters)0;
 
-    float4 position = mul(vin.Position, MATRIX_BONES[vin.Indices.x]) * vin.Weights.x;
+    if(vin.MixFactor != 0.0f)
+    {
+        Params.VertexPosition = vin.FlexPosition;
+    }
+    else
+    {
+        float4 position = mul(vin.Position, MATRIX_BONES[vin.Indices.x]) * vin.Weights.x;
 
-    if (vin.Indices.y != 255)
-        position += mul(vin.Position, MATRIX_BONES[vin.Indices.y]) * vin.Weights.y;
+        if (vin.Indices.y != 255)
+            position += mul(vin.Position, MATRIX_BONES[vin.Indices.y]) * vin.Weights.y;
 
-    if (vin.Indices.z != 255)                                              
-        position += mul(vin.Position, MATRIX_BONES[vin.Indices.z]) * vin.Weights.z;
+        if (vin.Indices.z != 255)                                              
+            position += mul(vin.Position, MATRIX_BONES[vin.Indices.z]) * vin.Weights.z;
 
-    if (vin.Indices.w != 255)                                              
-        position += mul(vin.Position, MATRIX_BONES[vin.Indices.w]) * vin.Weights.w;
+        if (vin.Indices.w != 255)                                              
+            position += mul(vin.Position, MATRIX_BONES[vin.Indices.w]) * vin.Weights.w;
 
-    Params.VertexPosition = position;
+        Params.VertexPosition = position;
+    }
+    
     Params.VertexColor = vin.Color;
     Params.TexCoords = vin.TexCoords;
     Params.MatrixWorld = MATRIX_M;
