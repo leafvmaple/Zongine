@@ -13,8 +13,11 @@ namespace Zongine {
     constexpr int FLEX_NORMALIZE_SCLAE = 100;
 
     struct NvFlexContent {
-        std::shared_ptr<NvFlexVector<DirectX::XMFLOAT4>> Particles;
-        std::shared_ptr<NvFlexVector<int>> Phases;
+        NvFlexVector<DirectX::XMFLOAT4> Particles;
+        NvFlexVector<int> Phases;
+        NvFlexVector<DirectX::XMFLOAT3> Velocities;
+
+        NvFlexContent(NvFlexLibrary* l, int size) : Particles(l, size) , Phases(l, size), Velocities(l, size){ }
     };
 
     struct NvFlexComponent {

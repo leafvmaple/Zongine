@@ -44,7 +44,6 @@ namespace Zongine {
         m_FlexLib = NvFlexInit(NV_FLEX_VERSION, FlexErorCallback, &initDesc);
 
         NvFlexSetSolverDescDefaults(&solverDesc);
-        solverDesc.maxParticles = 10000;
 
         m_Solver = NvFlexCreateSolver(m_FlexLib, &solverDesc);
         _InitializeParams();
@@ -52,10 +51,7 @@ namespace Zongine {
         auto& entities = EntityManager::GetInstance().GetEntities<NvFlexComponent>();
         for (auto& [entityID, flexComponent] : entities) {
             flexComponent.Initialize();
-            flexComponent.Content = std::make_unique<NvFlexContent>();
-
-            flexComponent.Content->Particles = std::make_unique<NvFlexVector<DirectX::XMFLOAT4>>(m_FlexLib, flexComponent.Phases.size());
-            flexComponent.Content->Phases = std::make_unique<NvFlexVector<int>>(m_FlexLib, flexComponent.Phases.size());
+            flexComponent.Content = std::make_unique<NvFlexContent>(m_FlexLib, flexComponent.Phases.size());
         }
     }
 
@@ -76,10 +72,10 @@ namespace Zongine {
 
             auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
 
-            auto& particles = *flexComponent.Content->Particles;
+            auto& particles = flexComponent.Content->Particles;
+            auto& phases = flexComponent.Content->Phases;
 
             if (!Init) {
-                auto& phases = *flexComponent.Content->Phases;
 
                 particles.map();
                 phases.map();
@@ -102,7 +98,7 @@ namespace Zongine {
                     }
 
                     position = XMVector3Transform(position, XMLoadFloat4x4(&transformComponent.World));
-                    XMStoreFloat4(&particles[particleID], XMVectorSetW(position, 1.0f));
+                    XMStoreFloat4(&particles[particleID], XMVectorSetW(position, flexComponent.FlexVertices[vertexID].MixFactor));
                 }
 
                 for (int i = 0; i < flexComponent.Phases.size(); i++)
@@ -115,16 +111,18 @@ namespace Zongine {
             }
 
             NvFlexSetParticles(m_Solver, particles.buffer, nullptr);
-            NvFlexSetPhases(m_Solver, particles.buffer, nullptr);
+            NvFlexSetPhases(m_Solver, phases.buffer, nullptr);
+            NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
             NvFlexSetParams(m_Solver, m_FlexParams.get());
 
             NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f, 1, false);
 
             NvFlexGetParticles(m_Solver, particles.buffer, nullptr);
+            NvFlexGetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
 
             particles.map();
 
-            auto test2 = particles[0];
+            auto test2 = particles[1000];
 
             auto inverseWorld = XMMatrixInverse(nullptr, XMLoadFloat4x4(&transformComponent.World));
 
