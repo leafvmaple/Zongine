@@ -23,6 +23,8 @@ struct VertexInput
     float2 TexCoords : TEXCOORD0;
     float4 Weights   : BONEWEIGHTS0;
     uint4  Indices   : BONEINDICES0;
+    float4 FlexPosition  : FLEX_POSITION0;
+    float  MixFactor : MIX_FACTOR0;
 };
 
 struct VertexOutput

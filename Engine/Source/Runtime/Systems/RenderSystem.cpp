@@ -8,6 +8,7 @@
 
 #include "Components/ShaderComponent.h"
 #include "Components/MeshComponent.h"
+#include "Components/NVFlexComponent.h"
 #include "components/MaterialComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/LandscapeRegionComponent.h"
@@ -55,9 +56,7 @@ namespace Zongine {
         auto mesh =  AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
         auto material = AssetManager::GetInstance().GetModelMaterialAsset(materialComponent.Path);
 
-        auto runtimeMacro = RUNTIME_MACRO_MESH;
-        if (mesh->InputLayout == INPUT_LAYOUT_CI_SKINMESH)
-            runtimeMacro = RUNTIME_MACRO_SKIN_MESH;
+        auto runtimeMacro = mesh->Macro;
 
         auto shader = AssetManager::GetInstance().GetShaderAsset(runtimeMacro, shaderComponent.Paths);
 
@@ -67,7 +66,16 @@ namespace Zongine {
         auto inputLayout = EffectManager::GetInstance().GetInputLayout(runtimeMacro);
 
         context->IASetInputLayout(inputLayout.Get());
-        context->IASetVertexBuffers(0, 1, vertexBuffer.Buffer.GetAddressOf(), &vertexBuffer.uStride, &vertexBuffer.uOffset);
+        if (runtimeMacro == RUNTIME_MACRO_FLEX_MESH) {
+            auto flexComponent = entity.GetComponent<NvFlexComponent>();
+            auto flex = AssetManager::GetInstance().GetNvFlexAsset(flexComponent.Path);
+
+            ID3D11Buffer* rawBuffers[2] = { flex->Buffers[0].Get(), flex->Buffers[1].Get()};
+            context->IASetVertexBuffers(0, 2, rawBuffers, flex->uStride, flex->uOffset);
+        }
+        else {
+            context->IASetVertexBuffers(0, 1, vertexBuffer.Buffer.GetAddressOf(), &vertexBuffer.uStride, &vertexBuffer.uOffset);
+        }
         context->IASetIndexBuffer(indexBuffer.Buffer.Get(), indexBuffer.eFormat, indexBuffer.uOffset);
         context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

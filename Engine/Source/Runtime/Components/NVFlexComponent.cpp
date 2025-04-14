@@ -1,12 +1,14 @@
 #include "NVFlexComponent.h"
 
 #include "../Managers/AssetManager.h"
+#include "../Managers/DeviceManager.h"
 
 #include "NVFlex/include/NvFlexExt.h"
 
 namespace Zongine {
     void Initialize(NvFlexComponent& flexComponent, const std::string& path) {
         auto mesh = AssetManager::GetInstance().GetMeshAsset(path);
+
         flexComponent.asset = std::make_shared<NvFlexExtAsset>();
 
         for (const auto& vertex : mesh->Vertices) {
@@ -21,7 +23,6 @@ namespace Zongine {
             else
                 invMass = std::pow(1.025f, 100.f - diffuse.a);
 
-            // flexComponent.InvMass.push_back(invMass);
             if (invMass != 0) {
                 flexComponent.Particles.emplace_back(DirectX::XMFLOAT4(vertex.Position.x, vertex.Position.y, vertex.Position.z, invMass));
                 flexComponent.Phases.emplace_back(NvFlexMakePhase(0, eNvFlexPhaseSelfCollide | eNvFlexPhaseSelfCollideFilter));

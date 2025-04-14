@@ -16,8 +16,6 @@ namespace Zongine {
     struct NvFlexComponent {
         std::string Path{};
 
-        std::vector<float> InvMass{};
-
         std::shared_ptr<NvFlexExtAsset> asset{};
         std::vector<DirectX::XMFLOAT4> Particles{};
         std::vector<int> Phases{};

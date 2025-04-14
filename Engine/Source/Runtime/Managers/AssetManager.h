@@ -36,6 +36,7 @@ namespace Zongine {
         std::shared_ptr<ShaderAsset> GetShaderAsset(RUNTIME_MACRO macro, const std::vector<std::string>& paths);
         std::shared_ptr<AnimationAsset> GetAnimationAsset(const std::string& path);
         std::shared_ptr<LandscapeAsset> GetLandscapeAsset(const std::string& dir, const std::string name);
+        std::shared_ptr<NvFlexAsset> GetNvFlexAsset(const std::string& path);
 
         const std::vector<int>& GetMeshSkeletonMap(const std::string& skeletonPath, const std::string& meshPath);
 
@@ -52,6 +53,7 @@ namespace Zongine {
         std::shared_ptr<ShaderAsset> _LoadShader(RUNTIME_MACRO macro, const std::vector<std::string>& paths);
         std::shared_ptr<AnimationAsset> _LoadAnimation(const std::string& path);
         std::shared_ptr<LandscapeAsset> _LoadLandscape(const std::string& dir, const std::string name);
+        std::shared_ptr<NvFlexAsset> _LoadNvFlex(const std::string& path);
 
         bool _LoadMaterial(MaterialAsset* material, const MATERIAL_SOURCE& source);
 
@@ -59,6 +61,8 @@ namespace Zongine {
         bool _LoadSocket(MeshAsset* mesh, const MESH_SOURCE& source);
         bool _LoadVertexBuffer(MeshAsset* mesh, const MESH_SOURCE& source);
         bool _LoadIndexBuffer(MeshAsset* mesh, const MESH_SOURCE& source);
+
+        bool _LoadNvFlexBuffer(NvFlexAsset* flex, MeshAsset* mesh, const MESH_SOURCE& source);
 
         bool _LoadLandscapeRegion(LandscapeRegionAsset* region, MaterialAsset* material, const LANDSCAPE_REGION& source);
 
@@ -72,7 +76,7 @@ namespace Zongine {
         std::unordered_map<std::string, std::shared_ptr<AnimationAsset>> m_AnimationCache{};
         std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_TextureCache{};
         std::unordered_map<std::string, std::shared_ptr<LandscapeAsset>> m_LandScapeCache{};
-        std::unordered_map<std::string, std::shared_ptr<NVFlexAsset>> m_NVFlexCache{};
+        std::unordered_map<std::string, std::shared_ptr<NvFlexAsset>> m_NvFlexCache{};
 
         // Map
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_MeshSkeletonMap{};

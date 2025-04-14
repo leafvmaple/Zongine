@@ -64,7 +64,7 @@ namespace Zongine {
             UINT uOffset{};
         } Index{};
 
-        INPUT_LAYOUT InputLayout{};
+        RUNTIME_MACRO Macro{};
 
         std::vector<SubsetMeshAsset> Subsets{};
         std::vector<BONE> Bones{};
@@ -126,8 +126,14 @@ namespace Zongine {
         int nRootBoneIndex{};
     };
 
-    struct NVFlexAsset {
+    struct NvFlexAsset {
+        std::string Path;
+
         std::vector<float> InvMass;
+
+        ComPtr<ID3D11Buffer> Buffers[2]{};
+        UINT uStride[2]{};
+        UINT uOffset[2]{};
     };
 
     struct AnimationSRT {

@@ -27,31 +27,9 @@ namespace Zongine {
         RUNTIME_MACRO_MESH,
         RUNTIME_MACRO_SKIN_MESH,
         RUNTIME_MACRO_TERRAIN,
+        RUNTIME_MACRO_FLEX_MESH,
 
         RUNTIME_MACRO_COUNT,
-    };
-
-    enum INPUT_LAYOUT {
-        INPUT_LAYOUT_CI_MESH,
-        INPUT_LAYOUT_CI_SKINMESH,
-        INPUT_LAYOUT_CI_TERRAIN,
-
-        INPUT_LAYOUT_COUNT,
-    };
-
-    enum PIXEL_SHADER {
-        PIXEL_SHADER_NULL,
-        PIXEL_SHADER_UV1_NO_LIGHT,
-
-        PIXEL_SHADER_COUNT,
-    };
-
-    enum VERTEX_SHADER {
-        VERTEX_SHADER_CI_MESH,
-        VERTEX_SHADER_CI_SKINMESH,
-        VERTEX_SHADER_CI_TERRAIN,
-
-        VERTEX_SHADER_COUNT,
     };
 
     enum class RENDER_PASS {

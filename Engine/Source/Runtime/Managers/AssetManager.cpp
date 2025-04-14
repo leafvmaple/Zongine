@@ -76,12 +76,7 @@ namespace Zongine {
         }
         if (TryReplaceExtension(filePath, ".mesh.flx")) {
             auto flexPath = filePath.string();
-            FLEX_DESC desc{ flexPath.c_str() };
-            FLEX_SOURCE source{};
             auto& flexComponent = entity.AddComponent<NvFlexComponent>(NvFlexComponent{ flexPath });
-
-            // TODO
-            ::LoadFlex(&desc, &source);
 
             Initialize(flexComponent, path);
         }
@@ -155,6 +150,13 @@ namespace Zongine {
         if (!landscape)
             landscape = _LoadLandscape(dir, name);
         return landscape;
+    }
+
+    std::shared_ptr<NvFlexAsset> AssetManager::GetNvFlexAsset(const std::string& path) {
+        auto& flex = m_NvFlexCache[path];
+        if (!flex)
+            flex = _LoadNvFlex(path);
+        return flex;
     }
 
     const std::vector<int>& AssetManager::GetMeshSkeletonMap(const std::string& skeletonPath, const std::string& meshPath) {
@@ -261,11 +263,17 @@ namespace Zongine {
     }
 
     std::shared_ptr<MeshAsset> AssetManager::_LoadMesh(const std::string& path) {
+        std::filesystem::path filePath = path;
         MESH_DESC desc{ path.c_str() };
         MESH_SOURCE source{};
         auto mesh = std::make_shared<MeshAsset>();
 
         ::LoadMesh(&desc, &source);
+
+        if (source.nVertexFVF & FVF_SKIN)
+            mesh->Macro = RUNTIME_MACRO_SKIN_MESH;
+        else
+            mesh->Macro = RUNTIME_MACRO_MESH;
 
         mesh->Path = path;
         _LoadBone(mesh.get(), source);
@@ -273,6 +281,13 @@ namespace Zongine {
 
         _LoadVertexBuffer(mesh.get(), source);
         _LoadIndexBuffer(mesh.get(), source);
+
+        if (TryReplaceExtension(filePath, ".mesh.flx")) {
+            auto flex = GetNvFlexAsset(filePath.string());
+            mesh->Macro = RUNTIME_MACRO_FLEX_MESH;
+
+            _LoadNvFlexBuffer(flex.get(), mesh.get(), source);
+        }
 
         mesh->Vertices.resize(source.nVerticesCount);
         memcpy(mesh->Vertices.data(), source.pVertices, sizeof(VERTEX) * source.nVerticesCount);
@@ -393,6 +408,18 @@ namespace Zongine {
         return landscape;
     }
 
+    std::shared_ptr<NvFlexAsset> AssetManager::_LoadNvFlex(const std::string& path) {
+        std::filesystem::path filePath = path;
+        FLEX_DESC desc{ path.c_str() };
+        FLEX_SOURCE source{};
+        auto flex = std::make_shared<NvFlexAsset>();
+
+        ::LoadFlex(&desc, &source);
+
+        flex->Path = path;
+        return flex;
+    }
+
     bool AssetManager::_LoadMaterial(MaterialAsset* material, const MATERIAL_SOURCE& source) {
         auto referMaterial = _LoadReferenceMaterial(source.Define.szName);
         auto& refer = material->Subsets.emplace_back(*referMaterial);
@@ -458,11 +485,6 @@ namespace Zongine {
         D3D11_BUFFER_DESC desc{};
         D3D11_SUBRESOURCE_DATA data{};
 
-        if (source.nVertexFVF & FVF_SKIN)
-            mesh->InputLayout = INPUT_LAYOUT_CI_SKINMESH;
-        else
-            mesh->InputLayout = INPUT_LAYOUT_CI_MESH;
-
         desc.ByteWidth = source.nVertexSize * source.nVerticesCount;;
         desc.Usage = D3D11_USAGE_IMMUTABLE;
         desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -493,6 +515,23 @@ namespace Zongine {
         mesh->Index.eFormat = DXGI_FORMAT_R32_UINT;
 
         DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, &data, mesh->Index.Buffer.GetAddressOf());
+
+        return true;
+    }
+
+    bool AssetManager::_LoadNvFlexBuffer(NvFlexAsset* flex, MeshAsset* mesh, const MESH_SOURCE& source) {
+        D3D11_BUFFER_DESC desc{};
+
+        desc.ByteWidth = sizeof(FLEX_VERTEX_EXT) * source.nVerticesCount;
+        desc.Usage = D3D11_USAGE_DYNAMIC;
+        desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+        flex->uStride[0] = mesh->Vertex.uStride;
+        flex->Buffers[0] = mesh->Vertex.Buffer;
+
+        flex->uStride[1] = sizeof(FLEX_VERTEX_EXT);
+        DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, nullptr, flex->Buffers[1].GetAddressOf());
 
         return true;
     }
