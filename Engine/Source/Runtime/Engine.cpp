@@ -114,7 +114,7 @@ namespace Zongine {
         animationSystem->Tick(nDeltaTime);
         transformSystem->Tick(nDeltaTime);
         physicsSystem->Tick(nDeltaTime);
-        // nvFlexSystem->Tick(nDeltaTime);
+        nvFlexSystem->Tick(nDeltaTime);
         cameraSystem->Tick(nDeltaTime);
         renderSystem->Tick(nDeltaTime);
 

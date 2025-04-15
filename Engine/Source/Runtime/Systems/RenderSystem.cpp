@@ -57,35 +57,34 @@ namespace Zongine {
         auto mesh =  AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
         auto material = AssetManager::GetInstance().GetModelMaterialAsset(materialComponent.Path);
 
-        auto runtimeMacro = mesh->Macro;
+        auto macro = mesh->Macro;
 
-        auto shader = AssetManager::GetInstance().GetShaderAsset(runtimeMacro, shaderComponent.Paths);
+        auto shader = AssetManager::GetInstance().GetShaderAsset(macro, shaderComponent.Paths);
 
         if (entity.HasComponent<NvFlexComponent>()) {
             auto& flexComponent = entity.GetComponent<NvFlexComponent>();
             auto flex = AssetManager::GetInstance().GetNvFlexAsset(flexComponent.Path);
 
-            HRESULT hr = context->Map(flex->Buffers[1].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+            HRESULT hr = context->Map(flex->Buffers.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
             memcpy(resource.pData, flexComponent.FlexVertices.data(), sizeof(FLEX_VERTEX_EXT) * flexComponent.FlexVertices.size());
-            context->Unmap(flex->Buffers[1].Get(), 0);
+            context->Unmap(flex->Buffers.Get(), 0);
         }
 
         auto& vertexBuffer = mesh->Vertex;
         auto& indexBuffer = mesh->Index;
 
-        auto inputLayout = EffectManager::GetInstance().GetInputLayout(runtimeMacro);
+        auto inputLayout = EffectManager::GetInstance().GetInputLayout(macro);
 
         context->IASetInputLayout(inputLayout.Get());
-        if (runtimeMacro == RUNTIME_MACRO_FLEX_MESH) {
+        context->IASetVertexBuffers(0, 1, vertexBuffer.Buffer.GetAddressOf(), &vertexBuffer.uStride, &vertexBuffer.uOffset);
+
+        if (macro == RUNTIME_MACRO_FLEX_MESH) {
             auto flexComponent = entity.GetComponent<NvFlexComponent>();
             auto flex = AssetManager::GetInstance().GetNvFlexAsset(flexComponent.Path);
 
-            ID3D11Buffer* rawBuffers[2] = { flex->Buffers[0].Get(), flex->Buffers[1].Get()};
-            context->IASetVertexBuffers(0, 2, rawBuffers, flex->uStride, flex->uOffset);
+            context->IASetVertexBuffers(1, 1, flex->Buffers.GetAddressOf(), &flex->uStride, &flex->uOffset);
         }
-        else {
-            context->IASetVertexBuffers(0, 1, vertexBuffer.Buffer.GetAddressOf(), &vertexBuffer.uStride, &vertexBuffer.uOffset);
-        }
+
         context->IASetIndexBuffer(indexBuffer.Buffer.Get(), indexBuffer.eFormat, indexBuffer.uOffset);
         context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -109,12 +108,14 @@ namespace Zongine {
             if (m_CameraBuffer)
                 subsetShader.CameraConst->SetConstantBuffer(m_CameraBuffer.Get());
 
-            // TODO
             subsetShader.ModelConst->GetMemberByName("MATRIX_M")->SetRawValue(&transformComponent.World, 0, sizeof(transformComponent.World));
-            subsetShader.ModelConst->GetMemberByName("MATRIX_INV_M")->SetRawValue(&inverseTransform, 0, sizeof(inverseTransform));
 
             subsetShader.ModelConst->GetMemberByName("MATRIX_BONES")->SetRawValue(
-                meshComponent.SkinningTransforms.data(), 0, meshComponent.SkinningTransforms.size() * sizeof(DirectX::XMFLOAT4X4));
+                meshComponent.SkinningTransforms.data(), 0, meshComponent.SkinningTransforms.size() * sizeof(DirectX::XMFLOAT4X4)
+            );
+
+            if (macro == RUNTIME_MACRO_FLEX_MESH)
+                subsetShader.ModelConst->GetMemberByName("MATRIX_INV_M")->SetRawValue(&inverseTransform, 0, sizeof(inverseTransform));
 
             subsetShader.SubsetConst->SetRawValue(&subsetMaterial.Const, 0, sizeof(SKIN_SUBSET_CONST));
 

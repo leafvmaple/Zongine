@@ -525,11 +525,9 @@ namespace Zongine {
         desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-        flex->uStride[0] = mesh->Vertex.uStride;
-        flex->Buffers[0] = mesh->Vertex.Buffer;
+        flex->uStride = sizeof(FLEX_VERTEX_EXT);
 
-        flex->uStride[1] = sizeof(FLEX_VERTEX_EXT);
-        DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, nullptr, flex->Buffers[1].GetAddressOf());
+        DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, nullptr, flex->Buffers.GetAddressOf());
 
         for (int i = 0; i < source.nVerticesCount; i++) {
             const auto& vertex = source.pVertices[i];

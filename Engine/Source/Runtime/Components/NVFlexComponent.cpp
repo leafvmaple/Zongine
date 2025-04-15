@@ -28,10 +28,8 @@ namespace Zongine {
             auto invMass = flex->InvMass[i];
 
             FlexVertices.emplace_back(FLEX_VERTEX_EXT{ {
-                    vertex.Position.x,
-                    vertex.Position.y,
-                    vertex.Position.z,
-                    1.f}, invMass });
+                vertex.Position.x, vertex.Position.y, vertex.Position.z, 1.f }, invMass
+            });
 
             if (invMass != 0) {
                 ParticleVertices.push_back(i);

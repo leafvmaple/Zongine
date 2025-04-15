@@ -132,9 +132,9 @@ namespace Zongine {
         std::vector<float> InvMass;
         std::vector<int> VertexParticleMap;
 
-        ComPtr<ID3D11Buffer> Buffers[2]{};
-        UINT uStride[2]{};
-        UINT uOffset[2]{};
+        ComPtr<ID3D11Buffer> Buffers{};
+        UINT uStride{};
+        UINT uOffset{};
     };
 
     struct AnimationSRT {
