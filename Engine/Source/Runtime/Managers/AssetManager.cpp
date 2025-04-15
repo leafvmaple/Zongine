@@ -76,7 +76,7 @@ namespace Zongine {
         }
         if (TryReplaceExtension(filePath, ".mesh.flx")) {
             auto flexPath = filePath.string();
-            auto& flexComponent = entity.AddComponent<NvFlexComponent>(NvFlexComponent{ flexPath, path });
+            auto& flexComponent = entity.AddComponent<NvFlexComponent>(NvFlexComponent{false, flexPath, path });
         }
     }
 
