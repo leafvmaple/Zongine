@@ -20,7 +20,7 @@ namespace Zongine {
     };
 
     __declspec(align(16)) struct FLEX_VERTEX_EXT {
-        DirectX::XMFLOAT4A FlexPosition;
+        DirectX::XMFLOAT4 FlexPosition;
         float MixFactor;
     };
 }

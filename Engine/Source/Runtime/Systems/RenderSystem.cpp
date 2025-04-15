@@ -47,6 +47,7 @@ namespace Zongine {
 
     void RenderSystem::TickEntity(ComPtr<ID3D11DeviceContext> context, const Entity& entity) {
         D3D11_MAPPED_SUBRESOURCE resource{};
+        XMFLOAT4X4A inverseTransform{};
 
         auto& meshComponent = entity.GetComponent<MeshComponent>();
         auto& transformComponent = entity.GetComponent<TransformComponent>();
@@ -88,6 +89,8 @@ namespace Zongine {
         context->IASetIndexBuffer(indexBuffer.Buffer.Get(), indexBuffer.eFormat, indexBuffer.uOffset);
         context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+        XMStoreFloat4x4A(&inverseTransform, XMMatrixInverse(nullptr, XMLoadFloat4x4(&transformComponent.World)));
+
         for (int i = 0; i < mesh->Subsets.size(); i++) {
             auto& subsetMesh = mesh->Subsets[i];
             auto& subsetShader = shader->Subsets[i];
@@ -108,6 +111,8 @@ namespace Zongine {
 
             // TODO
             subsetShader.ModelConst->GetMemberByName("MATRIX_M")->SetRawValue(&transformComponent.World, 0, sizeof(transformComponent.World));
+            subsetShader.ModelConst->GetMemberByName("MATRIX_INV_M")->SetRawValue(&inverseTransform, 0, sizeof(inverseTransform));
+
             subsetShader.ModelConst->GetMemberByName("MATRIX_BONES")->SetRawValue(
                 meshComponent.SkinningTransforms.data(), 0, meshComponent.SkinningTransforms.size() * sizeof(DirectX::XMFLOAT4X4));
 

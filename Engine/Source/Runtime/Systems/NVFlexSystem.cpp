@@ -20,10 +20,8 @@ void FlexErrorCallback(NvFlexErrorSeverity type, const char* msg, const char* fi
 }
 
 namespace Zongine {
-    using DirectX::XMVectorSetW;
-    using DirectX::XMVectorSelect;
-    using DirectX::XMVectorSelectControl;
     using DirectX::XMLoadFloat4x4;
+    using DirectX::XMStoreFloat4x4A;
     using DirectX::XMVectorScale;
 
     void NvFlexSystem::Initialize() {
@@ -75,28 +73,17 @@ namespace Zongine {
             NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
             NvFlexSetParams(m_Solver, m_FlexParams.get());
 
-            NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 20, 1, false);
+            NvFlexComputeWaitForGraphics(m_FlexLib);
+
+            NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 20.f, 1, false);
 
             NvFlexGetParticles(m_Solver, particles.buffer, nullptr);
-            NvFlexGetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
 
             particles.map();
 
-            auto inverseWorld = XMMatrixInverse(nullptr, XMLoadFloat4x4(&transformComponent.World));
-
             for (int particleID = 0; particleID < flexComponent.ParticleVertices.size(); particleID++) {
                 auto vertexID = flexComponent.ParticleVertices[particleID];
-                auto& flexVertex = flexComponent.FlexVertices[vertexID];
-
-                auto position = XMVectorSetW(XMLoadFloat4(&particles[particleID]), 1.0f);
-
-                auto resultPos = XMVectorSelect(
-                    XMVectorScale(XMVector4Transform(position, inverseWorld), FLEX_NORMALIZE_SCLAE),
-                    XMLoadFloat4(&flexVertex.FlexPosition),
-                    XMVectorSelectControl(0, 0, 0, 1)
-                );
-
-                XMStoreFloat4(&flexVertex.FlexPosition, resultPos);
+                flexComponent.FlexVertices[vertexID].FlexPosition = particles[particleID];
             }
 
             particles.unmap();

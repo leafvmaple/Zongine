@@ -4,6 +4,7 @@ cbuffer MODEL_CONST
 {
     row_major float4x4 MATRIX_M;
     row_major float4x4 MATRIX_BONES[MAX_NUM_BONE_PER_SET];
+    row_major float4x4 MATRIX_INV_M;
 };
 
 cbuffer SUBSET_CONST
@@ -45,7 +46,8 @@ MaterialVertexParameters GetMaterialVertexParameters(VertexInput vin)
 
     if(vin.MixFactor != 0.0f)
     {
-        Params.VertexPosition = vin.FlexPosition;
+        Params.VertexPosition = mul(float4(vin.FlexPosition.xyz, 1.0f), MATRIX_INV_M);
+        Params.VertexPosition.xyz *= 100.0f;
     }
     else
     {

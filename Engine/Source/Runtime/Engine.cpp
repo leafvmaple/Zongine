@@ -24,6 +24,8 @@
 #include <algorithm>
 #include <string>
 #include <iterator>
+#include <thread>
+#include <chrono>
 
 namespace Zongine {
     Engine::Engine() {
@@ -97,6 +99,8 @@ namespace Zongine {
         nvFlexSystem->Uninitialize();
     }
 
+    constexpr uint64_t targetFrameTime = 1000 / 60;
+
     void Engine::Tick() {
         uint64_t nTime = timeGetTime();
         uint64_t nDeltaTime = nTime - m_nLastTime;
@@ -110,9 +114,15 @@ namespace Zongine {
         animationSystem->Tick(nDeltaTime);
         transformSystem->Tick(nDeltaTime);
         physicsSystem->Tick(nDeltaTime);
-        nvFlexSystem->Tick(nDeltaTime);
+        // nvFlexSystem->Tick(nDeltaTime);
         cameraSystem->Tick(nDeltaTime);
         renderSystem->Tick(nDeltaTime);
+
+        uint64_t frameProcessTime = timeGetTime() - nTime;
+
+        if (frameProcessTime < targetFrameTime) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(targetFrameTime - frameProcessTime));
+        }
 
         m_nLastTime = nTime;
     }
