@@ -21,6 +21,6 @@ namespace Zongine {
     private:
         std::array<ComPtr<ID3D11RasterizerState>, RASTERIZER_STATE_COUNT> m_Rasterizers{};
         std::array<ComPtr<ID3D11SamplerState>, SAMPLER_STATE_COUNT> m_Samplers{};
-        std::array<ComPtr<ID3D11DepthStencilState>, DEPTH_WRITE_COUNT> m_DepthStencils{};
+        std::array<ComPtr<ID3D11DepthStencilState>, DEPTH_STENCIL_STATE_COUNT> m_DepthStencils{};
     };
 }

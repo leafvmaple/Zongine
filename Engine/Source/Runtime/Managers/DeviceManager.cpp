@@ -100,8 +100,8 @@ namespace Zongine {
     }
 
     bool DeviceManager::_CreateStencilView(unsigned uWidth, unsigned uHeight) {
-        ComPtr<ID3D11Texture2D> buffer{};
         D3D11_TEXTURE2D_DESC desc{};
+        ComPtr<ID3D11Texture2D> buffer{};
 
         desc.Width = uWidth;
         desc.Height = uHeight;

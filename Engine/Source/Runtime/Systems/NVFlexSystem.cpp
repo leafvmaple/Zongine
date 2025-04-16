@@ -73,7 +73,7 @@ namespace Zongine {
             NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
             NvFlexSetParams(m_Solver, m_FlexParams.get());
 
-            NvFlexComputeWaitForGraphics(m_FlexLib);
+            // NvFlexComputeWaitForGraphics(m_FlexLib);
 
             NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 20.f, 1, false);
 

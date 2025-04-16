@@ -20,7 +20,7 @@ namespace Zongine {
     enum DEPTHSTENCIL_STATE_ID {
         ZWRITE_ENABLE,
 
-        DEPTH_WRITE_COUNT
+        DEPTH_STENCIL_STATE_COUNT
     };
 
     enum RUNTIME_MACRO {

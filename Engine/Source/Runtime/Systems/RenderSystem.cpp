@@ -32,6 +32,7 @@ namespace Zongine {
         auto renderTargetView = DeviceManager::GetInstance().GetRenderTargetView();
         auto depthStencilView = DeviceManager::GetInstance().GetDepthStencilView();
 
+        context->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), depthStencilView.Get());
         context->ClearRenderTargetView(renderTargetView.Get(), reinterpret_cast<const float*>(&Colors::White));
         context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
