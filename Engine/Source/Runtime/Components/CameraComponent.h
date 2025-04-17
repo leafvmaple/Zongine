@@ -19,7 +19,5 @@ namespace Zongine {
             float fFovAngleY;
             float fAspectRatio;
         } Perspective;
-
-        ComPtr<ID3D11Buffer> Buffer{};
     };
 }

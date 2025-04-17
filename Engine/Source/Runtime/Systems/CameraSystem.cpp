@@ -12,24 +12,11 @@ using namespace DirectX;
 
 namespace Zongine {
     bool CameraSystem::Initialize() {
-        D3D11_BUFFER_DESC bufferDesc{};
-        ComPtr<ID3D11Buffer> buffer{};
-
-        auto device = DeviceManager::GetInstance().GetDevice();
-
-        bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-        bufferDesc.ByteWidth = sizeof(CAMERA_CONST);
-        bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-        device->CreateBuffer(&bufferDesc, nullptr, buffer.GetAddressOf());
-
         auto& entities = EntityManager::GetInstance().GetEntities<CameraComponent>();
         for (auto& [entityID, cameraComponent] : entities) {
             // cameraComponent.Perspective.fFovAngleY = XM_PIDIV2;
             cameraComponent.Perspective.fFovAngleY = XMConvertToRadians(30);
             cameraComponent.Perspective.fAspectRatio = (float)WindowManager::GetInstance().GetWidth() / WindowManager::GetInstance().GetHeight();
-            cameraComponent.Buffer = buffer;
         }
 
         return true;

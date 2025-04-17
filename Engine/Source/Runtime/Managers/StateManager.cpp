@@ -65,7 +65,13 @@ namespace Zongine {
             D3D11_DEPTH_WRITE_MASK_ALL,
             D3D11_COMPARISON_LESS_EQUAL,
             false   // Disable Stencil
-        }
+        },
+        { // ZWRITE_DISABLE
+            false,  // Disable Depth
+            D3D11_DEPTH_WRITE_MASK_ZERO,
+            D3D11_COMPARISON_LESS_EQUAL,
+            false   // Disable Stencil
+        },
     };
 
     bool StateManager::Initialize() {

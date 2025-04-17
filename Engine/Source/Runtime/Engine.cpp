@@ -91,6 +91,7 @@ namespace Zongine {
         inputSystem->Initialize();
         cameraSystem->Initialize();
         nvFlexSystem->Initialize();
+        renderSystem->Initialize();
 
         // eventManager->Emit("ENTITIY_UPDATE");
     }

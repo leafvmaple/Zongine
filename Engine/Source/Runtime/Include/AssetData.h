@@ -49,20 +49,23 @@ namespace Zongine {
         XMCOLOR Emissive{ 0xFF, 0xFF, 0xFF, 0xFF };
     };
 
+    struct VERTEX_BUFFER {
+        ComPtr<ID3D11Buffer> Buffer{};
+        UINT uStride{};
+        UINT uOffset{};
+    };
+
+    struct INDEX_BUFFER {
+        ComPtr<ID3D11Buffer> Buffer{};
+        DXGI_FORMAT eFormat{ DXGI_FORMAT_UNKNOWN };
+        UINT uOffset{};
+    };
+
     struct MeshAsset {
         std::string Path{};
 
-        struct VERTEX_BUFFER {
-            ComPtr<ID3D11Buffer> Buffer{};
-            UINT uStride{};
-            UINT uOffset{};
-        } Vertex{};
-
-        struct INDEX_BUFFER {
-            ComPtr<ID3D11Buffer> Buffer{};
-            DXGI_FORMAT eFormat{ DXGI_FORMAT_UNKNOWN };
-            UINT uOffset{};
-        } Index{};
+        VERTEX_BUFFER Vertex{};
+        INDEX_BUFFER Index{};
 
         RUNTIME_MACRO Macro{};
 
@@ -74,7 +77,7 @@ namespace Zongine {
         std::unordered_map<std::string, UINT> BoneMap{};
     };
 
-    struct SubsetShader {
+    struct SubsetShaderAsset {
         std::string ShaderPath{};
 
         ComPtr<ID3DX11Effect> Effect{};
@@ -85,7 +88,7 @@ namespace Zongine {
     };
 
     struct ShaderAsset {
-        std::vector<SubsetShader> Subsets{};
+        std::vector<SubsetShaderAsset> Subsets{};
 
         RENDER_PASS Pass{};
 

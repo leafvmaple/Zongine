@@ -75,7 +75,7 @@ namespace Zongine {
 
             // NvFlexComputeWaitForGraphics(m_FlexLib);
 
-            NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 20.f, 1, false);
+            // NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 20.f, 1, false);
 
             NvFlexGetParticles(m_Solver, particles.buffer, nullptr);
 

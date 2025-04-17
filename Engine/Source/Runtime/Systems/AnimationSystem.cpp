@@ -52,8 +52,7 @@ namespace Zongine {
             animationComponent.ModelTransforms[skeleton->nRootBoneIndex] = localTransforms[skeleton->nRootBoneIndex];
             _UpdateSkeletonSpaceRecursive(animationComponent, skeleton, localTransforms, skeleton->nRootBoneIndex);
             _MapSkeletonTransformsToMesh(entityID, skeletonComponent, animationComponent);
-            }
-        );
+        });
     }
 
     void AnimationSystem::_UpdateSkeletonSpaceRecursive(

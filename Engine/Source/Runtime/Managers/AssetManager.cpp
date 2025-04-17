@@ -332,7 +332,7 @@ namespace Zongine {
         auto shader = std::make_shared<ShaderAsset>();
 
         for (const auto& path : paths) {
-            SubsetShader subsetShader{};
+            SubsetShaderAsset subsetShader{};
 
             subsetShader.ShaderPath = path;
             subsetShader.Effect = EffectManager::GetInstance().LoadEffect(macro, path);

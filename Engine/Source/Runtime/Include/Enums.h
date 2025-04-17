@@ -19,6 +19,7 @@ namespace Zongine {
 
     enum DEPTHSTENCIL_STATE_ID {
         ZWRITE_ENABLE,
+        ZWRITE_DISABLE,
 
         DEPTH_STENCIL_STATE_COUNT
     };
@@ -35,6 +36,7 @@ namespace Zongine {
     enum class RENDER_PASS {
         COLOR,
         COLORSOFTMASK,
+        OIT,
     };
 
     namespace Colors {
