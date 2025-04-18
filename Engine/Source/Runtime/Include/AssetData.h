@@ -104,7 +104,7 @@ namespace Zongine {
         std::string Path{};
         std::string ShaderName{};
 
-        uint32_t nBlendMode;
+        BLEND_STATE Blend;
         RASTERIZER_STATE_ID Rasterizer{};
 
         SKIN_SUBSET_CONST Const{};

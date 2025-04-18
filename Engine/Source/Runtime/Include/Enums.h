@@ -10,6 +10,15 @@ namespace Zongine {
         RASTERIZER_STATE_COUNT,
     };
 
+    enum BLEND_STATE {
+        BLEND_STATE_OPAQUE,
+        BLEND_STATE_MASKED,
+        BLEND_STATE_SOFTMASKED,
+        BLEND_STATE_OIT,
+
+        BLEND_STATE_COUNT,
+    };
+
     enum SAMPLER_STATE_ID {
         SAMPLER_STATE_DEFAULT,
         SAMPLER_STATE_POINT_CLAMP,
@@ -49,14 +58,7 @@ namespace Zongine {
         BONE_FLAG_NO_UPDATE = 1 << 1,
     };
 
-    enum BlendMode {
-        BLEND_OPAQUE,
-        BLEND_MASKED,
-        BLEND_SOFTMASKED = 5,
-    };
-
-    enum FLEX_OBJECT_TYPE
-    {
+    enum FLEX_OBJECT_TYPE {
         FLEX_OBJECT_NONE,
         FLEX_OBJECT_CLOTH,
         FLEX_OBJECT_SOFTBODY,

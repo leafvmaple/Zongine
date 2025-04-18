@@ -32,6 +32,83 @@ namespace Zongine {
         },
     };
 
+    static const D3D11_BLEND_DESC BLEND_STATE_LIST[] = {
+        {
+            false,  // BOOL AlphaToCoverageEnable
+            false,  // BOOL IndependentBlendEnable;
+            {
+                {
+                    false, // BOOL BlendEnable;
+                    D3D11_BLEND_SRC_ALPHA, // D3D11_BLEND SrcBlend
+                    D3D11_BLEND_INV_SRC_ALPHA, // D3D11_BLEND DestBlend
+                    D3D11_BLEND_OP_ADD, // D3D11_BLEND_OP BlendOp
+                    D3D11_BLEND_SRC_ALPHA, // D3D11_BLEND SrcBlendAlpha
+                    D3D11_BLEND_INV_SRC_ALPHA, // D3D11_BLEND DestBlendAlpha
+                    D3D11_BLEND_OP_ADD, // D3D11_BLEND_OP BlendOpAlpha
+                    D3D11_COLOR_WRITE_ENABLE_ALL // UINT8 RenderTargetWriteMask;
+                }
+            }
+        },
+        {
+            false,  // BOOL AlphaToCoverageEnable
+            false,  // BOOL IndependentBlendEnable;
+            {
+                {
+                    false, // BOOL BlendEnable;
+                    D3D11_BLEND_SRC_ALPHA, // D3D11_BLEND SrcBlend
+                    D3D11_BLEND_INV_SRC_ALPHA, // D3D11_BLEND DestBlend
+                    D3D11_BLEND_OP_ADD, // D3D11_BLEND_OP BlendOp
+                    D3D11_BLEND_SRC_ALPHA, // D3D11_BLEND SrcBlendAlpha
+                    D3D11_BLEND_INV_SRC_ALPHA, // D3D11_BLEND DestBlendAlpha
+                    D3D11_BLEND_OP_ADD, // D3D11_BLEND_OP BlendOpAlpha
+                    D3D11_COLOR_WRITE_ENABLE_ALL // UINT8 RenderTargetWriteMask;
+                }
+            }
+        },
+        {
+            false,  // BOOL AlphaToCoverageEnable
+            false,  // BOOL IndependentBlendEnable;
+            {
+                {
+                    true, // BOOL BlendEnable;
+                    D3D11_BLEND_SRC_ALPHA, // D3D11_BLEND SrcBlend
+                    D3D11_BLEND_INV_SRC_ALPHA, // D3D11_BLEND DestBlend
+                    D3D11_BLEND_OP_ADD, // D3D11_BLEND_OP BlendOp
+                    D3D11_BLEND_SRC_ALPHA, // D3D11_BLEND SrcBlendAlpha
+                    D3D11_BLEND_INV_SRC_ALPHA, // D3D11_BLEND DestBlendAlpha
+                    D3D11_BLEND_OP_MAX, // D3D11_BLEND_OP BlendOpAlpha
+                    D3D11_COLOR_WRITE_ENABLE_ALL // UINT8 RenderTargetWriteMask;
+                }
+            }
+        },
+        {
+            false,  // BOOL AlphaToCoverageEnable
+            true,  // BOOL IndependentBlendEnable;
+            {
+                {
+                    true, // BOOL BlendEnable;
+                    D3D11_BLEND_ONE, // D3D11_BLEND SrcBlend
+                    D3D11_BLEND_ONE, // D3D11_BLEND DestBlend
+                    D3D11_BLEND_OP_ADD, // D3D11_BLEND_OP BlendOp
+                    D3D11_BLEND_ONE, // D3D11_BLEND SrcBlendAlpha
+                    D3D11_BLEND_ONE, // D3D11_BLEND DestBlendAlpha
+                    D3D11_BLEND_OP_ADD, // D3D11_BLEND_OP BlendOpAlpha
+                    D3D11_COLOR_WRITE_ENABLE_ALL // UINT8 RenderTargetWriteMask;
+                },
+                {
+                    true, // BOOL BlendEnable;
+                    D3D11_BLEND_ZERO, // D3D11_BLEND SrcBlend
+                    D3D11_BLEND_INV_SRC_COLOR, // D3D11_BLEND DestBlend
+                    D3D11_BLEND_OP_ADD, // D3D11_BLEND_OP BlendOp
+                    D3D11_BLEND_ONE, // D3D11_BLEND SrcBlendAlpha
+                    D3D11_BLEND_ONE, // D3D11_BLEND DestBlendAlpha
+                    D3D11_BLEND_OP_ADD, // D3D11_BLEND_OP BlendOpAlpha
+                    D3D11_COLOR_WRITE_ENABLE_ALL // UINT8 RenderTargetWriteMask;
+                }
+            }
+        },
+    };
+
     static const D3D11_SAMPLER_DESC SAMPLER_STATE_LIST[] = {
         { // SAMPLER_STATE_DEFAULT
             D3D11_FILTER_MIN_MAG_MIP_LINEAR,   //D3D11_FILTER Filter;
@@ -80,6 +157,10 @@ namespace Zongine {
         assert(_countof(RASTERIZER_STATE_LIST) == RASTERIZER_STATE_COUNT);
         for (int i = 0; i < RASTERIZER_STATE_COUNT; i++)
             CHECK_HRESULT(desc->CreateRasterizerState(&RASTERIZER_STATE_LIST[i], m_Rasterizers[i].GetAddressOf()));
+
+        assert(_countof(BLEND_STATE_LIST) == BLEND_STATE_COUNT);
+        for (int i = 0; i < BLEND_STATE_COUNT; i++)
+            CHECK_HRESULT(desc->CreateBlendState(&BLEND_STATE_LIST[i], m_Blends[i].GetAddressOf()));
 
         assert(_countof(SAMPLER_STATE_LIST) == SAMPLER_STATE_COUNT);
         for (int i = 0; i < SAMPLER_STATE_COUNT; i++)

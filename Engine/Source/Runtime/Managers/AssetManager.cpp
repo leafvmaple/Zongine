@@ -435,11 +435,17 @@ namespace Zongine {
         if (source.nTwoSideFlag)
             refer.Rasterizer = RASTERIZER_STATE_CULL_NONE;
 
-        refer.nBlendMode = source.nBlendMode;
+        refer.Blend = BLEND_STATE_OPAQUE;
+        if (source.nBlendMode == BLEND_Masked)
+            refer.Blend = BLEND_STATE_MASKED;
+        else if (source.nBlendMode == BLEND_SoftMasked)
+            refer.Blend = BLEND_STATE_SOFTMASKED;
+        else if (source.nBlendMode == BLEND_OIT)
+            refer.Blend = BLEND_STATE_OIT;
 
         refer.Const.AlphaReference = source.nAlphaRef / 255.f;
         refer.Const.AlphaReference2 = source.nAlphaRef2 / 255.f;
-        refer.Const.EnableAlphaTest = (refer.nBlendMode == BLEND_MASKED || refer.nBlendMode == BLEND_SOFTMASKED);
+        refer.Const.EnableAlphaTest = (refer.Blend == BLEND_STATE_MASKED || refer.Blend == BLEND_STATE_SOFTMASKED);
 
         return true;
     }

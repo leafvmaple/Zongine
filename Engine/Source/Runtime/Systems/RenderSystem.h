@@ -37,6 +37,7 @@ namespace Zongine {
         };
 
         std::vector<RenderEntity> m_GBufferRenderQueue{};
+        std::vector<RenderEntity> m_OITRenderQueue{};
 
         std::vector<Entity> m_TerrainRenderQueue{};
 

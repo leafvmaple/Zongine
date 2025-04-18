@@ -77,6 +77,9 @@ namespace Zongine {
         auto rasterizerState = StateManager::GetInstance().GetRasterizerState(renderEntity.Material->Rasterizer);
         context->RSSetState(rasterizerState.Get());
 
+        /*auto blendState = StateManager::GetInstance().GetBlendState(renderEntity.Material->Blend);
+        context->OMSetBlendState(blendState.Get(), nullptr, 0xFFFFFFFF);*/
+
         for (auto& [var, texture] : renderEntity.Material->Textures) {
             auto it = renderEntity.Shader->Variables.find(var);
             if (it == renderEntity.Shader->Variables.end())
@@ -163,8 +166,7 @@ namespace Zongine {
             auto& subsetMesh = mesh->Subsets[i];
             auto& subsetShader = shader->Subsets[i];
             auto& subsetMaterial = material->Subsets[i];
-
-            auto& subsetEntity = m_GBufferRenderQueue.emplace_back();
+            RenderEntity subsetEntity{};
 
             subsetEntity.Mesh = &mesh->Subsets[i];
             subsetEntity.Shader = &shader->Subsets[i];
@@ -185,6 +187,12 @@ namespace Zongine {
                 subsetShader.ModelConst->GetMemberByName("MATRIX_INV_M")->SetRawValue(&inverseTransform, 0, sizeof(inverseTransform));
 
             subsetShader.SubsetConst->SetRawValue(&subsetMaterial.Const, 0, sizeof(SKIN_SUBSET_CONST));
+
+            m_GBufferRenderQueue.emplace_back(subsetEntity);
+            /*if (subsetMaterial.Blend == BLEND_STATE_OIT)
+                m_OITRenderQueue.emplace_back(subsetEntity);
+            else
+                m_GBufferRenderQueue.emplace_back(subsetEntity);*/
         }
     }
 
