@@ -61,7 +61,6 @@ namespace Zongine {
         ComPtr<IDXGIAdapter> adapter{};
         ComPtr<IDXGIFactory> factory{};
 
-        desc.BufferCount = 1;
         desc.BufferDesc.Width = uWidth;
         desc.BufferDesc.Height = uHeight;
         desc.BufferDesc.RefreshRate.Numerator = 60;
@@ -70,7 +69,7 @@ namespace Zongine {
         desc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
         desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
         // DXGI_SAMPLE_DESC
-        desc.SampleDesc.Count = 1;     // 1X MASS (MultiSample Anti-Aliasing) 
+        desc.SampleDesc.Count = 4;     // 4X MASS (MultiSample Anti-Aliasing) 
 
         desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         desc.OutputWindow = hWnd;
