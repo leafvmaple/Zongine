@@ -5,6 +5,7 @@
 #include "Managers/StateManager.h"
 #include "Managers/AssetManager.h"
 #include "Managers/EventManager.h"
+#include "Managers/EffectManager.h"
 
 #include "Systems/RenderSystem.h"
 #include "Systems/InputSystem.h"
@@ -41,6 +42,7 @@ namespace Zongine {
         WindowManager::GetInstance().Initialize(wnd);
         DeviceManager::GetInstance().Initialize();
         StateManager::GetInstance().Initialize();
+        EffectManager::GetInstance().Initialize();
 
         // System initialization
         renderSystem = std::make_unique<RenderSystem>();
@@ -98,6 +100,7 @@ namespace Zongine {
 
     void Engine::Uninitialize() {
         nvFlexSystem->Uninitialize();
+        m_bRunning = false;
     }
 
     constexpr uint64_t targetFrameTime = 1000 / 60;

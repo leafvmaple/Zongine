@@ -41,21 +41,51 @@ namespace Zongine {
     }
 
     void RenderSystem::Tick(float fDeltaTime) {
+        ID3D11ShaderResourceView* nullSRVs[3]{};
+
         auto swapChain = DeviceManager::GetInstance().GetSwapChain();
         auto context = DeviceManager::GetInstance().GetImmediateContext();
-        auto renderTargetView = DeviceManager::GetInstance().GetRenderTargetView();
+        auto swapChainRTV = DeviceManager::GetInstance().GetSwapChainRTV();
         auto depthStencilView = DeviceManager::GetInstance().GetDepthStencilView();
+        auto mainSRV = DeviceManager::GetInstance().GetMainSRV();
+        auto accSRV = DeviceManager::GetInstance().GetOITAccSRV();
+        auto weightSRV = DeviceManager::GetInstance().GetOITWeightSRV();
+        auto mainRTV = DeviceManager::GetInstance().GetMainRTV();
+        auto accRTV = DeviceManager::GetInstance().GetOITAccRTV();
+        auto weightRTV = DeviceManager::GetInstance().GetOITWeightRTV();
 
-        context->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), depthStencilView.Get());
-        context->ClearRenderTargetView(renderTargetView.Get(), reinterpret_cast<const float*>(&Colors::White));
+        ID3D11RenderTargetView* RTVs[] = { accRTV.Get(), weightRTV.Get() };
+        ID3D11ShaderResourceView* SRVs[] = { mainSRV.Get(), accSRV.Get(), weightSRV.Get() };
+
+        context->ClearRenderTargetView(swapChainRTV.Get(), reinterpret_cast<const float*>(&Colors::White));
         context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+        context->ClearRenderTargetView(accRTV.Get(), reinterpret_cast<const float*>(&Colors::Black));
+        context->ClearRenderTargetView(weightRTV.Get(), reinterpret_cast<const float*>(&Colors::White));
 
         m_GBufferRenderQueue.clear();
+        m_OITRenderQueue.clear();
         _UpdateRenderQueue(EntityManager::GetInstance().GetRootEntity());
 
+        context->OMSetRenderTargets(1, mainRTV.GetAddressOf(), depthStencilView.Get());
         for (auto& renderEntity : m_GBufferRenderQueue) {
             TickRenderEntity(renderEntity, RENDER_PASS::COLOR);
         }
+
+        context->OMSetRenderTargets(ARRAYSIZE(RTVs), RTVs, depthStencilView.Get());
+        for (auto& renderEntity : m_OITRenderQueue) {
+            TickRenderEntity(renderEntity, RENDER_PASS::OIT);
+        }
+
+        context->OMSetRenderTargets(1, swapChainRTV.GetAddressOf(), depthStencilView.Get());
+        context->PSSetSamplers(0, 1, StateManager::GetInstance().GetSamplerState(SAMPLER_STATE_LINEAR3_CLAMP).GetAddressOf());
+
+        context->OMSetBlendState(StateManager::GetInstance().GetBlendState(BLEND_STATE_COPY).Get(), nullptr, 0xFFFFFFFF);
+
+        EffectManager::GetInstance().ApplyOIT();
+
+        context->PSSetShaderResources(0, ARRAYSIZE(SRVs), SRVs);
+        context->Draw(6, 0);
+        context->PSSetShaderResources(0, ARRAYSIZE(SRVs), nullSRVs);
 
         swapChain->Present(0, 0);
     }
@@ -77,8 +107,8 @@ namespace Zongine {
         auto rasterizerState = StateManager::GetInstance().GetRasterizerState(renderEntity.Material->Rasterizer);
         context->RSSetState(rasterizerState.Get());
 
-        /*auto blendState = StateManager::GetInstance().GetBlendState(renderEntity.Material->Blend);
-        context->OMSetBlendState(blendState.Get(), nullptr, 0xFFFFFFFF);*/
+        auto blendState = StateManager::GetInstance().GetBlendState(renderEntity.Material->Blend);
+        context->OMSetBlendState(blendState.Get(), nullptr, 0xFFFFFFFF);
 
         for (auto& [var, texture] : renderEntity.Material->Textures) {
             auto it = renderEntity.Shader->Variables.find(var);
@@ -188,11 +218,10 @@ namespace Zongine {
 
             subsetShader.SubsetConst->SetRawValue(&subsetMaterial.Const, 0, sizeof(SKIN_SUBSET_CONST));
 
-            m_GBufferRenderQueue.emplace_back(subsetEntity);
-            /*if (subsetMaterial.Blend == BLEND_STATE_OIT)
+            if (subsetMaterial.Blend == BLEND_STATE_OIT)
                 m_OITRenderQueue.emplace_back(subsetEntity);
             else
-                m_GBufferRenderQueue.emplace_back(subsetEntity);*/
+                m_GBufferRenderQueue.emplace_back(subsetEntity);
         }
     }
 

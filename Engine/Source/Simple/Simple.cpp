@@ -4,6 +4,8 @@
 
 #include "Runtime/Engine.h"
 
+Zongine::Engine engine;
+
 // 需要实现窗口过程函数
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -11,6 +13,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
     case WM_DESTROY:
         PostQuitMessage(0);
+        engine.Exit();
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -23,6 +26,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+    MSG msg{};
     WNDCLASSEX wndClassEx{};
 
     int width = 1182;
@@ -40,10 +44,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     RegisterClassEx(&wndClassEx);
     auto hWnd = CreateWindow(L"Zongine", L"Zongine", WS_OVERLAPPEDWINDOW, 0, 0, width, height, NULL, NULL, hInstance, NULL);
 
-    Zongine::Engine engine;
     engine.Initialize(hWnd);
 
-    while (true) {
+    while (engine.IsRunning()) {
         engine.Tick();
     }
 }

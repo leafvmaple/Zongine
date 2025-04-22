@@ -15,6 +15,12 @@ cbuffer SUBSET_CONST
     float  AlphaReference2 = 0.f;
 };
 
+struct PS_OUTPUT
+{
+    float4 Color0 : SV_Target0;
+    float4 Color1 : SV_Target1;
+};
+
 struct VertexInput
 {
     float4 Position  : POSITION;
@@ -39,6 +45,18 @@ struct VertexOutput
 #include "CommonParam.fx5"
 #include "NodeInterface.fx5"
 #include "UserShader.fx5"
+
+void writePixel(float4 premultipliedReflect, float3 transmit, float csZ, out float4 color0, out float4 color1)
+{
+    premultipliedReflect.a *= 1.0 - clamp((transmit.r + transmit.g + transmit.b) * (1.0 / 3.0), 0, 1);
+
+    float a = min(1.0, premultipliedReflect.a) * 8.0 + 0.01;
+    float b = -csZ * 0.95 + 1.0;
+
+    float w = clamp(a * a * a * 1e8 * b * b * b, 1e-2, 3e2);
+    color0 = premultipliedReflect * w;
+    color1 = premultipliedReflect.a;
+}
 
 MaterialVertexParameters GetMaterialVertexParameters(VertexInput vin)
 {
@@ -77,6 +95,7 @@ MaterialPixelParameters GetMaterialPixelParameters(VertexOutput Input)
     MaterialPixelParameters Params = (MaterialPixelParameters) 0;
 
     Params.TexCoords   = Input.TexCoords;
+    Params.ModelColor  = float4(1.0f, 1.0f, 1.0f, 1.0f);
     
     return Params;
 }
@@ -134,10 +153,54 @@ float4 PixelShaderMain(VertexOutput pin, uniform bool RenderSoftMask) : SV_Targe
     return retColor;
 }
 
+PS_OUTPUT PS_OIT(VertexOutput Input, uniform bool RenderSoftMask) : SV_Target0
+{
+    float4 OutColor = 0.0f;
+
+    MaterialPixelParameters Params = GetMaterialPixelParameters(Input);
+
+    ParamsMainPixelNode PixelMainNode = (ParamsMainPixelNode)0;
+    CalculateMainPixelNode(Params, PixelMainNode);
+
+    if (EnableAlphaTest)
+    {
+        if (PixelMainNode.Opacity < AlphaReference2)
+            discard;
+    }
+
+    if (RenderSoftMask)
+    {
+        PixelMainNode.Opacity = PixelMainNode.Opacity / AlphaReference;
+        PixelMainNode.Opacity = saturate(PixelMainNode.Opacity);
+    }
+
+    float3 color = 0;
+    color = PixelMainNode.Albedo;
+    color += PixelMainNode.Ambient;
+    color += PixelMainNode.Emissive;
+
+    OutColor.rgb = color;
+
+    OutColor.a = PixelMainNode.Opacity * Params.ModelColor.a;
+    OutColor.a = saturate(OutColor.a);
+
+    PS_OUTPUT pOut;
+    float4 v4 = OutColor;
+    // v4.rgb *= PixelMainNode.AO;
+    v4.rgb *= v4.a;
+
+    float3 v3 = 0.0;
+
+    writePixel(v4, v3, Input.PosH.z, pOut.Color0, pOut.Color1);
+
+    return pOut;
+}
+
 VertexShader MainVertexShader = CompileShader(vs_5_0, VertexShaderMain());
 
 PixelShader MainPixelShader = CompileShader(ps_5_0, PixelShaderMain(false));
 PixelShader SoftMaskShader  = CompileShader(ps_5_0, PixelShaderMain(true));
+PixelShader OITPixelShader = CompileShader(ps_5_0, PS_OIT(false));
 
 technique11 Color
 {
@@ -153,5 +216,14 @@ technique11 ColorSoftMask
     {
         SetVertexShader(MainVertexShader);
         SetPixelShader(SoftMaskShader);
+    }
+}
+
+technique11 OIT
+{
+    pass p0
+    {
+        SetVertexShader(MainVertexShader);
+        SetPixelShader(OITPixelShader);
     }
 }

@@ -35,6 +35,7 @@ namespace Zongine {
         void Resize(int width, int height);
 
         bool IsRunning() const { return m_bRunning; }
+        void Exit() { m_bRunning = false; };
 
         Entity& GetRootEntity();
         Entity& GetEntity(EntityID id);

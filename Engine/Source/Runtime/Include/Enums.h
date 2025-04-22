@@ -15,6 +15,7 @@ namespace Zongine {
         BLEND_STATE_MASKED,
         BLEND_STATE_SOFTMASKED,
         BLEND_STATE_OIT,
+        BLEND_STATE_COPY,
 
         BLEND_STATE_COUNT,
     };
@@ -22,6 +23,7 @@ namespace Zongine {
     enum SAMPLER_STATE_ID {
         SAMPLER_STATE_DEFAULT,
         SAMPLER_STATE_POINT_CLAMP,
+        SAMPLER_STATE_LINEAR3_CLAMP,
 
         SAMPLER_STATE_COUNT
     };
@@ -50,6 +52,7 @@ namespace Zongine {
 
     namespace Colors {
         XMGLOBALCONST DirectX::XMFLOAT4 White = { 1.0f, 1.0f, 1.0f, 1.0f };
+        XMGLOBALCONST DirectX::XMFLOAT4 Black = { 0.0f, 0.0f, 0.0f, 1.0f };
     }
 
     enum BONE_FLAG {

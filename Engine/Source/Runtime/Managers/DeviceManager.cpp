@@ -46,7 +46,7 @@ namespace Zongine {
             m_piSwapChain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
 
             m_piSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer);
-            m_piDevice->CreateRenderTargetView(buffer.Get(), nullptr, m_piRenderTargetView.GetAddressOf());
+            m_piDevice->CreateRenderTargetView(buffer.Get(), nullptr, m_SwapChainRTV.GetAddressOf());
 
             _CreateStencilView(width, height);
             _CreateSwapChainRTV();
@@ -61,6 +61,7 @@ namespace Zongine {
         ComPtr<IDXGIAdapter> adapter{};
         ComPtr<IDXGIFactory> factory{};
 
+        desc.BufferCount = 2;
         desc.BufferDesc.Width = uWidth;
         desc.BufferDesc.Height = uHeight;
         desc.BufferDesc.RefreshRate.Numerator = 60;
@@ -69,9 +70,9 @@ namespace Zongine {
         desc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
         desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
         // DXGI_SAMPLE_DESC
-        desc.SampleDesc.Count = 4;     // 4X MASS (MultiSample Anti-Aliasing) 
+        desc.SampleDesc.Count = 1;     // 4X MASS (MultiSample Anti-Aliasing) 
 
-        desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+        desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
         desc.OutputWindow = hWnd;
         desc.Windowed = true; // from SDK: should not create a full-screen swap chain
         desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
@@ -83,6 +84,7 @@ namespace Zongine {
 
         _CreateStencilView(uWidth, uHeight);
         _CreateSwapChainRTV();
+        _CreateOITResource(uWidth, uHeight);
 
         return true;
     }
@@ -124,10 +126,40 @@ namespace Zongine {
         ComPtr<ID3D11Texture2D> buffer{};
 
         CHECK_HRESULT(m_piSwapChain->GetBuffer(0, __uuidof(buffer), reinterpret_cast<void**>(buffer.GetAddressOf())));
-        CHECK_HRESULT(m_piDevice->CreateRenderTargetView(buffer.Get(), nullptr, m_piRenderTargetView.GetAddressOf()));
+        CHECK_HRESULT(m_piDevice->CreateRenderTargetView(buffer.Get(), nullptr, m_SwapChainRTV.GetAddressOf()));
 
-        m_piImmediateContext->OMSetRenderTargets(1, m_piRenderTargetView.GetAddressOf(), m_piDepthStencilView.Get());
+        // m_piImmediateContext->OMSetRenderTargets(1, m_piRenderTargetView.GetAddressOf(), m_piDepthStencilView.Get());
 
         return true;
     }
+
+    bool DeviceManager::_CreateOITResource(unsigned uWidth, unsigned uHeight) {
+        D3D11_TEXTURE2D_DESC texDesc{};
+        ComPtr<ID3D11Texture2D> texture{};
+
+        texDesc.Width = uWidth;
+        texDesc.Height = uHeight;
+        texDesc.MipLevels = 1;
+        texDesc.ArraySize = 1;
+        texDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT; // 高精度格式
+        texDesc.SampleDesc.Count = 1;
+        texDesc.Usage = D3D11_USAGE_DEFAULT;
+        texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+
+        m_piDevice->CreateTexture2D(&texDesc, nullptr, texture.GetAddressOf());
+        m_piDevice->CreateRenderTargetView(texture.Get(), nullptr, m_OITAccRTV.GetAddressOf());
+        m_piDevice->CreateShaderResourceView(texture.Get(), nullptr, m_OITAccSRV.GetAddressOf());
+
+        texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        m_piDevice->CreateTexture2D(&texDesc, nullptr, texture.GetAddressOf());
+        m_piDevice->CreateRenderTargetView(texture.Get(), nullptr, m_OITWeightRTV.GetAddressOf());
+        m_piDevice->CreateShaderResourceView(texture.Get(), nullptr, m_OITWeightSRV.GetAddressOf());
+
+        m_piDevice->CreateTexture2D(&texDesc, nullptr, texture.GetAddressOf());
+        m_piDevice->CreateRenderTargetView(texture.Get(), nullptr, m_MainRTV.GetAddressOf());
+        m_piDevice->CreateShaderResourceView(texture.Get(), nullptr, m_MainSRV.GetAddressOf());
+
+        return true;
+    }
+
 }

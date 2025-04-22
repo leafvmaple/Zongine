@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Include/Enums.h"
+#include "Include/AssetData.h"
 
 #include "Mananger.h"
 
@@ -18,6 +19,8 @@ namespace Zongine {
 
     class EffectManager : public SingleManager<EffectManager> {
     public:
+        bool Initialize();
+
         ComPtr<ID3DX11Effect> LoadEffect(RUNTIME_MACRO macro, const std::string& path);
 
         void LoadVariables(ComPtr<ID3DX11Effect> effect, std::unordered_map<std::string, ID3DX11EffectShaderResourceVariable*>& Variables);
@@ -25,18 +28,28 @@ namespace Zongine {
         ComPtr<ID3D11InputLayout> GetInputLayout(RUNTIME_MACRO macro) { return m_InputLayouts[macro]; }
         ID3DX11EffectPass* GetEffectPass(ComPtr<ID3DX11Effect> effect, RENDER_PASS pass);
 
+        void ApplyOIT();
+
     private:
         struct RENDER_PASS_TABLE {
             const char* szTechniqueName;
             unsigned    uPassSlot = 0;
         };
 
+        bool _CreateFullScreenBuffer();
+
         std::array<std::unordered_map<std::string, ComPtr<ID3DX11Effect>>, RUNTIME_MACRO_COUNT> m_Effects{};
         std::array<ComPtr<ID3D11InputLayout>, RUNTIME_MACRO_COUNT> m_InputLayouts{};
 
         std::unordered_map<RENDER_PASS, RENDER_PASS_TABLE> m_RenderPassTable {
             { RENDER_PASS::COLOR, { "Color" } },
-            { RENDER_PASS::COLORSOFTMASK, { "ColorSoftMask"} }
+            { RENDER_PASS::COLORSOFTMASK, { "ColorSoftMask"} },
+            { RENDER_PASS::OIT, { "OIT" } }
         };
+
+        VERTEX_BUFFER m_FullScreenVB{};
+        ComPtr<ID3D11InputLayout> m_FullScreenLayout{};
+        ComPtr<ID3D11VertexShader> m_FullScreenVS{};
+        ComPtr<ID3D11PixelShader> m_OITBlendPS{};
     };
 }

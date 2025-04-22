@@ -55,6 +55,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Entities\EntityManager.h" />
+    <ClInclude Include="Include\Assert.h" />
     <ClInclude Include="Include\AssetData.h" />
     <ClInclude Include="Include\Const.h" />
     <ClInclude Include="Include\Enums.h" />
