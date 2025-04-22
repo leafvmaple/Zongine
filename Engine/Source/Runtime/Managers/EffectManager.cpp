@@ -18,15 +18,11 @@
 
 namespace Zongine {
     static struct _SHADER_TEMPLATE {
-        RUNTIME_MACRO Macro;
         const char* szPath;
-        int nDescCount;
-        D3D11_INPUT_ELEMENT_DESC Desc[30];
+        std::vector<D3D11_INPUT_ELEMENT_DESC> Desc;
     } SShaderTemplate[] = {
         {
-            RUNTIME_MACRO_MESH,
             MATERIAL_SHADER_ROOT"MeshShader.fx5",
-            5,
             {
                 {"POSITION",    0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
                 {"NORMAL",      0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -36,9 +32,7 @@ namespace Zongine {
             }
         },
         {
-            RUNTIME_MACRO_SKIN_MESH,
             MATERIAL_SHADER_ROOT"SkinMeshShader.fx5",
-            7,
             {
                 {"POSITION",    0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
                 {"NORMAL",      0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -50,9 +44,7 @@ namespace Zongine {
             }
         },
         {
-            RUNTIME_MACRO_TERRAIN,
             MATERIAL_SHADER_ROOT"TerrainShader.fx5",
-            3,
             {
                 {"POSITION",    0, DXGI_FORMAT_R32G32_FLOAT,        0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA,    0},
                 {"CINSTANCE",   0, DXGI_FORMAT_R32G32B32A32_SINT,   1,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_INSTANCE_DATA,  1},
@@ -60,9 +52,7 @@ namespace Zongine {
             }
         },
         {
-            RUNTIME_MACRO_FLEX_MESH,
             MATERIAL_SHADER_ROOT"FlexMeshShader.fx5",
-            9,
             {
                 {"POSITION",    0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
                 {"NORMAL",      0, DXGI_FORMAT_R32G32B32_FLOAT,     0,  D3D11_APPEND_ALIGNED_ELEMENT,   D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -170,7 +160,7 @@ namespace Zongine {
             pass->GetDesc(&passDesc);
 
             device->CreateInputLayout(
-                desc.Desc, desc.nDescCount,
+                desc.Desc.data(), desc.Desc.size(),
                 passDesc.pIAInputSignature,
                 passDesc.IAInputSignatureSize,
                 inputLayout.GetAddressOf()
