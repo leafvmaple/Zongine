@@ -81,10 +81,15 @@ namespace Zongine {
 
         context->OMSetBlendState(StateManager::GetInstance().GetBlendState(BLEND_STATE_COPY).Get(), nullptr, 0xFFFFFFFF);
 
+        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+        context->IASetInputLayout(nullptr);
+        context->IASetVertexBuffers(0, 0, nullptr, nullptr, nullptr);
+        context->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
+
         EffectManager::GetInstance().ApplyOIT();
 
         context->PSSetShaderResources(0, ARRAYSIZE(SRVs), SRVs);
-        context->Draw(6, 0);
+        context->Draw(4, 0);
         context->PSSetShaderResources(0, ARRAYSIZE(SRVs), nullSRVs);
 
         swapChain->Present(0, 0);

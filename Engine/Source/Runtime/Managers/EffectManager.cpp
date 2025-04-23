@@ -112,15 +112,18 @@ namespace Zongine {
         auto device = DeviceManager::GetInstance().GetDevice();
 
         CHECK_BLOB(D3DCompileFromFile(
+            L"data/material/Shader/VS/RCVSMain.fx5", nullptr, nullptr, "RCVSMain", "vs_5_0",
+            D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, blob.GetAddressOf(), errorBlob.GetAddressOf()
+        ), errorBlob);
+
+        device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_FullScreenVS.GetAddressOf());
+
+        CHECK_BLOB(D3DCompileFromFile(
             L"data/material/Shader/PS/RCPSMain.fx5", nullptr, nullptr, "RCPSMain", "ps_5_0",
             D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, blob.GetAddressOf(), errorBlob.GetAddressOf()
         ), errorBlob);
 
-        device->CreatePixelShader(
-            blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_OITBlendPS.GetAddressOf()
-        );
-
-        _CreateFullScreenBuffer();
+        device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_OITBlendPS.GetAddressOf());
 
         return true;
     }
@@ -203,51 +206,7 @@ namespace Zongine {
     void EffectManager::ApplyOIT() {
         auto context = DeviceManager::GetInstance().GetImmediateContext();
 
-        context->IASetInputLayout(m_FullScreenLayout.Get());
-        context->IASetVertexBuffers(0, 1, m_FullScreenVB.Buffer.GetAddressOf(), &m_FullScreenVB.uStride, &m_FullScreenVB.uOffset);
-
         context->VSSetShader(m_FullScreenVS.Get(), nullptr, 0);
         context->PSSetShader(m_OITBlendPS.Get(), nullptr, 0);
-    }
-
-    bool EffectManager::_CreateFullScreenBuffer() {
-        D3D11_BUFFER_DESC desc{};
-        D3D11_SUBRESOURCE_DATA data{};
-        ComPtr<ID3D10Blob> blob{};
-        ComPtr<ID3D10Blob> errorBlob{};
-
-        D3D11_INPUT_ELEMENT_DESC layout[] =
-        {
-            { "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 8, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        };
-
-        auto device = DeviceManager::GetInstance().GetDevice();
-
-        float vertices[] = {
-            -1.0f,  1.0f,         0.0f, 0.0f,
-             1.0f,  1.0f,         1.0f, 0.0f,
-             1.0f, -1.0f,         1.0f, 1.0f,
-            -1.0f,  1.0f,         0.0f, 0.0f,
-             1.0f, -1.0f,         1.0f, 1.0f,
-            -1.0f, -1.0f,         0.0f, 1.0f,
-        };
-
-        desc.ByteWidth = sizeof(vertices);
-        desc.Usage = D3D11_USAGE_IMMUTABLE;
-        desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-        data.pSysMem = vertices;
-
-        m_FullScreenVB.uStride = sizeof(float) * 4;
-
-        device->CreateBuffer(&desc, &data, m_FullScreenVB.Buffer.GetAddressOf());
-
-        CHECK_BLOB(D3DCompileFromFile(
-            L"data/material/Shader/VS/RCVSMain.fx5", nullptr, nullptr, "RCVSMain", "vs_5_0",
-            D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0, blob.GetAddressOf(), errorBlob.GetAddressOf()
-        ), errorBlob);
-
-        device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_FullScreenVS.GetAddressOf());
-        device->CreateInputLayout(layout, ARRAYSIZE(layout), blob->GetBufferPointer(), blob->GetBufferSize(), m_FullScreenLayout.GetAddressOf());
     }
 }

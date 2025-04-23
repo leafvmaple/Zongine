@@ -36,8 +36,6 @@ namespace Zongine {
             unsigned    uPassSlot = 0;
         };
 
-        bool _CreateFullScreenBuffer();
-
         std::array<std::unordered_map<std::string, ComPtr<ID3DX11Effect>>, RUNTIME_MACRO_COUNT> m_Effects{};
         std::array<ComPtr<ID3D11InputLayout>, RUNTIME_MACRO_COUNT> m_InputLayouts{};
 
@@ -47,8 +45,6 @@ namespace Zongine {
             { RENDER_PASS::OIT, { "OIT" } }
         };
 
-        VERTEX_BUFFER m_FullScreenVB{};
-        ComPtr<ID3D11InputLayout> m_FullScreenLayout{};
         ComPtr<ID3D11VertexShader> m_FullScreenVS{};
         ComPtr<ID3D11PixelShader> m_OITBlendPS{};
     };
