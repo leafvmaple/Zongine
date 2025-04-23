@@ -440,7 +440,7 @@ namespace Zongine {
             refer.Blend = BLEND_STATE_MASKED;
         else if (source.nBlendMode == BLEND_SoftMasked)
             refer.Blend = BLEND_STATE_SOFTMASKED;
-        else if (source.nBlendMode == BLEND_OIT)
+        else if (source.nBlendMode == BLEND_OIT || source.nBlendMode == BLEND_OITMask)
             refer.Blend = BLEND_STATE_OIT;
 
         refer.Const.AlphaReference = source.nAlphaRef / 255.f;

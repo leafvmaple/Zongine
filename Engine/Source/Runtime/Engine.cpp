@@ -13,7 +13,7 @@
 #include "Systems/TransformSystem.h"
 #include "Systems/AnimationSystem.h"
 #include "Systems/PhysicsSystem.h"
-#include "Systems/NVFlexSystem.h"
+#include "Systems/NvFlexSystem.h"
 
 #include "Components/CameraComponent.h"
 #include "components/MaterialComponent.h"

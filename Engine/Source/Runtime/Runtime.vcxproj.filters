@@ -81,7 +81,7 @@
     <ClCompile Include="Components\NVFlexComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Systems\NVFlexSystem.cpp">
+    <ClCompile Include="Systems\NvFlexSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
@@ -191,7 +191,7 @@
     <ClInclude Include="Components\NVFlexComponent.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\NVFlexSystem.h">
+    <ClInclude Include="Systems\NvFlexSystem.h">
       <Filter>Source Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="Include\Assert.h">
