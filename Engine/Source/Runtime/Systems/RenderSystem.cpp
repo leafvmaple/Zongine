@@ -57,6 +57,9 @@ namespace Zongine {
         ID3D11RenderTargetView* RTVs[] = { accRTV.Get(), weightRTV.Get() };
         ID3D11ShaderResourceView* SRVs[] = { mainSRV.Get(), accSRV.Get(), weightSRV.Get() };
 
+        const auto& viewport = DeviceManager::GetInstance().GetViewport();
+        context->RSSetViewports(1, &viewport);
+
         context->ClearRenderTargetView(swapChainRTV.Get(), reinterpret_cast<const float*>(&Colors::White));
         context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
         context->ClearRenderTargetView(accRTV.Get(), reinterpret_cast<const float*>(&Colors::Black));

@@ -27,6 +27,8 @@ namespace Zongine {
         ComPtr<ID3D11ShaderResourceView> GetOITAccSRV() const { return m_OITAccSRV; };
         ComPtr<ID3D11ShaderResourceView> GetOITWeightSRV() const { return m_OITWeightSRV; };
 
+        const D3D11_VIEWPORT& GetViewport() const { return m_Viewport; }
+
     private:
         bool _CreateSwapChain(unsigned uWidth, unsigned uHeight, HWND hWnd);
 		bool _CreateViewport(unsigned uWidth, unsigned uHeight);

@@ -66,7 +66,6 @@ namespace Zongine {
 
             if (!flexComponent.bInitialized) {
                 flexComponent.Initialize(entity, m_FlexLib);
-                NvFlexSetActiveCount(m_Solver, flexComponent.ParticleVertices.size());
             }
 
             copyDesc.elementCount = flexComponent.ParticleVertices.size();
@@ -75,9 +74,10 @@ namespace Zongine {
             NvFlexSetPhases(m_Solver, flexComponent.Content->Phases.buffer, nullptr);
             NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
 
+            NvFlexSetActiveCount(m_Solver, flexComponent.ParticleVertices.size());
+
             NvFlexSetParams(m_Solver, m_FlexParams.get());
 
-            // NvFlexComputeWaitForGraphics(m_FlexLib);
             NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 20, 2, false);
 
             NvFlexGetParticles(m_Solver, flexComponent.Content->Particles.buffer, nullptr);

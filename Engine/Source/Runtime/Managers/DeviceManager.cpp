@@ -92,8 +92,6 @@ namespace Zongine {
         m_Viewport.MinDepth = 0.0f;
         m_Viewport.MaxDepth = 1.0f;
 
-        m_piImmediateContext->RSSetViewports(1, &m_Viewport);
-
         return true;
     }
 
