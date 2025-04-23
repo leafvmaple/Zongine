@@ -5,19 +5,14 @@
 #include "LAssert.h"
 
 namespace Zongine {
-
-    static const D3D_FEATURE_LEVEL FEATURE_LEVEL_ARRAY_0[] =
-    {
-        D3D_FEATURE_LEVEL_11_0,
-    };
-
-    static const D3D_FEATURE_LEVEL FEATURE_LEVEL_ARRAY_1[] =
-    {
-        D3D_FEATURE_LEVEL_11_1,
-    };
-
     void DeviceManager::Initialize() {
         UINT uCreateDeviceFlag{};
+        D3D_FEATURE_LEVEL featureLevels[] {
+            D3D_FEATURE_LEVEL_11_1,
+            D3D_FEATURE_LEVEL_11_0,
+            D3D_FEATURE_LEVEL_10_1,
+            D3D_FEATURE_LEVEL_10_0,
+        };
 
         auto width = WindowManager::GetInstance().GetWidth();
         auto height = WindowManager::GetInstance().GetHeight();
@@ -27,7 +22,7 @@ namespace Zongine {
 #endif
 
         D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, uCreateDeviceFlag,
-            FEATURE_LEVEL_ARRAY_0, _countof(FEATURE_LEVEL_ARRAY_0),
+            featureLevels, _countof(featureLevels),
             D3D11_SDK_VERSION,
             m_piDevice.GetAddressOf(), nullptr, m_piImmediateContext.GetAddressOf()
         );
@@ -70,12 +65,14 @@ namespace Zongine {
         desc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
         desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
         // DXGI_SAMPLE_DESC
-        desc.SampleDesc.Count = 1;     // 4X MASS (MultiSample Anti-Aliasing) 
+        desc.SampleDesc.Count = 1;
+        desc.SampleDesc.Quality = 0;
 
-        desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
+        desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         desc.OutputWindow = hWnd;
         desc.Windowed = true; // from SDK: should not create a full-screen swap chain
-        desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+        desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+        desc.Flags = 0;
 
         m_piDevice->QueryInterface(__uuidof(IDXGIDevice), (void**)device.GetAddressOf());
         device->GetParent(__uuidof(IDXGIAdapter), (void**)adapter.GetAddressOf());

@@ -125,7 +125,7 @@ namespace Zongine {
         uint64_t frameProcessTime = timeGetTime() - nTime;
 
         if (frameProcessTime < targetFrameTime) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(targetFrameTime - frameProcessTime));
+            // std::this_thread::sleep_for(std::chrono::milliseconds(targetFrameTime - frameProcessTime));
         }
 
         m_nLastTime = nTime;

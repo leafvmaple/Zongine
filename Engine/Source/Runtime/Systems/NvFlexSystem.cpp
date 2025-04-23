@@ -9,6 +9,9 @@
 #include "../Components/SkeletonComponent.h"
 #include "../Components/MeshComponent.h"
 
+#include <thread>
+#include <chrono>
+
 #pragma comment(lib, "NvFlexDebugD3D_x64.lib")
 #pragma comment(lib, "NvFlexExtDebugD3D_x64.lib")
 
@@ -55,29 +58,35 @@ namespace Zongine {
     }
 
     void NvFlexSystem::Tick(int nDeltaTime) {
+        NvFlexCopyDesc copyDesc{};
+
         auto& entities = EntityManager::GetInstance().GetEntities<NvFlexComponent>();
         for (auto& [entityID, flexComponent] : entities) {
             auto& entity = EntityManager::GetInstance().GetEntity(entityID);
-
-            auto& transformComponent = entity.GetComponent<TransformComponent>();
 
             if (!flexComponent.bInitialized) {
                 flexComponent.Initialize(entity, m_FlexLib);
                 NvFlexSetActiveCount(m_Solver, flexComponent.ParticleVertices.size());
             }
 
-            auto& particles = flexComponent.Content->Particles;
+            copyDesc.elementCount = flexComponent.ParticleVertices.size();
 
-            NvFlexSetParticles(m_Solver, particles.buffer, nullptr);
+            NvFlexSetParticles(m_Solver, flexComponent.Content->Particles.buffer, nullptr);
             NvFlexSetPhases(m_Solver, flexComponent.Content->Phases.buffer, nullptr);
             NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
+
             NvFlexSetParams(m_Solver, m_FlexParams.get());
 
             // NvFlexComputeWaitForGraphics(m_FlexLib);
+            NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 20, 2, false);
 
-            // NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 20.f, 1, false);
+            NvFlexGetParticles(m_Solver, flexComponent.Content->Particles.buffer, nullptr);
+            NvFlexGetPhases(m_Solver, flexComponent.Content->Phases.buffer, nullptr);
+            NvFlexGetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
+        }
 
-            NvFlexGetParticles(m_Solver, particles.buffer, nullptr);
+        for (auto& [entityID, flexComponent] : entities) {
+            auto& particles = flexComponent.Content->Particles;
 
             particles.map();
 
