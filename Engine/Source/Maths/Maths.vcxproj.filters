@@ -18,5 +18,13 @@
     <ClInclude Include="Matrix.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="perlin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="perlin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

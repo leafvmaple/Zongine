@@ -9,8 +9,7 @@
 #include "../Components/SkeletonComponent.h"
 #include "../Components/MeshComponent.h"
 
-#include <thread>
-#include <chrono>
+#include "Maths/perlin.h"
 
 #pragma comment(lib, "NvFlexDebugD3D_x64.lib")
 #pragma comment(lib, "NvFlexExtDebugD3D_x64.lib")
@@ -23,9 +22,12 @@ void FlexErrorCallback(NvFlexErrorSeverity type, const char* msg, const char* fi
 }
 
 namespace Zongine {
+    using DirectX::XMLoadFloat3;
+    using DirectX::XMStoreFloat3;
     using DirectX::XMLoadFloat4x4;
     using DirectX::XMStoreFloat4x4A;
     using DirectX::XMVectorScale;
+    using DirectX::XMVector3Normalize;
 
     void NvFlexSystem::Initialize() {
         NvFlexInitDesc initDesc{};
@@ -59,6 +61,8 @@ namespace Zongine {
 
     void NvFlexSystem::Tick(int nDeltaTime) {
         NvFlexCopyDesc copyDesc{};
+
+        _UpdateWind(nDeltaTime);
 
         auto& entities = EntityManager::GetInstance().GetEntities<NvFlexComponent>();
         for (auto& [entityID, flexComponent] : entities) {
@@ -100,12 +104,11 @@ namespace Zongine {
     }
 
     void NvFlexSystem::_InitializeParams() {
-
         m_FlexParams = std::make_unique<NvFlexParams>();
 
         m_FlexParams->numIterations = 4;
         m_FlexParams->gravity[0] = 0.0f;
-        m_FlexParams->gravity[1] = -9.81f;
+        m_FlexParams->gravity[1] = -9.81f * 2;
         m_FlexParams->gravity[2] = 0.0f;
         m_FlexParams->radius = 0.05f;
         m_FlexParams->solidRestDistance = 0.05f;
@@ -127,5 +130,16 @@ namespace Zongine {
 
         m_FlexParams->numPlanes = 1;
         (DirectX::XMFLOAT4&)m_FlexParams->planes[0] = { 0.0f, 1.0f, 0.0f, -0.01f };
+    }
+
+    void NvFlexSystem::_UpdateWind(int nDeltaTime) {
+        m_WindTime += nDeltaTime / 1000.f;
+
+        auto noise = Perlin1D(m_WindTime * 0.5f, 10, 0.25f);
+
+        auto vNormalWind = XMVector3Normalize(XMLoadFloat3(&m_EnvironmentWind));
+        auto wind = XMVectorScale(vNormalWind, 3.0f * 0.3f * std::fabs(noise));
+
+        DirectX::XMStoreFloat3((DirectX::XMFLOAT3*)m_FlexParams->wind, wind);
     }
 }
