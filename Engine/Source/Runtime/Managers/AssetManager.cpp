@@ -262,6 +262,8 @@ namespace Zongine {
 
     std::shared_ptr<MeshAsset> AssetManager::_LoadMesh(const std::string& path) {
         std::filesystem::path filePath = path;
+        std::vector<std::unordered_set<int>> neighborVertices;
+
         MESH_DESC desc{ path.c_str() };
         MESH_SOURCE source{};
         auto mesh = std::make_shared<MeshAsset>();
@@ -279,6 +281,28 @@ namespace Zongine {
 
         _LoadVertexBuffer(mesh.get(), source);
         _LoadIndexBuffer(mesh.get(), source);
+
+        neighborVertices.resize(source.nVerticesCount);
+        for (int i = 0; i < source.nIndexCount / 3; i++) {
+            auto vertex = source.pIndices[i * 3];
+            auto vertex1 = source.pIndices[i * 3 + 1];
+            auto vertex2 = source.pIndices[i * 3 + 2];
+
+            if (vertex < 0 || vertex1 < 0 || vertex2 < 0)
+                continue;
+
+            neighborVertices[vertex].insert(vertex1);
+            neighborVertices[vertex].insert(vertex2);
+            neighborVertices[vertex1].insert(vertex);
+            neighborVertices[vertex1].insert(vertex2);
+            neighborVertices[vertex2].insert(vertex);
+            neighborVertices[vertex2].insert(vertex1);
+        }
+
+        mesh->NeighborVertices.resize(source.nVerticesCount);
+        for (int i = 0; i < source.nVerticesCount; i++) {
+            mesh->NeighborVertices[i].assign(neighborVertices[i].begin(), neighborVertices[i].end());
+        }
 
         if (TryReplaceExtension(filePath, ".mesh.flx")) {
             auto flex = GetNvFlexAsset(filePath.string());
@@ -525,6 +549,7 @@ namespace Zongine {
 
     bool AssetManager::_LoadNvFlexBuffer(NvFlexAsset* flex, MeshAsset* mesh, const MESH_SOURCE& source) {
         D3D11_BUFFER_DESC desc{};
+        std::vector<std::unordered_set<int>> neighborParticles;
 
         desc.ByteWidth = sizeof(FLEX_VERTEX_EXT) * source.nVerticesCount;
         desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -534,6 +559,10 @@ namespace Zongine {
         flex->uStride = sizeof(FLEX_VERTEX_EXT);
 
         DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, nullptr, flex->Buffers.GetAddressOf());
+
+        flex->InvMass.reserve(source.nVerticesCount);
+        flex->CollisionGroup.reserve(source.nVerticesCount);
+        flex->VertexParticleMap.resize(source.nVerticesCount, -1);
 
         for (int i = 0; i < source.nVerticesCount; i++) {
             const auto& vertex = source.pVertices[i];
@@ -549,11 +578,65 @@ namespace Zongine {
             else
                 invMass = std::pow(1.025f, 100.f - diffuse.a);
 
-            if (invMass != 0) {
-                flex->VertexParticleMap.emplace_back((int)flex->VertexParticleMap.size());
-            }
+            // TODO
+            // if (invMass != 0) {
+                flex->VertexParticleMap[i] = static_cast<int>(flex->ParticleVertexMap.size());
+                flex->ParticleVertexMap.emplace_back(i);
+                flex->InvMass.emplace_back(invMass);
+            //}
 
-            flex->InvMass.emplace_back(invMass);
+            flex->CollisionGroup.emplace_back(diffuse.g);
+        }
+
+        neighborParticles.resize(source.nVerticesCount);
+        for (int i = 0; i < source.nIndexCount / 3; i++) {
+            auto vertex = source.pIndices[i * 3];
+            auto vertex1 = source.pIndices[i * 3 + 1];
+            auto vertex2 = source.pIndices[i * 3 + 2];
+
+            auto particleIndex = flex->VertexParticleMap[source.pIndices[i * 3]];
+            auto particleIndex1 = flex->VertexParticleMap[source.pIndices[i * 3 + 1]];
+            auto particleIndex2 = flex->VertexParticleMap[source.pIndices[i * 3 + 2]];
+
+            if (particleIndex < 0 || particleIndex1 < 0 || particleIndex2 < 0)
+                continue;
+
+            if (particleIndex == particleIndex1 || particleIndex1 == particleIndex2 || particleIndex2 == particleIndex)
+                continue;
+
+            auto invMass = flex->InvMass[particleIndex];
+            auto invMass1 = flex->InvMass[particleIndex1];
+            auto invMass2 = flex->InvMass[particleIndex2];
+
+            if (invMass > 0 || invMass1 > 0 || invMass2 > 0) {
+                neighborParticles[particleIndex].insert(particleIndex1);
+                neighborParticles[particleIndex].insert(particleIndex2);
+                neighborParticles[particleIndex1].insert(particleIndex);
+                neighborParticles[particleIndex1].insert(particleIndex2);
+                neighborParticles[particleIndex2].insert(particleIndex);
+                neighborParticles[particleIndex2].insert(particleIndex1);
+
+                flex->ActiveParticleIndies.emplace_back(particleIndex);
+                flex->ActiveParticleIndies.emplace_back(particleIndex1);
+                flex->ActiveParticleIndies.emplace_back(particleIndex2);
+            }
+        }
+
+
+        auto particleCount = static_cast<int>(flex->ParticleVertexMap.size());
+
+        /*flex->IsBorder.resize(source.nVerticesCount, false);
+        for (int i = 0; i < source.nVerticesCount; i++) {
+            for (auto& neighbor : neighborVertices[i]) {
+                if (flex->InvMass[i] == 0 && flex->InvMass[neighbor] != 0) {
+                    flex->IsBorder[i] = true;
+                }
+            }
+        }*/
+
+        flex->ActiveNeighborParticles.resize(particleCount);
+        for (int i = 0; i < particleCount; i++) {
+            flex->ActiveNeighborParticles[i].assign(neighborParticles[i].begin(), neighborParticles[i].end());
         }
 
         return true;

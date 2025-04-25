@@ -9,7 +9,7 @@
 #include "../Components/SkeletonComponent.h"
 #include "../Components/MeshComponent.h"
 
-#include "Maths/perlin.h"
+#include "NVFlex/core/perlin.h"
 
 #pragma comment(lib, "NvFlexDebugD3D_x64.lib")
 #pragma comment(lib, "NvFlexExtDebugD3D_x64.lib")
@@ -44,6 +44,7 @@ namespace Zongine {
         m_FlexLib = NvFlexInit(NV_FLEX_VERSION, FlexErrorCallback, &initDesc);
 
         NvFlexSetSolverDescDefaults(&solverDesc);
+        solverDesc.maxParticles = 100000;
         solverDesc.featureMode = eNvFlexFeatureModeSimpleSolids;
 
         m_Solver = NvFlexCreateSolver(m_FlexLib, &solverDesc);
@@ -70,15 +71,25 @@ namespace Zongine {
 
             if (!flexComponent.bInitialized) {
                 flexComponent.Initialize(entity, m_FlexLib);
+
+                NvFlexSetActiveCount(m_Solver, flexComponent.Content->Particles.size());
+
+                NvFlexSetDynamicTriangles(m_Solver,
+                    flexComponent.Content->Triangles.buffer,
+                    flexComponent.Content->triangleNormals.buffer,
+                    flexComponent.Content->Triangles.size() / 3);
+
+                /*NvFlexSetSprings(m_Solver,
+                    flexComponent.Content->springIndices.buffer,
+                    flexComponent.Content->springStiffness.buffer,
+                    flexComponent.Content->springLengths.buffer, flexComponent.Content->springLengths.size());*/
             }
 
-            copyDesc.elementCount = flexComponent.ParticleVertices.size();
+            auto triangleCount = flexComponent.Content->Triangles.size() / 3;
 
             NvFlexSetParticles(m_Solver, flexComponent.Content->Particles.buffer, nullptr);
             NvFlexSetPhases(m_Solver, flexComponent.Content->Phases.buffer, nullptr);
             NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
-
-            NvFlexSetActiveCount(m_Solver, flexComponent.ParticleVertices.size());
 
             NvFlexSetParams(m_Solver, m_FlexParams.get());
 
@@ -91,11 +102,12 @@ namespace Zongine {
 
         for (auto& [entityID, flexComponent] : entities) {
             auto& particles = flexComponent.Content->Particles;
+            auto flex = AssetManager::GetInstance().GetNvFlexAsset(flexComponent.Path);
 
             particles.map();
 
-            for (int particleID = 0; particleID < flexComponent.ParticleVertices.size(); particleID++) {
-                auto vertexID = flexComponent.ParticleVertices[particleID];
+            for (int particleID = 0; particleID < flex->ParticleVertexMap.size(); particleID++) {
+                auto vertexID = flex->ParticleVertexMap[particleID];
                 flexComponent.FlexVertices[vertexID].FlexPosition = particles[particleID];
             }
 
@@ -116,12 +128,26 @@ namespace Zongine {
 
         m_FlexParams->dynamicFriction = 0.025;
         m_FlexParams->staticFriction = 0.05;
+
+        m_FlexParams->damping = 0.675f;
         m_FlexParams->drag = 0.375f;
         m_FlexParams->lift = 0.55f;
         m_FlexParams->cohesion = 0.025f;
 
-        m_FlexParams->damping = 0.f;
-        m_FlexParams->collisionDistance = 0.0125f;
+        m_FlexParams->anisotropyScale = 1.0f;
+        m_FlexParams->anisotropyMin = 0.1f;
+        m_FlexParams->anisotropyMax = 2.0f;
+        m_FlexParams->smoothing = 1.0f;
+        m_FlexParams->solidPressure = 1.0f;
+        m_FlexParams->buoyancy = 1.0f;
+
+        m_FlexParams->diffuseThreshold = 100.f;
+        m_FlexParams->diffuseBuoyancy = 1.f;
+        m_FlexParams->diffuseDrag = 0.8f;
+        m_FlexParams->diffuseBallistic = 16;
+        m_FlexParams->diffuseLifetime = 2.f;
+
+        m_FlexParams->collisionDistance = 0.025f;
 
         m_FlexParams->maxSpeed = FLT_MAX;
         m_FlexParams->maxAcceleration = FLT_MAX;

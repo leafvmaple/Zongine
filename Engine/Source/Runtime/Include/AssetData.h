@@ -74,6 +74,8 @@ namespace Zongine {
         std::vector<SOCKET> Sockets{};
         std::vector<VERTEX> Vertices{};
 
+        std::vector<std::vector<int>> NeighborVertices;
+
         std::unordered_map<std::string, UINT> BoneMap{};
     };
 
@@ -133,7 +135,13 @@ namespace Zongine {
         std::string Path;
 
         std::vector<float> InvMass;
+        std::vector<int> CollisionGroup;
+        std::vector<int> ParticleVertexMap{};
         std::vector<int> VertexParticleMap;
+        std::vector<int> ActiveParticleIndies{};
+        std::vector<bool> IsBorder;
+
+        std::vector<std::vector<int>> ActiveNeighborParticles;
 
         ComPtr<ID3D11Buffer> Buffers{};
         UINT uStride{};
