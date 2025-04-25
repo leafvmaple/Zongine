@@ -588,12 +588,10 @@ namespace Zongine {
             flex->CollisionGroup.emplace_back(diffuse.g);
         }
 
-        neighborParticles.resize(source.nVerticesCount);
-        for (int i = 0; i < source.nIndexCount / 3; i++) {
-            auto vertex = source.pIndices[i * 3];
-            auto vertex1 = source.pIndices[i * 3 + 1];
-            auto vertex2 = source.pIndices[i * 3 + 2];
+        auto particleCount = static_cast<int>(flex->ParticleVertexMap.size());
 
+        neighborParticles.resize(particleCount);
+        for (int i = 0; i < source.nIndexCount / 3; i++) {
             auto particleIndex = flex->VertexParticleMap[source.pIndices[i * 3]];
             auto particleIndex1 = flex->VertexParticleMap[source.pIndices[i * 3 + 1]];
             auto particleIndex2 = flex->VertexParticleMap[source.pIndices[i * 3 + 2]];
@@ -621,9 +619,6 @@ namespace Zongine {
                 flex->ActiveParticleIndies.emplace_back(particleIndex2);
             }
         }
-
-
-        auto particleCount = static_cast<int>(flex->ParticleVertexMap.size());
 
         /*flex->IsBorder.resize(source.nVerticesCount, false);
         for (int i = 0; i < source.nVerticesCount; i++) {
