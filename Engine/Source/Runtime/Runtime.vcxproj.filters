@@ -78,11 +78,17 @@
     <ClCompile Include="Systems\PhysicsSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Components\NVFlexComponent.cpp">
+    <ClCompile Include="Components\NvFlexComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Systems\NvFlexSystem.cpp">
       <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\VertexUtils.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\MeshComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,7 +194,7 @@
     <ClInclude Include="Components\LandscapeRegionComponent.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Components\NVFlexComponent.h">
+    <ClInclude Include="Components\NvFlexComponent.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Systems\NvFlexSystem.h">
@@ -196,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="Include\Assert.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\VertexUtils.h">
+      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

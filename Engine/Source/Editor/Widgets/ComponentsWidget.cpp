@@ -37,7 +37,7 @@ namespace Zongine {
 
             auto& transform = entity.GetComponent<TransformComponent>();
             auto position = new QTreeWidgetItem(item);
-            position->setText(0, "Position");
+            position->setText(0, "Particles");
 
             AddVectorProperty(transform.Position, position);
 

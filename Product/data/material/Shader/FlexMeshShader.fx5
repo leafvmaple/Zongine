@@ -64,7 +64,7 @@ MaterialVertexParameters GetMaterialVertexParameters(VertexInput vin)
 
     if(vin.MixFactor != 0.0f)
     {
-        Params.VertexPosition = mul(float4(vin.FlexPosition.xyz, 1.0f), MATRIX_INV_M);
+        Params.VertexPosition = float4(vin.FlexPosition.xyz, 1.0f);
         Params.VertexPosition.xyz *= 100.0f;
     }
     else

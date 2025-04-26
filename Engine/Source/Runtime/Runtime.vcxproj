@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Components\NVFlexComponent.cpp" />
+    <ClCompile Include="Components\MeshComponent.cpp" />
+    <ClCompile Include="Components\NvFlexComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
     <ClCompile Include="Entities\EntityManager.cpp" />
@@ -37,12 +38,13 @@
     <ClCompile Include="Systems\RenderSystem.cpp" />
     <ClCompile Include="Systems\TransformSystem.cpp" />
     <ClCompile Include="Utilities\StringUtils.cpp" />
+    <ClCompile Include="Utilities\VertexUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\AnimationComponent.h" />
     <ClInclude Include="Components\BaseComponent.h" />
     <ClInclude Include="Components\CameraComponent.h" />
-    <ClInclude Include="Components\NVFlexComponent.h" />
+    <ClInclude Include="Components\NvFlexComponent.h" />
     <ClInclude Include="Components\FlexibleComponent.h" />
     <ClInclude Include="Components\LandscapeComponent.h" />
     <ClInclude Include="Components\LandscapeRegionComponent.h" />
@@ -76,6 +78,7 @@
     <ClInclude Include="Systems\RenderSystem.h" />
     <ClInclude Include="Systems\TransformSystem.h" />
     <ClInclude Include="Utilities\StringUtils.h" />
+    <ClInclude Include="Utilities\VertexUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\3rd\DirectXTex\DirectXTex\DirectXTex_Desktop_2019_Win10.vcxproj">

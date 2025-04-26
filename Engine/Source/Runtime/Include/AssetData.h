@@ -7,6 +7,7 @@
 #include <d3d11.h>
 #include <string>
 #include <vector>
+#include <unordered_set>
 #include <memory>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
@@ -134,14 +135,16 @@ namespace Zongine {
     struct NvFlexAsset {
         std::string Path;
 
-        std::vector<float> InvMass;
-        std::vector<int> CollisionGroup;
         std::vector<int> ParticleVertexMap{};
         std::vector<int> VertexParticleMap;
-        std::vector<int> ActiveParticleIndies{};
         std::vector<bool> IsBorder;
+        std::vector<bool> IsGap;
 
-        std::vector<std::vector<int>> ActiveNeighborParticles;
+        std::vector<DirectX::XMFLOAT4> Particles{};
+        std::vector<int> ParticleIndies{};
+        std::vector<int> ActiveParticleIndies{};
+
+        std::vector<std::unordered_set<int>> ActiveNeighborParticles;
 
         ComPtr<ID3D11Buffer> Buffers{};
         UINT uStride{};

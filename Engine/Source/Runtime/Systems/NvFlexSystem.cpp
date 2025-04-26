@@ -61,7 +61,7 @@ namespace Zongine {
     }
 
     void NvFlexSystem::Tick(int nDeltaTime) {
-        NvFlexCopyDesc copyDesc{};
+
 
         _UpdateWind(nDeltaTime);
 
@@ -70,30 +70,40 @@ namespace Zongine {
             auto& entity = EntityManager::GetInstance().GetEntity(entityID);
 
             if (!flexComponent.bInitialized) {
+                NvFlexCopyDesc copyDesc{};
+
                 flexComponent.Initialize(entity, m_FlexLib);
 
-                NvFlexSetActiveCount(m_Solver, flexComponent.Content->Particles.size());
+                copyDesc.elementCount = flexComponent.Content->Particles.size();
+
+                NvFlexSetParticles(m_Solver, flexComponent.Content->Particles.buffer, &copyDesc);
+                NvFlexSetRestParticles(m_Solver, flexComponent.Content->ResetParticles.buffer, &copyDesc);
+                NvFlexSetNormals(m_Solver, flexComponent.Content->Normals.buffer, &copyDesc);
+                NvFlexSetPhases(m_Solver, flexComponent.Content->Phases.buffer, &copyDesc);
+                NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, &copyDesc);
 
                 NvFlexSetDynamicTriangles(m_Solver,
                     flexComponent.Content->Triangles.buffer,
-                    flexComponent.Content->triangleNormals.buffer,
-                    flexComponent.Content->Triangles.size() / 3);
+                    flexComponent.Content->TriangleNormals.buffer,
+                    flexComponent.Content->TriangleNormals.size());
 
-                /*NvFlexSetSprings(m_Solver,
+                NvFlexSetSprings(m_Solver,
                     flexComponent.Content->springIndices.buffer,
+                    flexComponent.Content->springLengths.buffer,
                     flexComponent.Content->springStiffness.buffer,
-                    flexComponent.Content->springLengths.buffer, flexComponent.Content->springLengths.size());*/
+                    flexComponent.Content->springLengths.size());
             }
-
-            auto triangleCount = flexComponent.Content->Triangles.size() / 3;
 
             NvFlexSetParticles(m_Solver, flexComponent.Content->Particles.buffer, nullptr);
             NvFlexSetPhases(m_Solver, flexComponent.Content->Phases.buffer, nullptr);
             NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
 
+            NvFlexSetActive(m_Solver, flexComponent.Content->Active.buffer, nullptr);
+            NvFlexSetActiveCount(m_Solver, flexComponent.Content->Active.size());
+
             NvFlexSetParams(m_Solver, m_FlexParams.get());
 
-            NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 20, 2, false);
+            NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 10, 2, false);
 
             NvFlexGetParticles(m_Solver, flexComponent.Content->Particles.buffer, nullptr);
             NvFlexGetPhases(m_Solver, flexComponent.Content->Phases.buffer, nullptr);
@@ -106,9 +116,14 @@ namespace Zongine {
 
             particles.map();
 
-            for (int particleID = 0; particleID < flex->ParticleVertexMap.size(); particleID++) {
-                auto vertexID = flex->ParticleVertexMap[particleID];
-                flexComponent.FlexVertices[vertexID].FlexPosition = particles[particleID];
+            for (int i = 0; i < flexComponent.Particles.size(); i++) {
+                flexComponent.Particles[i] = particles[i];
+            }
+
+            for (int i = 0; i < flex->VertexParticleMap.size(); i++) {
+                auto particle = flexComponent.Particles[flex->VertexParticleMap[i]];
+                if (particle.w > 0)
+                    flexComponent.FlexVertices[i].FlexPosition = particle;
             }
 
             particles.unmap();
@@ -124,7 +139,6 @@ namespace Zongine {
         m_FlexParams->gravity[2] = 0.0f;
         m_FlexParams->radius = 0.05f;
         m_FlexParams->solidRestDistance = 0.05f;
-        m_FlexParams->fluidRestDistance = 0.05f;
 
         m_FlexParams->dynamicFriction = 0.025;
         m_FlexParams->staticFriction = 0.05;

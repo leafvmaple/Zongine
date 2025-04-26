@@ -62,7 +62,7 @@ namespace Zongine {
 
         camera.AddComponent<CameraComponent>(CameraComponent{});
         auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
-        cameraTransform.Position = { 0.0f, 0, -100.0f };
+        cameraTransform.Position = { 0.0f, 50.f, -200.0f };
 
         assetManager.LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
         player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b02dj打坐b.ani" });
@@ -115,7 +115,7 @@ namespace Zongine {
             DispatchMessage(&msg);
         }
         inputSystem->Tick(nDeltaTime);
-        animationSystem->Tick(nDeltaTime);
+        // animationSystem->Tick(nDeltaTime);
         transformSystem->Tick(nDeltaTime);
         physicsSystem->Tick(nDeltaTime);
         nvFlexSystem->Tick(nDeltaTime);

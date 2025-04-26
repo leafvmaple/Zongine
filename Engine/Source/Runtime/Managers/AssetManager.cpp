@@ -6,6 +6,7 @@
 #include "Managers/EffectManager.h"
 
 #include "Utilities/StringUtils.h"
+#include "Utilities/VertexUtils.h"
 
 #include "Components/TransformComponent.h"
 #include "Components/FlexibleComponent.h"
@@ -27,6 +28,7 @@
 #include "DirectXTex/DirectXTex/DirectXTex.h"
 #include "FX11/inc/d3dx11effect.h"
 
+#include <set>
 #include <unordered_set>
 
 namespace Zongine {
@@ -47,7 +49,8 @@ namespace Zongine {
         std::filesystem::path filePath = path;
 
         entity.AddComponent<TransformComponent>(TransformComponent{});
-        entity.AddComponent<MeshComponent>(MeshComponent { path });
+        auto& meshComponent = entity.AddComponent<MeshComponent>(MeshComponent { path });
+        meshComponent.Initialize(entity);
 
         auto mesh = GetMeshAsset(path);
         std::vector<DriverInfo> driversInfo;
@@ -547,9 +550,17 @@ namespace Zongine {
         return true;
     }
 
+    static bool _IsSameVertex(const XMFLOAT4& vec1, const XMFLOAT4& vec2, float diff)
+    {
+        if (abs(vec1.x - vec2.x) <= diff && abs(vec1.y - vec2.y) <= diff && abs(vec1.z - vec2.z) <= diff)
+            return true;
+        else
+            return false;
+    }
+
     bool AssetManager::_LoadNvFlexBuffer(NvFlexAsset* flex, MeshAsset* mesh, const MESH_SOURCE& source) {
         D3D11_BUFFER_DESC desc{};
-        std::vector<std::unordered_set<int>> neighborParticles;
+        std::vector<std::set<int>> neighborParticles;
 
         desc.ByteWidth = sizeof(FLEX_VERTEX_EXT) * source.nVerticesCount;
         desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -560,10 +571,12 @@ namespace Zongine {
 
         DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, nullptr, flex->Buffers.GetAddressOf());
 
-        flex->InvMass.reserve(source.nVerticesCount);
-        flex->CollisionGroup.reserve(source.nVerticesCount);
-        flex->VertexParticleMap.resize(source.nVerticesCount, -1);
+        std::vector<XMFLOAT4> vertices(source.nVerticesCount);
+        std::vector<int> subset(source.nVerticesCount);
+        std::vector<int> mergedVertiesMap;
+        std::vector<int> mergedVerties;
 
+        XMFLOAT3 offset{ (float)INT_MAX, (float)INT_MAX, (float)INT_MAX };
         for (int i = 0; i < source.nVerticesCount; i++) {
             const auto& vertex = source.pVertices[i];
             const auto& diffuse = vertex.Color;
@@ -578,23 +591,60 @@ namespace Zongine {
             else
                 invMass = std::pow(1.025f, 100.f - diffuse.a);
 
-            // TODO
-            // if (invMass != 0) {
-                flex->VertexParticleMap[i] = static_cast<int>(flex->ParticleVertexMap.size());
-                flex->ParticleVertexMap.emplace_back(i);
-                flex->InvMass.emplace_back(invMass);
-            //}
+            vertices[i].x = vertex.Position.x / FLEX_NORMALIZE_SCLAE;
+            vertices[i].y = vertex.Position.y / FLEX_NORMALIZE_SCLAE;
+            vertices[i].z = vertex.Position.z / FLEX_NORMALIZE_SCLAE;
+            vertices[i].w = invMass;
 
-            flex->CollisionGroup.emplace_back(diffuse.g);
+            offset.x = min(offset.x, vertices[i].x);
+            offset.y = min(offset.y, vertices[i].y);
+            offset.z = min(offset.z, vertices[i].z);
         }
+
+        flex->IsBorder.resize(source.nVerticesCount, false);
+        for (int i = 0; i < source.nVerticesCount; i++)
+            for (auto neighbor : mesh->NeighborVertices[i])
+                if (vertices[i].w == 0.f && vertices[neighbor].w != 0.f)
+                    flex->IsBorder[i] = true;
+
+        flex->IsGap.resize(source.nVerticesCount, false);
+        for (int i = 0; i < source.nVerticesCount; i++)
+            for (auto neighbor : mesh->NeighborVertices[i])
+                if (vertices[i].w == 0.f && !flex->IsBorder[i] && flex->IsBorder[neighbor])
+                    flex->IsGap[i] = true;
+
+        auto func = [vertices, flex](int vertexID1, int vertexID2) {
+            const auto& vertex1 = vertices[vertexID1];
+            const auto& vertex2 = vertices[vertexID2];
+
+            if (vertex1.w == 0.f && vertex2.w == 0.f && !flex->IsBorder[vertexID1] && !flex->IsBorder[vertexID2] && !flex->IsGap[vertexID1] && !flex->IsGap[vertexID2])
+                return _IsSameVertex(vertex1, vertex2, 0.02f);
+
+            if (vertex1.w != 0.f && vertex2.w != 0.f) {
+                return _IsSameVertex(vertex1, vertex2, 0.f);
+            }
+
+            return false;
+
+            };
+
+        MergeVertex(flex->ParticleVertexMap, flex->VertexParticleMap, vertices, 0.05f, offset, func);
 
         auto particleCount = static_cast<int>(flex->ParticleVertexMap.size());
 
-        neighborParticles.resize(particleCount);
+        flex->Particles.resize(particleCount);
+        for (int i = 0; i < particleCount; i++)
+            flex->Particles[i] = vertices[flex->ParticleVertexMap[i]];
+
+        flex->ActiveNeighborParticles.resize(particleCount);
         for (int i = 0; i < source.nIndexCount / 3; i++) {
-            auto particleIndex = flex->VertexParticleMap[source.pIndices[i * 3]];
-            auto particleIndex1 = flex->VertexParticleMap[source.pIndices[i * 3 + 1]];
-            auto particleIndex2 = flex->VertexParticleMap[source.pIndices[i * 3 + 2]];
+            auto vertex = source.pIndices[i * 3];
+            auto vertex1 = source.pIndices[i * 3 + 1];
+            auto vertex2 = source.pIndices[i * 3 + 2];
+
+            auto particleIndex = flex->VertexParticleMap[vertex];
+            auto particleIndex1 = flex->VertexParticleMap[vertex1];
+            auto particleIndex2 = flex->VertexParticleMap[vertex2];
 
             if (particleIndex < 0 || particleIndex1 < 0 || particleIndex2 < 0)
                 continue;
@@ -602,36 +652,22 @@ namespace Zongine {
             if (particleIndex == particleIndex1 || particleIndex1 == particleIndex2 || particleIndex2 == particleIndex)
                 continue;
 
-            auto invMass = flex->InvMass[particleIndex];
-            auto invMass1 = flex->InvMass[particleIndex1];
-            auto invMass2 = flex->InvMass[particleIndex2];
+            flex->ParticleIndies.emplace_back(particleIndex);
+            flex->ParticleIndies.emplace_back(particleIndex1);
+            flex->ParticleIndies.emplace_back(particleIndex2);
 
-            if (invMass > 0 || invMass1 > 0 || invMass2 > 0) {
-                neighborParticles[particleIndex].insert(particleIndex1);
-                neighborParticles[particleIndex].insert(particleIndex2);
-                neighborParticles[particleIndex1].insert(particleIndex);
-                neighborParticles[particleIndex1].insert(particleIndex2);
-                neighborParticles[particleIndex2].insert(particleIndex);
-                neighborParticles[particleIndex2].insert(particleIndex1);
+            if (vertices[vertex].w > 0 || vertices[vertex1].w > 0 || vertices[vertex2].w > 0) {
+                flex->ActiveNeighborParticles[particleIndex].insert(particleIndex1);
+                flex->ActiveNeighborParticles[particleIndex].insert(particleIndex2);
+                flex->ActiveNeighborParticles[particleIndex1].insert(particleIndex);
+                flex->ActiveNeighborParticles[particleIndex1].insert(particleIndex2);
+                flex->ActiveNeighborParticles[particleIndex2].insert(particleIndex);
+                flex->ActiveNeighborParticles[particleIndex2].insert(particleIndex1);
 
                 flex->ActiveParticleIndies.emplace_back(particleIndex);
                 flex->ActiveParticleIndies.emplace_back(particleIndex1);
                 flex->ActiveParticleIndies.emplace_back(particleIndex2);
             }
-        }
-
-        /*flex->IsBorder.resize(source.nVerticesCount, false);
-        for (int i = 0; i < source.nVerticesCount; i++) {
-            for (auto& neighbor : neighborVertices[i]) {
-                if (flex->InvMass[i] == 0 && flex->InvMass[neighbor] != 0) {
-                    flex->IsBorder[i] = true;
-                }
-            }
-        }*/
-
-        flex->ActiveNeighborParticles.resize(particleCount);
-        for (int i = 0; i < particleCount; i++) {
-            flex->ActiveNeighborParticles[i].assign(neighborParticles[i].begin(), neighborParticles[i].end());
         }
 
         return true;

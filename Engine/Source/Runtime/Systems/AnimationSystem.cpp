@@ -74,21 +74,16 @@ namespace Zongine {
             auto& meshComponent = entity.GetComponent<MeshComponent>();
             auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
 
-            if (meshComponent.BoneModelTransforms.empty()) {
-                meshComponent.BoneModelTransforms.resize(mesh->Bones.size());
-                meshComponent.SkinningTransforms.resize(mesh->Bones.size());
-            }
-
             auto& meshSkeletonMap = AssetManager::GetInstance().GetMeshSkeletonMap(skeleton.Path, meshComponent.Path);
 
             assert(mesh->Bones.size() == meshSkeletonMap.size());
 
             for (int i = 0; i < meshSkeletonMap.size(); i++) {
                 auto skeletonIndex = meshSkeletonMap[i];
-                if (skeletonIndex != -1)
-                    meshComponent.BoneModelTransforms[i] = animation.ModelTransforms[skeletonIndex];
-                else
-                    XMStoreFloat4x4(&meshComponent.BoneModelTransforms[i], XMMatrixInverse(nullptr, XMLoadFloat4x4(&mesh->Bones[i].InversePoseTransform)));
+                if (skeletonIndex == -1)
+                    continue;
+
+                meshComponent.BoneModelTransforms[i] = animation.ModelTransforms[skeletonIndex];
 
                 XMStoreFloat4x4(&meshComponent.SkinningTransforms[i],
                     XMLoadFloat4x4(&mesh->Bones[i].InversePoseTransform) * XMLoadFloat4x4(&meshComponent.BoneModelTransforms[i]));

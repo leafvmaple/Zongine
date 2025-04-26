@@ -280,7 +280,7 @@ public:
                 }
             }
             else
-                return false;
+                return true;
         }
 
         bool operator < (const Edge& rhs) const
