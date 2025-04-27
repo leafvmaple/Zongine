@@ -104,12 +104,8 @@ namespace Zongine {
                 cloth.mConstraintIndices.push_back(particleID);
                 cloth.mConstraintIndices.push_back(nearestAnchors[particleID]);
 
-                XMVECTOR vPoint1 = XMLoadFloat4(&flex->Particles[particleID]);
-                XMVECTOR vPoint2 = XMLoadFloat4(&flex->Particles[nearestAnchors[particleID]]);
-                XMVECTOR vDiff = XMVectorSubtract(vPoint2, vPoint1);
-                XMVECTOR vLength = XMVector3Length(vDiff);
-
-                XMStoreFloat(&distance, vLength);
+                XMStoreFloat(&distance, XMVector3Length(
+                    XMVectorSubtract(XMLoadFloat4(&flex->Particles[particleID]), XMLoadFloat4(&flex->Particles[nearestAnchors[particleID]]))));
 
                 cloth.mConstraintRestLengths.push_back(distance * 1.1);
                 cloth.mConstraintCoefficients.push_back(-0.9f);
