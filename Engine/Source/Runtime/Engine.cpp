@@ -115,7 +115,7 @@ namespace Zongine {
             DispatchMessage(&msg);
         }
         inputSystem->Tick(nDeltaTime);
-        // animationSystem->Tick(nDeltaTime);
+        animationSystem->Tick(nDeltaTime);
         transformSystem->Tick(nDeltaTime);
         physicsSystem->Tick(nDeltaTime);
         nvFlexSystem->Tick(nDeltaTime);

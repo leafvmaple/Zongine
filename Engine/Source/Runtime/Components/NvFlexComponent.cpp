@@ -42,13 +42,6 @@ namespace Zongine {
         std::queue<int> queue;
         std::vector<int> visited(ParticlesCount, 0);
         std::vector<int> nearestAnchors(ParticlesCount, -1);
-        std::vector<XMMATRIX> updateTransform(mesh->Bones.size());
-
-        for (int i = 0; i < mesh->Bones.size(); i++) {
-            updateTransform[i] = XMMatrixMultiply(
-                XMLoadFloat4x4(&mesh->Bones[i].InversePoseTransform),
-                XMLoadFloat4x4(&mesh->Bones[i].PhysicsPoseTransform));
-        }
 
         Particles = flex->Particles;
         FlexPosition.resize(verticesCount);
@@ -64,11 +57,11 @@ namespace Zongine {
                 if (boneIndex == 0xFF)
                     continue;
                 auto weight = vertex.BoneWeights[j];
-                auto transform = XMVectorScale(XMVector3Transform(vertexPos, updateTransform[boneIndex]), weight / FLEX_NORMALIZE_SCLAE);
+                auto transform = XMVectorScale(XMVector3Transform(vertexPos, XMLoadFloat4x4(&meshComponent.SkinningTransforms[boneIndex])), weight / FLEX_NORMALIZE_SCLAE);
                 position = XMVectorAdd(position, transform);
             }
 
-            // position = XMVector3Transform(position, XMLoadFloat4x4(&transformComponent.World));
+            position = XMVector3Transform(position, XMLoadFloat4x4(&transformComponent.World));
             XMStoreFloat4(&FlexPosition[i], XMVectorSetW(position, flex->Particles[particleID].w));
 
             FlexVertices.emplace_back(FLEX_VERTEX_EXT{ FlexPosition[i], flex->Particles[particleID].w });

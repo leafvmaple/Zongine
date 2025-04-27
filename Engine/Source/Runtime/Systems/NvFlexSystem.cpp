@@ -38,8 +38,7 @@ namespace Zongine {
         initDesc.enableExtensions = true;
         initDesc.renderDevice = DeviceManager::GetInstance().GetDevice().Get();
         initDesc.renderContext = DeviceManager::GetInstance().GetImmediateContext().Get();
-        initDesc.computeContext = DeviceManager::GetInstance().GetImmediateContext().Get();
-        initDesc.runOnRenderContext = false;
+        initDesc.runOnRenderContext = true;
 
         m_FlexLib = NvFlexInit(NV_FLEX_VERSION, FlexErrorCallback, &initDesc);
 
@@ -76,11 +75,11 @@ namespace Zongine {
 
                 copyDesc.elementCount = flexComponent.Content->Particles.size();
 
-                NvFlexSetParticles(m_Solver, flexComponent.Content->Particles.buffer, &copyDesc);
-                NvFlexSetRestParticles(m_Solver, flexComponent.Content->ResetParticles.buffer, &copyDesc);
-                NvFlexSetNormals(m_Solver, flexComponent.Content->Normals.buffer, &copyDesc);
-                NvFlexSetPhases(m_Solver, flexComponent.Content->Phases.buffer, &copyDesc);
-                NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, &copyDesc);
+                NvFlexSetParticles(m_Solver, flexComponent.Content->Particles.buffer, nullptr);
+                NvFlexSetRestParticles(m_Solver, flexComponent.Content->ResetParticles.buffer, nullptr);
+                NvFlexSetNormals(m_Solver, flexComponent.Content->Normals.buffer, nullptr);
+                NvFlexSetPhases(m_Solver, flexComponent.Content->Phases.buffer, nullptr);
+                NvFlexSetVelocities(m_Solver, flexComponent.Content->Velocities.buffer, nullptr);
 
                 NvFlexSetDynamicTriangles(m_Solver,
                     flexComponent.Content->Triangles.buffer,
@@ -139,6 +138,7 @@ namespace Zongine {
         m_FlexParams->gravity[2] = 0.0f;
         m_FlexParams->radius = 0.05f;
         m_FlexParams->solidRestDistance = 0.05f;
+        m_FlexParams->fluidRestDistance = 0.05f;
 
         m_FlexParams->dynamicFriction = 0.025;
         m_FlexParams->staticFriction = 0.05;
