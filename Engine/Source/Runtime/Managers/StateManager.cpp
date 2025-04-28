@@ -9,7 +9,7 @@ namespace Zongine {
         { // RASTERIZER_STATE_CULL_NONE,
             D3D11_FILL_SOLID,   //D3D11_FILL_MODE FillMode;
             D3D11_CULL_NONE,    //D3D11_CULL_MODE CullMode;
-            FALSE,              //BOOL FrontCounterClockwise;
+            TRUE,               //BOOL FrontCounterClockwise;
             0,      //INT DepthBias;
             0.0f,   //FLOAT DepthBiasClamp;
             0.0f,   //FLOAT SlopeScaledDepthBias;

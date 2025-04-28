@@ -92,9 +92,6 @@ namespace Zongine {
 
     struct ShaderAsset {
         std::vector<SubsetShaderAsset> Subsets{};
-
-        RENDER_PASS Pass{};
-
         std::vector<ComPtr<ID3D11Buffer>> SubsetBuffers{};
     };
 
@@ -107,7 +104,7 @@ namespace Zongine {
         std::string Path{};
         std::string ShaderName{};
 
-        BLEND_STATE Blend;
+        BLEND_STATE Blend{};
         RASTERIZER_STATE_ID Rasterizer{};
 
         SKIN_SUBSET_CONST Const{};

@@ -65,18 +65,18 @@ namespace Zongine {
         context->ClearRenderTargetView(accRTV.Get(), reinterpret_cast<const float*>(&Colors::Black));
         context->ClearRenderTargetView(weightRTV.Get(), reinterpret_cast<const float*>(&Colors::White));
 
-        m_GBufferRenderQueue.clear();
+        m_OpaqueRenderQueue.clear();
         m_OITRenderQueue.clear();
         _UpdateRenderQueue(EntityManager::GetInstance().GetRootEntity());
 
         context->OMSetRenderTargets(1, mainRTV.GetAddressOf(), depthStencilView.Get());
-        for (auto& renderEntity : m_GBufferRenderQueue) {
-            TickRenderEntity(renderEntity, RENDER_PASS::COLOR);
+        for (auto& renderEntity : m_OpaqueRenderQueue) {
+            TickRenderEntity(renderEntity);
         }
 
         context->OMSetRenderTargets(ARRAYSIZE(RTVs), RTVs, depthStencilView.Get());
         for (auto& renderEntity : m_OITRenderQueue) {
-            TickRenderEntity(renderEntity, RENDER_PASS::OIT);
+            TickRenderEntity(renderEntity);
         }
 
         context->OMSetRenderTargets(1, swapChainRTV.GetAddressOf(), depthStencilView.Get());
@@ -98,7 +98,7 @@ namespace Zongine {
         swapChain->Present(0, 0);
     }
 
-    void RenderSystem::TickRenderEntity(const RenderEntity& renderEntity, RENDER_PASS pass) {
+    void RenderSystem::TickRenderEntity(const RenderEntity& renderEntity) {
         auto context = DeviceManager::GetInstance().GetImmediateContext();
 
         auto inputLayout = EffectManager::GetInstance().GetInputLayout(renderEntity.Macro);
@@ -125,7 +125,7 @@ namespace Zongine {
             it->second->SetResource(texture.Texture.Get());
         }
 
-        auto effectPass = EffectManager::GetInstance().GetEffectPass(renderEntity.Shader->Effect, pass);
+        auto effectPass = EffectManager::GetInstance().GetEffectPass(renderEntity.Shader->Effect, renderEntity.Pass);
         effectPass->Apply(0, context.Get());
 
         context->DrawIndexed(renderEntity.Mesh->uIndexCount, renderEntity.Mesh->uStartIndex, 0);
@@ -214,6 +214,12 @@ namespace Zongine {
             subsetEntity.Index = mesh->Index;
             subsetEntity.Vertex = vertex;
 
+            subsetEntity.Pass = RENDER_PASS::COLOR;
+            if (subsetMaterial.Blend == BLEND_STATE_SOFTMASKED)
+                subsetEntity.Pass = RENDER_PASS::COLORSOFTMASK;
+            else if (subsetMaterial.Blend == BLEND_STATE_OIT)
+                subsetEntity.Pass = RENDER_PASS::OIT;
+
             subsetShader.CameraConst->SetConstantBuffer(m_CameraBuffer.Get());
 
             subsetShader.ModelConst->GetMemberByName("MATRIX_M")->SetRawValue(&transformComponent.World, 0, sizeof(transformComponent.World));
@@ -229,7 +235,7 @@ namespace Zongine {
             if (subsetMaterial.Blend == BLEND_STATE_OIT)
                 m_OITRenderQueue.emplace_back(subsetEntity);
             else
-                m_GBufferRenderQueue.emplace_back(subsetEntity);
+                m_OpaqueRenderQueue.emplace_back(subsetEntity);
         }
     }
 

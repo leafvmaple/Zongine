@@ -458,9 +458,9 @@ namespace Zongine {
                     value.Texture = _LoadTexture(texture.szValue);
         }
 
-        refer.Rasterizer = RASTERIZER_STATE_CULL_CLOCKWISE;
+        refer.Rasterizer = RASTERIZER_SOLID_CULL_CLOCKWISE;
         if (source.nTwoSideFlag)
-            refer.Rasterizer = RASTERIZER_STATE_CULL_NONE;
+            refer.Rasterizer = RASTERIZER_SOLID_CULL_NONE;
 
         refer.Blend = BLEND_STATE_OPAQUE;
         if (source.nBlendMode == BLEND_Masked)

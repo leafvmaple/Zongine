@@ -26,6 +26,7 @@ namespace Zongine {
         };
 
         struct RenderEntity {
+            RENDER_PASS Pass{};
             RUNTIME_MACRO Macro{};
 
             VertexVector Vertex{};
@@ -36,14 +37,14 @@ namespace Zongine {
             ReferenceMaterialAsset* Material{};
         };
 
-        std::vector<RenderEntity> m_GBufferRenderQueue{};
+        std::vector<RenderEntity> m_OpaqueRenderQueue{};
         std::vector<RenderEntity> m_OITRenderQueue{};
 
         std::vector<Entity> m_TerrainRenderQueue{};
 
         ComPtr<ID3D11Buffer> m_CameraBuffer{};
 
-        void TickRenderEntity(const RenderEntity& renderEntity, RENDER_PASS pass);
+        void TickRenderEntity(const RenderEntity& renderEntity);
         void TickTerrain(ComPtr<ID3D11DeviceContext> context, const Entity& entity);
 
         void _UpdateRenderQueue(Entity& entity);
