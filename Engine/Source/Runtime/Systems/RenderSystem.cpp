@@ -70,6 +70,11 @@ namespace Zongine {
         _UpdateRenderQueue(EntityManager::GetInstance().GetRootEntity());
 
         context->OMSetRenderTargets(1, mainRTV.GetAddressOf(), depthStencilView.Get());
+
+        for (auto& renderEntity : m_OpaqueRenderQueue) {
+            TickRenderEntity(renderEntity, RENDER_PASS::COLOR);
+        }
+
         for (auto& renderEntity : m_OpaqueRenderQueue) {
             TickRenderEntity(renderEntity);
         }
@@ -99,6 +104,10 @@ namespace Zongine {
     }
 
     void RenderSystem::TickRenderEntity(const RenderEntity& renderEntity) {
+        TickRenderEntity(renderEntity, renderEntity.Pass);
+    }
+
+    void RenderSystem::TickRenderEntity(const RenderEntity& renderEntity, RENDER_PASS pass) {
         auto context = DeviceManager::GetInstance().GetImmediateContext();
 
         auto inputLayout = EffectManager::GetInstance().GetInputLayout(renderEntity.Macro);
@@ -125,7 +134,7 @@ namespace Zongine {
             it->second->SetResource(texture.Texture.Get());
         }
 
-        auto effectPass = EffectManager::GetInstance().GetEffectPass(renderEntity.Shader->Effect, renderEntity.Pass);
+        auto effectPass = EffectManager::GetInstance().GetEffectPass(renderEntity.Shader->Effect, pass);
         effectPass->Apply(0, context.Get());
 
         context->DrawIndexed(renderEntity.Mesh->uIndexCount, renderEntity.Mesh->uStartIndex, 0);

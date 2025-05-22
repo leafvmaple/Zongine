@@ -54,7 +54,7 @@ namespace Zongine {
         nvFlexSystem = std::make_unique<NvFlexSystem>();
 
         auto& root = EntityManager::GetInstance().GetRootEntity();
-        assetManager.LoadScene(root, "data/source/maps/µ¾Ïã´å/µ¾Ïã´å.jsonmap");
+        // assetManager.LoadScene(root, "data/source/maps/µ¾Ïã´å/µ¾Ïã´å.jsonmap");
         root.AddComponent<TransformComponent>(TransformComponent{});
 
         auto& camera = root.AddChild("Camera");

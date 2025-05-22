@@ -46,7 +46,7 @@ namespace Zongine {
         auto& bone = bones[parentIndex];
         for (auto child : bone.Children) {
             auto& childBone = bones[child];
-            if (childBone.Name.starts_with("fbr"))
+            if (childBone.Name.starts_with("fb"))
                 drivenBones.push_back(child);
             _InitializeDrivenBones(child, drivenBones, bones);
         }

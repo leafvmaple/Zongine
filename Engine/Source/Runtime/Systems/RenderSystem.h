@@ -45,6 +45,8 @@ namespace Zongine {
         ComPtr<ID3D11Buffer> m_CameraBuffer{};
 
         void TickRenderEntity(const RenderEntity& renderEntity);
+        void TickRenderEntity(const RenderEntity& renderEntity, RENDER_PASS pass);
+
         void TickTerrain(ComPtr<ID3D11DeviceContext> context, const Entity& entity);
 
         void _UpdateRenderQueue(Entity& entity);
