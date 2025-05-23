@@ -3,7 +3,6 @@
 #include "../Managers/AssetManager.h"
 
 namespace Zongine {
-
     void MeshComponent::Initialize(const Entity& entity) {
         auto mesh = AssetManager::GetInstance().GetMeshAsset(Path);
 

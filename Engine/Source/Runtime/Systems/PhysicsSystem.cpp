@@ -18,9 +18,6 @@ namespace Zongine {
             auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
 
             for (auto& driver : flexibleComponent.Drivers) {
-                if (driver.driven.empty())
-                    _InitializeDrivenBones(driver.index, driver.driven, mesh->Bones);
-
                 auto driverInverseTransform = XMLoadFloat4x4(&mesh->Bones[driver.index].InversePoseTransform);
                 auto driverModelTransform = XMLoadFloat4x4(&meshComponent.BoneModelTransforms[driver.index]);
 
@@ -35,20 +32,6 @@ namespace Zongine {
                         XMLoadFloat4x4(&driven.InversePoseTransform) * XMLoadFloat4x4(&meshComponent.BoneModelTransforms[drivenIndex]));
                 }
             }
-        }
-    }
-
-    void PhysicsSystem::_InitializeDrivenBones(
-        int parentIndex,
-        std::vector<uint32_t>& drivenBones,
-        const std::vector<BONE>& bones
-    ) {
-        auto& bone = bones[parentIndex];
-        for (auto child : bone.Children) {
-            auto& childBone = bones[child];
-            if (childBone.Name.starts_with("fb"))
-                drivenBones.push_back(child);
-            _InitializeDrivenBones(child, drivenBones, bones);
         }
     }
 }

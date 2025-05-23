@@ -4,7 +4,7 @@
 #include "../Managers/AssetManager.h"
 #include "../Managers/DeviceManager.h"
 
-#include "../Components/TransformComponent.h"
+#include "TransformComponent.h"
 
 #include "NVFlex/include/NvFlexExt.h"
 #include "NVFlex/core/cloth.h"

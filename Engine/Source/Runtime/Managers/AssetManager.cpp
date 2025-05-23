@@ -62,7 +62,8 @@ namespace Zongine {
             }
         }
         if (!driversInfo.empty()) {
-            entity.AddComponent<FlexibleComponent>(FlexibleComponent{ driversInfo });
+            auto& flexibleComponent = entity.AddComponent<FlexibleComponent>(FlexibleComponent{ driversInfo });
+            flexibleComponent.Initialize(entity);
         }
 
         if (TryReplaceExtension(filePath, ".JsonInspack")) {
