@@ -62,7 +62,6 @@ namespace Zongine {
         
         // RenderGraph
         std::unique_ptr<RenderGraph> m_RenderGraph;
-        bool m_bUseRenderGraph{ true };  // Toggle: use RenderGraph or not
 
         void TickRenderEntity(const RenderEntity& renderEntity);
         void TickRenderEntity(const RenderEntity& renderEntity, RENDER_PASS pass);
@@ -72,8 +71,5 @@ namespace Zongine {
         void _UpdateRenderQueue(Entity& entity);
 
         void _AddRenderEntity(Entity& entity);
-        
-        // Traditional rendering path (for compatibility)
-        void _RenderTraditional(float fDeltaTime);
     };
 }
