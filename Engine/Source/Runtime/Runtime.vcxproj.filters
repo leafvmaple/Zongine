@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Managers">
       <UniqueIdentifier>{41847bf4-47b8-4408-9676-eefa4356dba0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\RenderGraph">
+      <UniqueIdentifier>{0273d883-7bc2-4d34-bfd9-0c1eae8e7187}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\RenderSystem.cpp">
@@ -92,6 +95,15 @@
     </ClCompile>
     <ClCompile Include="Components\FlexibleComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderGraph\RenderGraph.cpp">
+      <Filter>Source Files\RenderGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderGraph\RenderPass.cpp">
+      <Filter>Source Files\RenderGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderGraph\RenderPasses.cpp">
+      <Filter>Source Files\RenderGraph</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +220,15 @@
     </ClInclude>
     <ClInclude Include="Utilities\VertexUtils.h">
       <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderGraph\RenderGraph.h">
+      <Filter>Source Files\RenderGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderGraph\RenderPass.h">
+      <Filter>Source Files\RenderGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderGraph\RenderPasses.h">
+      <Filter>Source Files\RenderGraph</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

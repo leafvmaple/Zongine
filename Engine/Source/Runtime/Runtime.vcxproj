@@ -31,6 +31,9 @@
     <ClCompile Include="Managers\EventManager.cpp" />
     <ClCompile Include="Managers\StateManager.cpp" />
     <ClCompile Include="Managers\WindowManager.cpp" />
+    <ClCompile Include="RenderGraph\RenderGraph.cpp" />
+    <ClCompile Include="RenderGraph\RenderPass.cpp" />
+    <ClCompile Include="RenderGraph\RenderPasses.cpp" />
     <ClCompile Include="Systems\AnimationSystem.cpp" />
     <ClCompile Include="Systems\CameraSystem.cpp" />
     <ClCompile Include="Systems\InputSystem.cpp" />
@@ -71,6 +74,9 @@
     <ClInclude Include="Managers\Mananger.h" />
     <ClInclude Include="Managers\StateManager.h" />
     <ClInclude Include="Managers\WindowManager.h" />
+    <ClInclude Include="RenderGraph\RenderGraph.h" />
+    <ClInclude Include="RenderGraph\RenderPass.h" />
+    <ClInclude Include="RenderGraph\RenderPasses.h" />
     <ClInclude Include="Systems\AnimationSystem.h" />
     <ClInclude Include="Systems\CameraSystem.h" />
     <ClInclude Include="Systems\InputSystem.h" />

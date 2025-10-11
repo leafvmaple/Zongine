@@ -2,6 +2,7 @@
 
 #include <d3d11.h>
 #include <vector>
+#include <memory>
 #include <wrl/client.h>
 
 #include "Entities/Entity.h"
@@ -13,12 +14,11 @@
 namespace Zongine {
     using Microsoft::WRL::ComPtr;
 
+    class RenderGraph;
+
     class RenderSystem {
     public:
-        void Initialize();
-        void Tick(float fDeltaTime);
-
-    private:
+        // Public structures for RenderPass access
         struct VertexVector {
             std::vector<ID3D11Buffer*> Buffers{};
             std::vector<UINT> Strides{};
@@ -37,12 +37,32 @@ namespace Zongine {
             ReferenceMaterialAsset* Material{};
         };
 
+        RenderSystem();
+        ~RenderSystem();
+        
+        void Initialize();
+        void Tick(float fDeltaTime);
+        
+        // RenderGraph related interfaces
+        void InitializeRenderGraph();
+        void RenderOpaqueQueue(ComPtr<ID3D11DeviceContext> context);
+        void RenderOITQueue(ComPtr<ID3D11DeviceContext> context);
+        
+        // Get render queues for RenderPass
+        const std::vector<RenderEntity>& GetOpaqueQueue() const { return m_OpaqueRenderQueue; }
+        const std::vector<RenderEntity>& GetOITQueue() const { return m_OITRenderQueue; }
+
+    private:
         std::vector<RenderEntity> m_OpaqueRenderQueue{};
         std::vector<RenderEntity> m_OITRenderQueue{};
 
         std::vector<Entity> m_TerrainRenderQueue{};
 
         ComPtr<ID3D11Buffer> m_CameraBuffer{};
+        
+        // RenderGraph
+        std::unique_ptr<RenderGraph> m_RenderGraph;
+        bool m_bUseRenderGraph{ true };  // Toggle: use RenderGraph or not
 
         void TickRenderEntity(const RenderEntity& renderEntity);
         void TickRenderEntity(const RenderEntity& renderEntity, RENDER_PASS pass);
@@ -52,5 +72,8 @@ namespace Zongine {
         void _UpdateRenderQueue(Entity& entity);
 
         void _AddRenderEntity(Entity& entity);
+        
+        // Traditional rendering path (for compatibility)
+        void _RenderTraditional(float fDeltaTime);
     };
 }

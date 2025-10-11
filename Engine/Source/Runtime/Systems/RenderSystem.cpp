@@ -13,6 +13,9 @@
 #include "Components/TransformComponent.h"
 #include "Components/LandscapeRegionComponent.h"
 
+#include "RenderGraph/RenderGraph.h"
+#include "RenderGraph/RenderPasses.h"
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>
@@ -27,6 +30,10 @@ constexpr int SHARED_BUFFER_SLOT = 13;
 
 namespace Zongine {
 
+    RenderSystem::RenderSystem() = default;
+    
+    RenderSystem::~RenderSystem() = default;
+
     void RenderSystem::Initialize() {
         D3D11_BUFFER_DESC desc{};
 
@@ -38,9 +45,94 @@ namespace Zongine {
         desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
         device->CreateBuffer(&desc, nullptr, m_CameraBuffer.GetAddressOf());
+        
+        // Initialize RenderGraph
+        if (m_bUseRenderGraph) {
+            InitializeRenderGraph();
+        }
+    }
+    
+    void RenderSystem::InitializeRenderGraph() {
+        m_RenderGraph = std::make_unique<RenderGraph>();
+        
+        auto& deviceMgr = DeviceManager::GetInstance();
+        const auto& viewport = deviceMgr.GetViewport();
+        UINT width = static_cast<UINT>(viewport.Width);
+        UINT height = static_cast<UINT>(viewport.Height);
+        
+        // Import external resources
+        m_RenderGraph->ImportRenderTarget("SwapChainRT", deviceMgr.GetSwapChainRTV());
+        m_RenderGraph->ImportDepthStencil("DepthStencil", deviceMgr.GetDepthStencilView());
+        m_RenderGraph->ImportRenderTarget("MainRT", deviceMgr.GetMainRTV());
+        m_RenderGraph->ImportRenderTarget("OITAccumulation", deviceMgr.GetOITAccRTV());
+        m_RenderGraph->ImportRenderTarget("OITWeight", deviceMgr.GetOITWeightRTV());
+        
+        // Add render passes
+        // 0. Clear SwapChain - Black background
+        auto clearSwapChain = m_RenderGraph->AddPass<ClearPass>("ClearSwapChain", "SwapChainRT", Colors::Black);
+        clearSwapChain->SetClearDepth(false);
+        
+        // 1. Clear main render target and depth buffer - Black background
+        auto clearMainRT = m_RenderGraph->AddPass<ClearPass>("ClearMainRT", "MainRT", Colors::Black);
+        
+        // 2. Opaque Pass
+        auto opaquePass = m_RenderGraph->AddPass<OpaquePass>("OpaquePass", this);
+        
+        // 3. Clear OIT buffers
+        auto clearOITAcc = m_RenderGraph->AddPass<ClearPass>("ClearOITAcc", "OITAccumulation", Colors::Black);
+        clearOITAcc->SetClearDepth(false);
+        
+        auto clearOITWeight = m_RenderGraph->AddPass<ClearPass>("ClearOITWeight", "OITWeight", Colors::White);
+        clearOITWeight->SetClearDepth(false);
+        
+        // 4. OIT Pass
+        auto oitPass = m_RenderGraph->AddPass<OITPass>("OITPass", this);
+        
+        // 5. Composite Pass
+        auto compositePass = m_RenderGraph->AddPass<CompositePass>("CompositePass");
+        
+        // 6. Present Pass
+        auto presentPass = m_RenderGraph->AddPass<PresentPass>("PresentPass");
+        
+        // Compile render graph
+        m_RenderGraph->Compile();
     }
 
     void RenderSystem::Tick(float fDeltaTime) {
+        auto context = DeviceManager::GetInstance().GetImmediateContext();
+        const auto& viewport = DeviceManager::GetInstance().GetViewport();
+        context->RSSetViewports(1, &viewport);
+        
+        // Update render queues
+        m_OpaqueRenderQueue.clear();
+        m_OITRenderQueue.clear();
+        _UpdateRenderQueue(EntityManager::GetInstance().GetRootEntity());
+        
+        // Use RenderGraph or traditional rendering path
+        if (m_bUseRenderGraph && m_RenderGraph) {
+            m_RenderGraph->Execute(context);
+        } else {
+            _RenderTraditional(fDeltaTime);
+        }
+    }
+    
+    void RenderSystem::RenderOpaqueQueue(ComPtr<ID3D11DeviceContext> context) {
+        for (auto& renderEntity : m_OpaqueRenderQueue) {
+            TickRenderEntity(renderEntity, RENDER_PASS::COLOR);
+        }
+        
+        for (auto& renderEntity : m_OpaqueRenderQueue) {
+            TickRenderEntity(renderEntity);
+        }
+    }
+    
+    void RenderSystem::RenderOITQueue(ComPtr<ID3D11DeviceContext> context) {
+        for (auto& renderEntity : m_OITRenderQueue) {
+            TickRenderEntity(renderEntity);
+        }
+    }
+    
+    void RenderSystem::_RenderTraditional(float fDeltaTime) {
         ID3D11ShaderResourceView* nullSRVs[3]{};
 
         auto swapChain = DeviceManager::GetInstance().GetSwapChain();
@@ -57,17 +149,10 @@ namespace Zongine {
         ID3D11RenderTargetView* RTVs[] = { accRTV.Get(), weightRTV.Get() };
         ID3D11ShaderResourceView* SRVs[] = { mainSRV.Get(), accSRV.Get(), weightSRV.Get() };
 
-        const auto& viewport = DeviceManager::GetInstance().GetViewport();
-        context->RSSetViewports(1, &viewport);
-
         context->ClearRenderTargetView(swapChainRTV.Get(), reinterpret_cast<const float*>(&Colors::White));
         context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
         context->ClearRenderTargetView(accRTV.Get(), reinterpret_cast<const float*>(&Colors::Black));
         context->ClearRenderTargetView(weightRTV.Get(), reinterpret_cast<const float*>(&Colors::White));
-
-        m_OpaqueRenderQueue.clear();
-        m_OITRenderQueue.clear();
-        _UpdateRenderQueue(EntityManager::GetInstance().GetRootEntity());
 
         context->OMSetRenderTargets(1, mainRTV.GetAddressOf(), depthStencilView.Get());
 

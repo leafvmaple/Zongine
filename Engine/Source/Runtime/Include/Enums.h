@@ -50,9 +50,23 @@ namespace Zongine {
         OIT,
     };
 
+    // Color constants (compatible with DirectX Colors naming style)
     namespace Colors {
-        XMGLOBALCONST DirectX::XMFLOAT4 White = { 1.0f, 1.0f, 1.0f, 1.0f };
-        XMGLOBALCONST DirectX::XMFLOAT4 Black = { 0.0f, 0.0f, 0.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Black = { 0.0f, 0.0f, 0.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 White = { 1.0f, 1.0f, 1.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Red = { 1.0f, 0.0f, 0.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Green = { 0.0f, 1.0f, 0.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Blue = { 0.0f, 0.0f, 1.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Yellow = { 1.0f, 1.0f, 0.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Cyan = { 0.0f, 1.0f, 1.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Magenta = { 1.0f, 0.0f, 1.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Gray = { 0.5f, 0.5f, 0.5f, 1.0f };
+        constexpr DirectX::XMFLOAT4 DarkGray = { 0.25f, 0.25f, 0.25f, 1.0f };
+        constexpr DirectX::XMFLOAT4 LightGray = { 0.75f, 0.75f, 0.75f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Transparent = { 0.0f, 0.0f, 0.0f, 0.0f };
+        constexpr DirectX::XMFLOAT4 CornflowerBlue = { 0.392f, 0.584f, 0.929f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Orange = { 1.0f, 0.647f, 0.0f, 1.0f };
+        constexpr DirectX::XMFLOAT4 Purple = { 0.5f, 0.0f, 0.5f, 1.0f };
     }
 
     enum BONE_FLAG {
