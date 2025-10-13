@@ -31,6 +31,9 @@
     <Filter Include="Source Files\RenderGraph">
       <UniqueIdentifier>{0273d883-7bc2-4d34-bfd9-0c1eae8e7187}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Animation">
+      <UniqueIdentifier>{63395fee-9bf4-4615-951f-2ca8e31d57a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Systems\RenderSystem.cpp">
@@ -104,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="RenderGraph\RenderPasses.cpp">
       <Filter>Source Files\RenderGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\CharacterControllerSystem.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation\AnimStateMachineBuilder.cpp">
+      <Filter>Source Files\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +238,21 @@
     </ClInclude>
     <ClInclude Include="RenderGraph\RenderPasses.h">
       <Filter>Source Files\RenderGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\CharacterControllerSystem.h">
+      <Filter>Source Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\AnimationStateComponents.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\CharacterControllerComponent.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\InputComponent.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation\AnimStateMachineBuilder.h">
+      <Filter>Source Files\Animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

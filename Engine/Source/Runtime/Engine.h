@@ -22,12 +22,17 @@ namespace Zongine {
     class AnimationSystem;
     class PhysicsSystem;
     class NvFlexSystem;
+    class CharacterControllerSystem;
 
     class Engine {
     public:
         Engine();
         ~Engine();
 
+        // Unified API: Create window and initialize engine
+        HWND CreateAndInitialize(HINSTANCE hInstance, const wchar_t* title, int width, int height);
+
+        // Legacy API: Initialize with existing window (for backward compatibility)
         void Initialize(HWND wnd);
         void Uninitialize();
 
@@ -50,6 +55,7 @@ namespace Zongine {
         std::unique_ptr<AnimationSystem> animationSystem{};
         std::unique_ptr<PhysicsSystem> physicsSystem{};
         std::unique_ptr<NvFlexSystem> nvFlexSystem{};
+        std::unique_ptr<CharacterControllerSystem> characterControllerSystem{};
 
         bool m_bRunning{ true };
         uint64_t m_nLastTime{};

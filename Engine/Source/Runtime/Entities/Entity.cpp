@@ -14,6 +14,9 @@
 #include "Components/NVFlexComponent.h"
 #include "Components/LandscapeComponent.h"
 #include "Components/LandscapeRegionComponent.h"
+#include "Components/InputComponent.h"
+#include "Components/AnimationStateComponents.h"
+#include "Components/CharacterControllerComponent.h"
 
 namespace Zongine {
     template<typename ComponentType>
@@ -63,4 +66,12 @@ namespace Zongine {
     DECLARE_COMPONENT(LandscapeComponent);
     DECLARE_COMPONENT(LandscapeRegionComponent);
     DECLARE_COMPONENT(NvFlexComponent);
+    
+    // Animation State Machine Components
+    DECLARE_COMPONENT(InputComponent);
+    DECLARE_COMPONENT(AnimStateCollectionComponent);
+    DECLARE_COMPONENT(AnimTransitionCollectionComponent);
+    DECLARE_COMPONENT(AnimParameterCollectionComponent);
+    DECLARE_COMPONENT(AnimStateMachineRuntimeComponent);
+    DECLARE_COMPONENT(CharacterControllerComponent);
 }

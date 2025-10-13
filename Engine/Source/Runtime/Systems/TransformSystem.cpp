@@ -35,6 +35,7 @@ namespace Zongine {
 
         for (auto& id : entity.GetChildren()) {
             auto& child = EntityManager::GetInstance().GetEntity(id);
+            if (!child.HasComponent<TransformComponent>()) continue;
             auto& component = child.GetComponent<TransformComponent>();
 
             auto targetMatrix = transformComponent.World;

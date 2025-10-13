@@ -14,11 +14,16 @@
 #include "Systems/AnimationSystem.h"
 #include "Systems/PhysicsSystem.h"
 #include "Systems/NvFlexSystem.h"
+#include "Systems/CharacterControllerSystem.h"
 
 #include "Components/CameraComponent.h"
 #include "components/MaterialComponent.h"
 #include "components/TransformComponent.h"
 #include "Components/AnimationComponent.h"
+#include "Components/InputComponent.h"
+#include "Components/CharacterControllerComponent.h"
+
+#include "Animation/AnimStateMachineBuilder.h"
 
 #include "Entities/EntityManager.h"
 
@@ -32,6 +37,16 @@ namespace Zongine {
     Engine::Engine() {
     }
     Engine::~Engine() {
+    }
+
+    HWND Engine::CreateAndInitialize(HINSTANCE hInstance, const wchar_t* title, int width, int height) {
+        // Create window internally via WindowManager
+        HWND hWnd = WindowManager::GetInstance().CreateGameWindow(hInstance, title, width, height);
+        
+        // Initialize engine with the created window
+        Initialize(hWnd);
+        
+        return hWnd;
     }
 
     void Engine::Initialize(HWND wnd) {
@@ -52,13 +67,18 @@ namespace Zongine {
         animationSystem = std::make_unique<AnimationSystem>();
         physicsSystem = std::make_unique<PhysicsSystem>();
         nvFlexSystem = std::make_unique<NvFlexSystem>();
+        characterControllerSystem = std::make_unique<CharacterControllerSystem>();
 
         auto& root = EntityManager::GetInstance().GetRootEntity();
         // assetManager.LoadScene(root, "data/source/maps/稻香村/稻香村.jsonmap");
         root.AddComponent<TransformComponent>(TransformComponent{});
+        root.AddComponent<NameComponent>(NameComponent({ "Root" }));
 
         auto& camera = root.AddChild("Camera");
         auto& player = root.AddChild("Player");
+        // auto& input = root.AddChild("__GlobalInput__");
+
+        // input.AddComponent<InputComponent>(InputComponent{});
 
         camera.AddComponent<CameraComponent>(CameraComponent{});
         auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
@@ -90,7 +110,22 @@ namespace Zongine {
         //assetManager.LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
         //assetManager.LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
 
+        AnimStateMachineBuilder(player)
+            .AddState("Idle", "data/source/player/F1/动作/F1b01bi持武器普通待机01a.ani", true, 1.0f)
+            .AddState("Run", "data/source/player/F1/动作/F1b02yd奔跑.ani", true, 1.0f)
+            .SetDefaultState("Idle")
+            .AddTransition("Idle", "Run", 0.2f)
+            .AddCondition("Idle", "Run", "Speed", AnimConditionType::Greater, 0.1f)
+            .AddTransition("Run", "Idle", 0.2f)
+            .AddCondition("Run", "Idle", "Speed", AnimConditionType::Less, 0.1f)
+            .Build();
+
+        auto& controller = player.AddComponent<CharacterControllerComponent>(CharacterControllerComponent{});
+        controller.MoveSpeed = 5.0f;
+        controller.EnableInput = true;
+
         inputSystem->Initialize();
+        characterControllerSystem->Initialize();
         cameraSystem->Initialize();
         nvFlexSystem->Initialize();
         renderSystem->Initialize();
@@ -115,6 +150,7 @@ namespace Zongine {
             DispatchMessage(&msg);
         }
         inputSystem->Tick(nDeltaTime);
+        characterControllerSystem->Tick(nDeltaTime);
         animationSystem->Tick(nDeltaTime);
         transformSystem->Tick(nDeltaTime);
         physicsSystem->Tick(nDeltaTime);

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation\AnimStateMachineBuilder.cpp" />
     <ClCompile Include="Components\FlexibleComponent.cpp" />
     <ClCompile Include="Components\MeshComponent.cpp" />
     <ClCompile Include="Components\NvFlexComponent.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="RenderGraph\RenderPasses.cpp" />
     <ClCompile Include="Systems\AnimationSystem.cpp" />
     <ClCompile Include="Systems\CameraSystem.cpp" />
+    <ClCompile Include="Systems\CharacterControllerSystem.cpp" />
     <ClCompile Include="Systems\InputSystem.cpp" />
     <ClCompile Include="Systems\NvFlexSystem.cpp" />
     <ClCompile Include="Systems\PhysicsSystem.cpp" />
@@ -45,9 +47,13 @@
     <ClCompile Include="Utilities\VertexUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation\AnimStateMachineBuilder.h" />
     <ClInclude Include="Components\AnimationComponent.h" />
+    <ClInclude Include="Components\AnimationStateComponents.h" />
     <ClInclude Include="Components\BaseComponent.h" />
     <ClInclude Include="Components\CameraComponent.h" />
+    <ClInclude Include="Components\CharacterControllerComponent.h" />
+    <ClInclude Include="Components\InputComponent.h" />
     <ClInclude Include="Components\NvFlexComponent.h" />
     <ClInclude Include="Components\FlexibleComponent.h" />
     <ClInclude Include="Components\LandscapeComponent.h" />
@@ -79,6 +85,7 @@
     <ClInclude Include="RenderGraph\RenderPasses.h" />
     <ClInclude Include="Systems\AnimationSystem.h" />
     <ClInclude Include="Systems\CameraSystem.h" />
+    <ClInclude Include="Systems\CharacterControllerSystem.h" />
     <ClInclude Include="Systems\InputSystem.h" />
     <ClInclude Include="Systems\NvFlexSystem.h" />
     <ClInclude Include="Systems\PhysicsSystem.h" />
