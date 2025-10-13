@@ -15,13 +15,18 @@ namespace Zongine {
     }
 
     void InputSystem::Tick(float fDeltaTime) {
-        // Clear transient events at end of frame
+        // Clear transient events from previous frame
+        // This runs BEFORE message processing, so new events will be captured this frame
         auto inputEntity = GetInputEntity();
         auto& entity = EntityManager::GetInstance().GetEntity(inputEntity);
 
         if (entity.HasComponent<InputComponent>()) {
             auto& input = entity.GetComponent<InputComponent>();
-            input.ClearFrameEvents();
+            input.KeysDown.clear();
+            input.KeysUp.clear();
+            input.MouseDeltaX = 0;
+            input.MouseDeltaY = 0;
+            input.MouseWheel = 0;
         }
     }
 
@@ -74,6 +79,7 @@ namespace Zongine {
         case WM_LBUTTONDOWN:
         {
             input.LeftMouseDown = true;
+            input.LeftMouseHeld = true;
             input.KeysDown.insert(VK_LBUTTON);
             input.KeysHeld.insert(VK_LBUTTON);
             break;
@@ -81,6 +87,7 @@ namespace Zongine {
         case WM_LBUTTONUP:
         {
             input.LeftMouseDown = false;
+            input.LeftMouseHeld = false;
             input.KeysUp.insert(VK_LBUTTON);
             input.KeysHeld.erase(VK_LBUTTON);
             break;

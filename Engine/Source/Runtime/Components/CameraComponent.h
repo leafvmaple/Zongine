@@ -19,5 +19,10 @@ namespace Zongine {
             float fFovAngleY;
             float fAspectRatio;
         } Perspective;
+
+        // Third-person camera parameters
+        float Distance = 200.0f;          // Distance from target
+        float MinDistance = 50.0f;        // Minimum zoom distance
+        float MaxDistance = 500.0f;       // Maximum zoom distance
     };
 }

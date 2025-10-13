@@ -76,9 +76,6 @@ namespace Zongine {
 
         auto& camera = root.AddChild("Camera");
         auto& player = root.AddChild("Player");
-        // auto& input = root.AddChild("__GlobalInput__");
-
-        // input.AddComponent<InputComponent>(InputComponent{});
 
         camera.AddComponent<CameraComponent>(CameraComponent{});
         auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
@@ -144,12 +141,15 @@ namespace Zongine {
         uint64_t nTime = timeGetTime();
         uint64_t nDeltaTime = nTime - m_nLastTime;
 
+        // Clear input events from previous frame before processing new messages
+        inputSystem->Tick(nDeltaTime);
+        
         MSG msg{};
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-        inputSystem->Tick(nDeltaTime);
+        
         characterControllerSystem->Tick(nDeltaTime);
         animationSystem->Tick(nDeltaTime);
         transformSystem->Tick(nDeltaTime);

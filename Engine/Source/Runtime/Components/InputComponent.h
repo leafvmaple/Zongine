@@ -31,6 +31,7 @@ namespace Zongine {
         
     // Mouse button states
         bool LeftMouseDown = false;
+        bool LeftMouseHeld = false;
         bool RightMouseDown = false;
         bool MiddleMouseDown = false;
         
