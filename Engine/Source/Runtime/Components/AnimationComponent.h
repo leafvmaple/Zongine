@@ -20,4 +20,15 @@ namespace Zongine {
 
         std::vector<DirectX::XMFLOAT4X4> ModelTransforms{};  // 骨骼模型空间变换矩阵
     };
+
+    /**
+     * 动画状态机组件
+     * 
+     * 类似 Unity 的 Animator 组件，存储状态机资源路径
+     * 由 AssetManager 在初始化时加载状态机配置到实体
+     */
+    struct AnimStateMachineComponent {
+        std::string StateMachineAssetPath{};  // 状态机 JSON 文件路径
+        bool IsLoaded = false;                // 是否已加载
+    };
 }

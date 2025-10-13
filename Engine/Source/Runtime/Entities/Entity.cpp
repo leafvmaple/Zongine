@@ -66,6 +66,7 @@ namespace Zongine {
     DECLARE_COMPONENT(LandscapeComponent);
     DECLARE_COMPONENT(LandscapeRegionComponent);
     DECLARE_COMPONENT(NvFlexComponent);
+    DECLARE_COMPONENT(AnimStateMachineComponent);
     
     // Animation State Machine Components
     DECLARE_COMPONENT(InputComponent);

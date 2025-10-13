@@ -1,0 +1,47 @@
+{
+  "defaultState": "Idle",
+  "states": [
+    {
+      "name": "Idle",
+      "animationPath": "data/source/player/F1/动作/F1b01bi持武器普通待机01a.ani",
+      "loop": true,
+      "speed": 1.0
+    },
+    {
+      "name": "Run",
+      "animationPath": "data/source/player/F1/动作/F1b02yd奔跑.ani",
+      "loop": true,
+      "speed": 1.0
+    }
+  ],
+  "transitions": [
+    {
+      "from": "Idle",
+      "to": "Run",
+      "duration": 0.2,
+      "hasExitTime": false,
+      "exitTime": 1.0,
+      "conditions": [
+        {
+          "parameter": "Speed",
+          "type": "Greater",
+          "value": 0.1
+        }
+      ]
+    },
+    {
+      "from": "Run",
+      "to": "Idle",
+      "duration": 0.2,
+      "hasExitTime": false,
+      "exitTime": 1.0,
+      "conditions": [
+        {
+          "parameter": "Speed",
+          "type": "Less",
+          "value": 0.1
+        }
+      ]
+    }
+  ]
+}

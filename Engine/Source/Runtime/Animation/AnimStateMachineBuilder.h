@@ -47,6 +47,12 @@ namespace Zongine {
         // Finish building, ensure components are added
         void Build();
 
+        // Serialize to JSON file
+        bool SaveToJson(const std::string& filePath) const;
+
+        // Deserialize from JSON file and build state machine
+        static bool LoadFromJson(Entity& entity, const std::string& filePath);
+
     private:
         Entity& m_Entity;
         AnimStateCollectionComponent m_States;

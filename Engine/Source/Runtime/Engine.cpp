@@ -23,8 +23,6 @@
 #include "Components/InputComponent.h"
 #include "Components/CharacterControllerComponent.h"
 
-#include "Animation/AnimStateMachineBuilder.h"
-
 #include "Entities/EntityManager.h"
 
 #include <algorithm>
@@ -82,6 +80,7 @@ namespace Zongine {
         cameraTransform.Position = { 0.0f, 50.f, -200.0f };
 
         assetManager.LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
+        assetManager.LoadAnimStateMachine(player, "data/player_statemachine.json");
         player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b02dj打坐b.ani" });
 
         auto& playerTransform = player.GetComponent<TransformComponent>();
@@ -106,16 +105,6 @@ namespace Zongine {
         assetManager.LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
         //assetManager.LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
         //assetManager.LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
-
-        AnimStateMachineBuilder(player)
-            .AddState("Idle", "data/source/player/F1/动作/F1b01bi持武器普通待机01a.ani", true, 1.0f)
-            .AddState("Run", "data/source/player/F1/动作/F1b02yd奔跑.ani", true, 1.0f)
-            .SetDefaultState("Idle")
-            .AddTransition("Idle", "Run", 0.2f)
-            .AddCondition("Idle", "Run", "Speed", AnimConditionType::Greater, 0.1f)
-            .AddTransition("Run", "Idle", 0.2f)
-            .AddCondition("Run", "Idle", "Speed", AnimConditionType::Less, 0.1f)
-            .Build();
 
         auto& controller = player.AddComponent<CharacterControllerComponent>(CharacterControllerComponent{});
         controller.MoveSpeed = 5.0f;

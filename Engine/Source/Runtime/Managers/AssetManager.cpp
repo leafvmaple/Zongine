@@ -13,6 +13,7 @@
 #include "Components/LandscapeComponent.h"
 #include "Components/LandscapeRegionComponent.h"
 #include "Components/NVFlexComponent.h"
+#include "Components/AnimationComponent.h"
 
 #include "LAssert.h"
 
@@ -109,6 +110,15 @@ namespace Zongine {
                 regionEntity.AddComponent<LandscapeRegionComponent>(LandscapeRegionComponent{});
                 regionEntity.AddComponent<ShaderComponent>(ShaderComponent{ { region.Material.ShaderName } });
             }
+        }
+    }
+
+    void AssetManager::LoadAnimStateMachine(Entity& entity, const std::string& path) {
+        // This method is called by AnimationSystem during initialization
+        // AnimStateMachineBuilder will handle the actual JSON loading
+        // We just ensure the component is properly set up
+        if (!entity.HasComponent<AnimStateMachineComponent>()) {
+            entity.AddComponent<AnimStateMachineComponent>(AnimStateMachineComponent{ path, false });
         }
     }
 

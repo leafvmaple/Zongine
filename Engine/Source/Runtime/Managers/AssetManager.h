@@ -29,6 +29,7 @@ namespace Zongine {
         void LoadMesh(Entity& entity, const std::string& path);
         void LoadMesh(Entity& entity, const std::string& path, const std::string& socketName);
         void LoadScene(Entity& entity, const std::string& path);
+        void LoadAnimStateMachine(Entity& entity, const std::string& path);
 
         std::shared_ptr<MeshAsset> GetMeshAsset(const std::string& path);
         std::shared_ptr<MaterialAsset> GetModelMaterialAsset(const std::string& path);

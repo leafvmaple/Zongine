@@ -21,6 +21,7 @@ namespace Zongine {
     struct AnimTransitionCollectionComponent;
     struct AnimParameterCollectionComponent;
     struct AnimStateMachineRuntimeComponent;
+    struct AnimStateMachineComponent;
     struct AnimCondition;
     struct AnimTransition;
     class Entity;
@@ -42,6 +43,7 @@ namespace Zongine {
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_SkeletonMeshMap{};
 
         // 状态机逻辑
+        void _LoadStateMachineFromAsset(Entity& entity, AnimStateMachineComponent& stateMachineComp);
         void _UpdateStateMachine(Entity& entity, float deltaTime);
         void _InitializeStateMachine(Entity& entity);
         void _CheckTransitions(Entity& entity);

@@ -10,20 +10,31 @@
 #include "Components/SkeletonComponent.h"
 #include "Components/MeshComponent.h"
 
+#include "Animation/AnimStateMachineBuilder.h"
+
 #include <algorithm>
 
 namespace Zongine {
     void AnimationSystem::Tick(int nDeltaTime) {
         float deltaSeconds = nDeltaTime / 1000.0f;
 
-        // First update all state machines (based on ECS components)
+        // First, check for unloaded state machines and load them
+        EntityManager::GetInstance().ForEach<AnimStateMachineComponent>(
+            [this](auto entityID, auto& stateMachineComp) {
+            if (!stateMachineComp.IsLoaded && !stateMachineComp.StateMachineAssetPath.empty()) {
+                auto& entity = EntityManager::GetInstance().GetEntity(entityID);
+                _LoadStateMachineFromAsset(entity, stateMachineComp);
+            }
+        });
+
+        // Then update all state machines (based on ECS components)
         EntityManager::GetInstance().ForEach<AnimStateMachineRuntimeComponent>(
             [this, deltaSeconds](auto entityID, auto& runtime) {
             auto& entity = EntityManager::GetInstance().GetEntity(entityID);
             _UpdateStateMachine(entity, deltaSeconds);
         });
 
-        // Then update all animations
+        // Finally update all animations
         EntityManager::GetInstance().ForEach<AnimationComponent>(
             [this, nDeltaTime](auto entityID, auto& animationComponent) {
 
@@ -348,5 +359,12 @@ namespace Zongine {
         }
 
         return true;
+    }
+
+    void AnimationSystem::_LoadStateMachineFromAsset(Entity& entity, AnimStateMachineComponent& stateMachineComp) {
+        // Use AnimStateMachineBuilder to load from JSON
+        if (AnimStateMachineBuilder::LoadFromJson(entity, stateMachineComp.StateMachineAssetPath)) {
+            stateMachineComp.IsLoaded = true;
+        }
     }
 }
