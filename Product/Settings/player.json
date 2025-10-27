@@ -1,0 +1,10 @@
+{
+    
+    "mdl": "Art/Models/Player/F1.mdl",
+    "mesh": {
+        "head": "Art/Models/Player/F1_5407h_a_head.mesh",
+        "body": "Art/Models/Player/f1_5407h_body.mesh",
+        "face": "Art/Models/Player/f1_new_face.mesh"
+    },
+    "state_machine": "Settings/player_state_machine.json"
+}

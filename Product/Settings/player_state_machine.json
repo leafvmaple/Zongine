@@ -3,13 +3,13 @@
   "states": [
     {
       "name": "Idle",
-      "animationPath": "data/source/player/F1/动作/F1b01ty普通待机01.ani",
+      "animationPath": "Art/Animations/F1_Idle.ani",
       "loop": true,
       "speed": 1.0
     },
     {
       "name": "Run",
-      "animationPath": "data/source/player/F1/动作/F1b02yd奔跑.ani",
+      "animationPath": "Art/Animations/F1_Run.ani",
       "loop": true,
       "speed": 1.0
     }

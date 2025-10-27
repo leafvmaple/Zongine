@@ -25,6 +25,7 @@ namespace Zongine {
 
     class AssetManager : public SingleManager<AssetManager> {
     public:
+        void LoadPlayer(Entity& player, const std::string& path);
         void LoadModel(Entity& entity, const std::string& path);
         void LoadMesh(Entity& entity, const std::string& path);
         void LoadMesh(Entity& entity, const std::string& path, const std::string& socketName);

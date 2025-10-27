@@ -14,6 +14,7 @@
 #include "Components/LandscapeRegionComponent.h"
 #include "Components/NVFlexComponent.h"
 #include "Components/AnimationComponent.h"
+#include "Components/CharacterControllerComponent.h"
 
 #include "LAssert.h"
 
@@ -27,13 +28,41 @@
 #include "ILandScape.h"
 #include "IFlex.h"
 
-#include "DirectXTex/DirectXTex/DirectXTex.h"
-#include "FX11/inc/d3dx11effect.h"
+#include <DirectXTex/DirectXTex/DirectXTex.h>
+#include <FX11/inc/d3dx11effect.h>
+#include <nlohmann/json.hpp>
 
 #include <set>
 #include <unordered_set>
+#include <fstream>
 
 namespace Zongine {
+    void AssetManager::LoadPlayer(Entity& player, const std::string& path) {
+        std::ifstream stream(path);
+        nlohmann::json playerConfig;
+        stream >> playerConfig;
+
+        LoadModel(player, playerConfig["mdl"].get<std::string>());
+
+        auto& head = player.AddChild("Head");
+        LoadMesh(head, playerConfig["mesh"]["head"].get<std::string>());
+        auto& body = player.AddChild("Body");
+        LoadMesh(body, playerConfig["mesh"]["body"].get<std::string>());
+        auto& face = head.AddChild("Face");
+        LoadMesh(face, playerConfig["mesh"]["face"].get<std::string>(), "s_face");
+        //auto& hat = head.AddChild("Hat");
+        //auto& weapon = hand.AddChild("Weapon");
+
+        // TODO
+        player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/����/F1b02dj����b.ani" });
+
+        LoadAnimStateMachine(player, playerConfig["state_machine"].get<std::string>());
+
+        auto& controller = player.AddComponent<CharacterControllerComponent>(CharacterControllerComponent{});
+        controller.MoveSpeed = 5.0f;
+        controller.EnableInput = true;
+    }
+
     void AssetManager::LoadModel(Entity& entity, const std::string& path) {
         MODEL_DESC desc{ path.c_str() };
         MODEL_SOURCE source{};

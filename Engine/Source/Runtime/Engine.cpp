@@ -75,41 +75,39 @@ namespace Zongine {
         auto& camera = root.AddChild("Camera");
         auto& player = root.AddChild("Player");
 
+        assetManager.LoadPlayer(player, "Settings/player.json");
+
         camera.AddComponent<CameraComponent>(CameraComponent{});
         auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
         cameraTransform.Position = { 0.0f, 50.f, -200.0f };
 
-        assetManager.LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
-        assetManager.LoadAnimStateMachine(player, "data/player_statemachine.json");
-        player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b02dj打坐b.ani" });
+        //assetManager.LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
+        //assetManager.LoadAnimStateMachine(player, "data/player_statemachine.json");
+        //player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b02dj打坐b.ani" });
 
-        auto& playerTransform = player.GetComponent<TransformComponent>();
-        playerTransform.Position = { 0.0f, 0, 50.0f };
+        //auto& playerTransform = player.GetComponent<TransformComponent>();
+        //playerTransform.Position = { 0.0f, 0, 50.0f };
 
-        auto& head = player.AddChild("Head");
-        auto& body = player.AddChild("Body");
-        //auto& hand = player.AddChild("Hand");
-        //auto& leg = player.AddChild("Leg");
-        //auto& belt = player.AddChild("Belt");
+        //auto& head = player.AddChild("Head");
+        //auto& body = player.AddChild("Body");
+        ////auto& hand = player.AddChild("Hand");
+        ////auto& leg = player.AddChild("Leg");
+        ////auto& belt = player.AddChild("Belt");
 
-        assetManager.LoadMesh(head, "data/source/player/F1/部件/F1_5407h_a_head.mesh");
-        //assetManager.LoadMesh(body, "data/source/player/F1/部件/F1_5407h_body.mesh");
-        assetManager.LoadMesh(body, "data/source/player/F1/parts/f1_5407h_body.gltf");
-        //assetManager.LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
-        //assetManager.LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
-        //assetManager.LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
+        //assetManager.LoadMesh(head, "data/source/player/F1/部件/F1_5407h_a_head.mesh");
+        ////assetManager.LoadMesh(body, "data/source/player/F1/部件/F1_5407h_body.mesh");
+        //assetManager.LoadMesh(body, "data/source/player/F1/parts/f1_5407h_body.gltf");
+        ////assetManager.LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
+        ////assetManager.LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
+        ////assetManager.LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
 
-        auto& face = head.AddChild("Face");
-        //auto& hat = head.AddChild("Hat");
-        //auto& weapon = hand.AddChild("Weapon");
+        //auto& face = head.AddChild("Face");
+        ////auto& hat = head.AddChild("Hat");
+        ////auto& weapon = hand.AddChild("Weapon");
 
-        assetManager.LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
+        //assetManager.LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
         //assetManager.LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
         //assetManager.LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
-
-        auto& controller = player.AddComponent<CharacterControllerComponent>(CharacterControllerComponent{});
-        controller.MoveSpeed = 5.0f;
-        controller.EnableInput = true;
 
         inputSystem->Initialize();
         characterControllerSystem->Initialize();
