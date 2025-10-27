@@ -5,5 +5,7 @@
         "*.s": "gas",
         "*.asm": "masm",
         "*.rh": "cpp"
-    }
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": []
 }

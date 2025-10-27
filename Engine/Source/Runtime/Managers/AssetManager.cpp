@@ -18,6 +18,7 @@
 #include "LAssert.h"
 
 #include "IMesh.h"
+#include "IGltfLoader.h"
 #include "IModel.h"
 #include "IScene.h"
 #include "ISkeleton.h"
@@ -278,11 +279,17 @@ namespace Zongine {
         std::filesystem::path filePath = path;
         std::vector<std::unordered_set<int>> neighborVertices;
 
-        MESH_DESC desc{ path.c_str() };
         MESH_SOURCE source{};
         auto mesh = std::make_shared<MeshAsset>();
 
-        ::LoadMesh(&desc, &source);
+        if (IsGLTFFile(path.c_str())) {
+            GLTF_DESC gltfDesc{ path.c_str() };
+            LoadMeshFromGLTF(&gltfDesc, &source);
+        }
+        else {
+            MESH_DESC desc{ path.c_str() };
+            ::LoadMesh(&desc, &source);
+        }
 
         if (source.nVertexFVF & FVF_SKIN)
             mesh->Macro = RUNTIME_MACRO_SKIN_MESH;

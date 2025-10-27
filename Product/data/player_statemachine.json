@@ -3,7 +3,7 @@
   "states": [
     {
       "name": "Idle",
-      "animationPath": "data/source/player/F1/动作/F1b01bi持武器普通待机01a.ani",
+      "animationPath": "data/source/player/F1/动作/F1b01ty普通待机01.ani",
       "loop": true,
       "speed": 1.0
     },

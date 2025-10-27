@@ -6,6 +6,14 @@ namespace Zongine {
         if (pThis) {
             pThis->OnMessageEvent(hWnd, message, wParam, lParam);
         }
+        if (message == WM_CLOSE) {
+            DestroyWindow(hWnd);
+            return 0;
+        }
+        if (message == WM_DESTROY) {
+            PostQuitMessage(0);
+            return 0;
+        }
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
 

@@ -93,7 +93,8 @@ namespace Zongine {
         //auto& belt = player.AddChild("Belt");
 
         assetManager.LoadMesh(head, "data/source/player/F1/部件/F1_5407h_a_head.mesh");
-        assetManager.LoadMesh(body, "data/source/player/F1/部件/F1_5407h_body.mesh");
+        //assetManager.LoadMesh(body, "data/source/player/F1/部件/F1_5407h_body.mesh");
+        assetManager.LoadMesh(body, "data/source/player/F1/parts/f1_5407h_body.gltf");
         //assetManager.LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
         //assetManager.LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
         //assetManager.LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
@@ -135,6 +136,9 @@ namespace Zongine {
         
         MSG msg{};
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+            if (msg.message == WM_QUIT) {
+                Exit();
+            }
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
