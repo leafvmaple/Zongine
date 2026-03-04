@@ -13,6 +13,7 @@ namespace Zongine {
 
     class RenderPass;
     class RenderResource;
+    struct RenderContext;
 
     // Resource type
     enum class ResourceType {
@@ -70,6 +71,10 @@ namespace Zongine {
         // Execute render graph
         void Execute(ComPtr<ID3D11DeviceContext> context);
 
+        // Per-frame render context (owned by RenderSystem, shared with passes)
+        void SetRenderContext(RenderContext* ctx) { m_RenderContext = ctx; }
+        RenderContext* GetRenderContext() const { return m_RenderContext; }
+
         // Clear
         void Clear();
 
@@ -108,6 +113,7 @@ namespace Zongine {
         bool m_bCompiled{ false };
 
         ComPtr<ID3D11Device> m_Device;
+        RenderContext* m_RenderContext{ nullptr };
     };
 
     // Template implementation

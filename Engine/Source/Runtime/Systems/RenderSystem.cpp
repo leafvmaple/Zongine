@@ -1,15 +1,16 @@
 #include "RenderSystem.h"
 
-#include "Entities/EntityManager.h"
+#include "Entities/World.h"
 #include "Managers/DeviceManager.h"
 #include "Managers/AssetManager.h"
 #include "Managers/EffectManager.h"
 #include "Managers/StateManager.h"
 
+#include "Components/CameraComponent.h"
 #include "Components/ShaderComponent.h"
 #include "Components/MeshComponent.h"
 #include "Components/NVFlexComponent.h"
-#include "components/MaterialComponent.h"
+#include "Components/MaterialComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/LandscapeRegionComponent.h"
 
@@ -44,7 +45,7 @@ namespace Zongine {
         desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-        device->CreateBuffer(&desc, nullptr, m_CameraBuffer.GetAddressOf());
+        device->CreateBuffer(&desc, nullptr, m_RenderContext.CameraBuffer.GetAddressOf());
         
         // Initialize RenderGraph
         InitializeRenderGraph();
@@ -65,7 +66,7 @@ namespace Zongine {
         m_RenderGraph->ImportRenderTarget("OITAccumulation", deviceMgr.GetOITAccRTV());
         m_RenderGraph->ImportRenderTarget("OITWeight", deviceMgr.GetOITWeightRTV());
         
-        // Add render passes
+        // Add render passes — passes no longer need a RenderSystem pointer
         // 0. Clear SwapChain - Black background
         auto clearSwapChain = m_RenderGraph->AddPass<ClearPass>("ClearSwapChain", "SwapChainRT", Colors::Black);
         clearSwapChain->SetClearDepth(false);
@@ -74,7 +75,7 @@ namespace Zongine {
         auto clearMainRT = m_RenderGraph->AddPass<ClearPass>("ClearMainRT", "MainRT", Colors::Black);
         
         // 2. Opaque Pass
-        auto opaquePass = m_RenderGraph->AddPass<OpaquePass>("OpaquePass", this);
+        auto opaquePass = m_RenderGraph->AddPass<OpaquePass>("OpaquePass");
         
         // 3. Clear OIT buffers
         auto clearOITAcc = m_RenderGraph->AddPass<ClearPass>("ClearOITAcc", "OITAccumulation", Colors::Black);
@@ -84,7 +85,7 @@ namespace Zongine {
         clearOITWeight->SetClearDepth(false);
         
         // 4. OIT Pass
-        auto oitPass = m_RenderGraph->AddPass<OITPass>("OITPass", this);
+        auto oitPass = m_RenderGraph->AddPass<OITPass>("OITPass");
         
         // 5. Composite Pass
         auto compositePass = m_RenderGraph->AddPass<CompositePass>("CompositePass");
@@ -92,6 +93,9 @@ namespace Zongine {
         // 6. Present Pass
         auto presentPass = m_RenderGraph->AddPass<PresentPass>("PresentPass");
         
+        // Share the per-frame RenderContext with the graph
+        m_RenderGraph->SetRenderContext(&m_RenderContext);
+
         // Compile render graph
         m_RenderGraph->Compile();
     }
@@ -101,112 +105,71 @@ namespace Zongine {
         const auto& viewport = DeviceManager::GetInstance().GetViewport();
         context->RSSetViewports(1, &viewport);
         
-        // Update render queues
-        m_OpaqueRenderQueue.clear();
-        m_OITRenderQueue.clear();
-        _UpdateRenderQueue(EntityManager::GetInstance().GetRootEntity());
+        auto rootID = World::GetInstance().GetRootEntity();
+
+        // 1. Update camera constant buffer (separated from queue building)
+        _UpdateCamera(rootID);
+
+        // 2. Build render queues
+        m_RenderContext.OpaqueQueue.clear();
+        m_RenderContext.OITQueue.clear();
+        m_RenderContext.TerrainQueue.clear();
+        _UpdateRenderQueue(rootID);
         
-        // Execute RenderGraph
+        // 3. Execute RenderGraph
         if (m_RenderGraph) {
             m_RenderGraph->Execute(context);
         }
     }
-    
-    void RenderSystem::RenderOpaqueQueue(ComPtr<ID3D11DeviceContext> context) {
-        for (auto& renderEntity : m_OpaqueRenderQueue) {
-            TickRenderEntity(renderEntity, RENDER_PASS::COLOR);
-        }
-        
-        for (auto& renderEntity : m_OpaqueRenderQueue) {
-            TickRenderEntity(renderEntity);
-        }
-    }
-    
-    void RenderSystem::RenderOITQueue(ComPtr<ID3D11DeviceContext> context) {
-        for (auto& renderEntity : m_OITRenderQueue) {
-            TickRenderEntity(renderEntity);
-        }
-    }
 
-    void RenderSystem::TickRenderEntity(const RenderEntity& renderEntity) {
-        TickRenderEntity(renderEntity, renderEntity.Pass);
-    }
+    // ---------- Camera update (extracted from _UpdateRenderQueue) ----------
 
-    void RenderSystem::TickRenderEntity(const RenderEntity& renderEntity, RENDER_PASS pass) {
-        auto context = DeviceManager::GetInstance().GetImmediateContext();
+    void RenderSystem::_UpdateCamera(EntityID entityID) {
+        auto& world = World::GetInstance();
 
-        auto inputLayout = EffectManager::GetInstance().GetInputLayout(renderEntity.Macro);
-        context->IASetInputLayout(inputLayout.Get());
-        context->IASetVertexBuffers(0,
-            renderEntity.Vertex.Buffers.size(),
-            renderEntity.Vertex.Buffers.data(),
-            renderEntity.Vertex.Strides.data(),
-            renderEntity.Vertex.Offsets.data());
-
-        context->IASetIndexBuffer(renderEntity.Index.Buffer.Get(), renderEntity.Index.eFormat, renderEntity.Index.uOffset);
-        context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-        auto rasterizerState = StateManager::GetInstance().GetRasterizerState(renderEntity.Material->Rasterizer);
-        context->RSSetState(rasterizerState.Get());
-
-        auto blendState = StateManager::GetInstance().GetBlendState(renderEntity.Material->Blend);
-        context->OMSetBlendState(blendState.Get(), nullptr, 0xFFFFFFFF);
-
-        for (auto& [var, texture] : renderEntity.Material->Textures) {
-            auto it = renderEntity.Shader->Variables.find(var);
-            if (it == renderEntity.Shader->Variables.end())
-                continue;
-            it->second->SetResource(texture.Texture.Get());
-        }
-
-        auto effectPass = EffectManager::GetInstance().GetEffectPass(renderEntity.Shader->Effect, pass);
-        effectPass->Apply(0, context.Get());
-
-        context->DrawIndexed(renderEntity.Mesh->uIndexCount, renderEntity.Mesh->uStartIndex, 0);
-    }
-
-    void RenderSystem::TickTerrain(ComPtr<ID3D11DeviceContext> context, const Entity& entity) {
-
-    }
-
-    void RenderSystem::_UpdateRenderQueue(Entity& entity) {
-        if (entity.HasComponent<MeshComponent>()) {
-            _AddRenderEntity(entity);
-        }
-        if (entity.HasComponent<LandscapeRegionComponent>()) {
-            m_TerrainRenderQueue.push_back(entity);
-        }
-
-        if (entity.HasComponent<CameraComponent>()) {
+        if (world.Has<CameraComponent>(entityID)) {
             D3D11_MAPPED_SUBRESOURCE resource{};
-
             auto context = DeviceManager::GetInstance().GetImmediateContext();
+            auto& cameraComponent = world.Get<CameraComponent>(entityID);
 
-            auto& cameraComponent = entity.GetComponent<CameraComponent>();
-
-            context->Map(m_CameraBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+            context->Map(m_RenderContext.CameraBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
             memcpy(resource.pData, &cameraComponent.Matrix, sizeof(CAMERA_CONST));
-            context->Unmap(m_CameraBuffer.Get(), 0);
+            context->Unmap(m_RenderContext.CameraBuffer.Get(), 0);
         }
 
-        for (auto& id : entity.GetChildren()) {
-            auto& child = EntityManager::GetInstance().GetEntity(id);
-
-            _UpdateRenderQueue(child);
+        for (auto& childID : world.GetChildren(entityID)) {
+            _UpdateCamera(childID);
         }
     }
 
-    void RenderSystem::_AddRenderEntity(Entity& entity) {
+    // ---------- Render queue building ----------
+
+    void RenderSystem::_UpdateRenderQueue(EntityID entityID) {
+        auto& world = World::GetInstance();
+        if (world.Has<MeshComponent>(entityID)) {
+            _AddRenderEntity(entityID);
+        }
+        if (world.Has<LandscapeRegionComponent>(entityID)) {
+            m_RenderContext.TerrainQueue.push_back(entityID);
+        }
+
+        for (auto& childID : world.GetChildren(entityID)) {
+            _UpdateRenderQueue(childID);
+        }
+    }
+
+    void RenderSystem::_AddRenderEntity(EntityID entityID) {
+        auto& world = World::GetInstance();
         VertexVector vertex{};
         XMFLOAT4X4A inverseTransform{};
         D3D11_MAPPED_SUBRESOURCE resource{};
 
         auto context = DeviceManager::GetInstance().GetImmediateContext();
 
-        auto& transformComponent = entity.GetComponent<TransformComponent>();
-        auto& meshComponent = entity.GetComponent<MeshComponent>();
-        auto& shaderComponent = entity.GetComponent<ShaderComponent>();
-        auto& materialComponent = entity.GetComponent<MaterialComponent>();
+        auto& transformComponent = world.Get<TransformComponent>(entityID);
+        auto& meshComponent = world.Get<MeshComponent>(entityID);
+        auto& shaderComponent = world.Get<ShaderComponent>(entityID);
+        auto& materialComponent = world.Get<MaterialComponent>(entityID);
 
         auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
         auto material = AssetManager::GetInstance().GetModelMaterialAsset(materialComponent.Path);
@@ -221,8 +184,8 @@ namespace Zongine {
         vertex.Strides.push_back(vertexBuffer.uStride);
         vertex.Offsets.push_back(vertexBuffer.uOffset);
 
-        if (entity.HasComponent<NvFlexComponent>()) {
-            auto& flexComponent = entity.GetComponent<NvFlexComponent>();
+        if (world.Has<NvFlexComponent>(entityID)) {
+            auto& flexComponent = world.Get<NvFlexComponent>(entityID);
             auto flex = AssetManager::GetInstance().GetNvFlexAsset(flexComponent.Path);
 
             context->Map(flex->Buffers.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
@@ -238,23 +201,23 @@ namespace Zongine {
             auto& subsetMesh = mesh->Subsets[i];
             auto& subsetShader = shader->Subsets[i];
             auto& subsetMaterial = material->Subsets[i];
-            RenderEntity subsetEntity{};
+            RenderItem subsetItem{};
 
-            subsetEntity.Mesh = &mesh->Subsets[i];
-            subsetEntity.Shader = &shader->Subsets[i];
-            subsetEntity.Material = &material->Subsets[i];
+            subsetItem.Mesh = &mesh->Subsets[i];
+            subsetItem.Shader = &shader->Subsets[i];
+            subsetItem.Material = &material->Subsets[i];
 
-            subsetEntity.Macro = mesh->Macro;
-            subsetEntity.Index = mesh->Index;
-            subsetEntity.Vertex = vertex;
+            subsetItem.Macro = mesh->Macro;
+            subsetItem.Index = mesh->Index;
+            subsetItem.Vertex = vertex;
 
-            subsetEntity.Pass = RENDER_PASS::COLOR;
+            subsetItem.Pass = RENDER_PASS::COLOR;
             if (subsetMaterial.Blend == BLEND_STATE_SOFTMASKED)
-                subsetEntity.Pass = RENDER_PASS::COLORSOFTMASK;
+                subsetItem.Pass = RENDER_PASS::COLORSOFTMASK;
             else if (subsetMaterial.Blend == BLEND_STATE_OIT)
-                subsetEntity.Pass = RENDER_PASS::OIT;
+                subsetItem.Pass = RENDER_PASS::OIT;
 
-            subsetShader.CameraConst->SetConstantBuffer(m_CameraBuffer.Get());
+            subsetShader.CameraConst->SetConstantBuffer(m_RenderContext.CameraBuffer.Get());
 
             subsetShader.ModelConst->GetMemberByName("MATRIX_M")->SetRawValue(&transformComponent.World, 0, sizeof(transformComponent.World));
             subsetShader.ModelConst->GetMemberByName("MATRIX_BONES")->SetRawValue(
@@ -267,12 +230,10 @@ namespace Zongine {
             subsetShader.SubsetConst->SetRawValue(&subsetMaterial.Const, 0, sizeof(SKIN_SUBSET_CONST));
 
             if (subsetMaterial.Blend == BLEND_STATE_OIT)
-                m_OITRenderQueue.emplace_back(subsetEntity);
+                m_RenderContext.OITQueue.emplace_back(subsetItem);
             else
-                m_OpaqueRenderQueue.emplace_back(subsetEntity);
+                m_RenderContext.OpaqueQueue.emplace_back(subsetItem);
         }
     }
 
 }
-
-

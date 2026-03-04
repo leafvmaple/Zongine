@@ -48,6 +48,9 @@
     <ClCompile Include="Entities\EntityManager.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Entities\World.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
     <ClCompile Include="Systems\InputSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -102,6 +105,9 @@
     <ClCompile Include="RenderGraph\RenderGraph.cpp">
       <Filter>Source Files\RenderGraph</Filter>
     </ClCompile>
+    <ClCompile Include="RenderGraph\RenderHelper.cpp">
+      <Filter>Source Files\RenderGraph</Filter>
+    </ClCompile>
     <ClCompile Include="RenderGraph\RenderPass.cpp">
       <Filter>Source Files\RenderGraph</Filter>
     </ClCompile>
@@ -140,6 +146,9 @@
     <ClInclude Include="Entities\EntityManager.h">
       <Filter>Source Files\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Entities\World.h">
+      <Filter>Source Files\Entities</Filter>
+    </ClInclude>
     <ClInclude Include="Systems\InputSystem.h">
       <Filter>Source Files\Systems</Filter>
     </ClInclude>
@@ -170,7 +179,7 @@
     <ClInclude Include="Components\AnimationComponent.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Managers\Mananger.h">
+    <ClInclude Include="Managers\Manager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Include\Maths.h">
@@ -196,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="Managers\EventManager.h">
       <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\HierarchyComponent.h">
+      <Filter>Source Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\NameComponent.h">
       <Filter>Source Files\Components</Filter>
@@ -231,6 +243,12 @@
       <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="RenderGraph\RenderGraph.h">
+      <Filter>Source Files\RenderGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderGraph\RenderData.h">
+      <Filter>Source Files\RenderGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderGraph\RenderHelper.h">
       <Filter>Source Files\RenderGraph</Filter>
     </ClInclude>
     <ClInclude Include="RenderGraph\RenderPass.h">

@@ -1,5 +1,7 @@
 #include "RenderPasses.h"
 #include "RenderGraph.h"
+#include "RenderData.h"
+#include "RenderHelper.h"
 #include "../Managers/DeviceManager.h"
 #include "../Managers/StateManager.h"
 #include "../Managers/EffectManager.h"
@@ -7,8 +9,7 @@
 namespace Zongine {
 
     // ==================== OpaquePass ====================
-    OpaquePass::OpaquePass(RenderSystem* renderSystem)
-        : m_RenderSystem(renderSystem) {
+    OpaquePass::OpaquePass() {
     }
 
     void OpaquePass::Setup(RenderGraph& graph) {
@@ -20,27 +21,29 @@ namespace Zongine {
     }
 
     void OpaquePass::Execute(ComPtr<ID3D11DeviceContext> context, RenderGraph& graph) {
-        if (!m_bEnabled || !m_RenderSystem) {
-            return;
-        }
+        if (!m_bEnabled) return;
+
+        auto* ctx = graph.GetRenderContext();
+        if (!ctx) return;
 
         auto rtv = graph.GetRenderTarget("MainRT");
         auto dsv = graph.GetDepthStencil("DepthStencil");
-
-        if (!rtv || !dsv) {
-            return;
-        }
+        if (!rtv || !dsv) return;
 
         // Set render target
         context->OMSetRenderTargets(1, rtv.GetAddressOf(), dsv.Get());
 
-        // Render opaque objects
-        m_RenderSystem->RenderOpaqueQueue(context);
+        // Two-pass rendering: first with COLOR override, then with each item's own pass
+        for (auto& item : ctx->OpaqueQueue) {
+            SubmitRenderItem(context, item, RENDER_PASS::COLOR);
+        }
+        for (auto& item : ctx->OpaqueQueue) {
+            SubmitRenderItem(context, item);
+        }
     }
 
     // ==================== OITPass ====================
-    OITPass::OITPass(RenderSystem* renderSystem)
-        : m_RenderSystem(renderSystem) {
+    OITPass::OITPass() {
     }
 
     void OITPass::Setup(RenderGraph& graph) {
@@ -54,23 +57,23 @@ namespace Zongine {
     }
 
     void OITPass::Execute(ComPtr<ID3D11DeviceContext> context, RenderGraph& graph) {
-        if (!m_bEnabled || !m_RenderSystem) {
-            return;
-        }
+        if (!m_bEnabled) return;
+
+        auto* ctx = graph.GetRenderContext();
+        if (!ctx) return;
 
         auto accRTV = graph.GetRenderTarget("OITAccumulation");
         auto weightRTV = graph.GetRenderTarget("OITWeight");
         auto dsv = graph.GetDepthStencil("DepthStencil");
-
-        if (!accRTV || !weightRTV || !dsv) {
-            return;
-        }
+        if (!accRTV || !weightRTV || !dsv) return;
 
         ID3D11RenderTargetView* rtvs[] = { accRTV.Get(), weightRTV.Get() };
         context->OMSetRenderTargets(2, rtvs, dsv.Get());
 
         // Render transparent objects
-        m_RenderSystem->RenderOITQueue(context);
+        for (auto& item : ctx->OITQueue) {
+            SubmitRenderItem(context, item);
+        }
     }
 
     // ==================== CompositePass ====================

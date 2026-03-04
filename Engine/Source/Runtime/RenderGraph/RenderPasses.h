@@ -1,7 +1,6 @@
 #pragma once
 
 #include "RenderPass.h"
-#include "../Systems/RenderSystem.h"
 #include <DirectXMath.h>
 
 namespace Zongine {
@@ -10,25 +9,19 @@ namespace Zongine {
     // Opaque Pass - Render opaque objects
     class OpaquePass : public RenderPass {
     public:
-        OpaquePass(RenderSystem* renderSystem);
+        OpaquePass();
 
         void Setup(RenderGraph& graph) override;
         void Execute(ComPtr<ID3D11DeviceContext> context, RenderGraph& graph) override;
-
-    private:
-        RenderSystem* m_RenderSystem{ nullptr };
     };
 
     // OIT Pass - Order Independent Transparency
     class OITPass : public RenderPass {
     public:
-        OITPass(RenderSystem* renderSystem);
+        OITPass();
 
         void Setup(RenderGraph& graph) override;
         void Execute(ComPtr<ID3D11DeviceContext> context, RenderGraph& graph) override;
-
-    private:
-        RenderSystem* m_RenderSystem{ nullptr };
     };
 
     // Composite Pass - Composite final image

@@ -26,6 +26,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
     <ClCompile Include="Entities\EntityManager.cpp" />
+    <ClCompile Include="Entities\World.cpp" />
     <ClCompile Include="Managers\AssetManager.cpp" />
     <ClCompile Include="Managers\DeviceManager.cpp" />
     <ClCompile Include="Managers\EffectManager.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="Managers\StateManager.cpp" />
     <ClCompile Include="Managers\WindowManager.cpp" />
     <ClCompile Include="RenderGraph\RenderGraph.cpp" />
+    <ClCompile Include="RenderGraph\RenderHelper.cpp" />
     <ClCompile Include="RenderGraph\RenderPass.cpp" />
     <ClCompile Include="RenderGraph\RenderPasses.cpp" />
     <ClCompile Include="Systems\AnimationSystem.cpp" />
@@ -60,6 +62,7 @@
     <ClInclude Include="Components\LandscapeRegionComponent.h" />
     <ClInclude Include="Components\MaterialComponent.h" />
     <ClInclude Include="Components\MeshComponent.h" />
+    <ClInclude Include="Components\HierarchyComponent.h" />
     <ClInclude Include="Components\NameComponent.h" />
     <ClInclude Include="Components\ShaderComponent.h" />
     <ClInclude Include="Components\SkeletonComponent.h" />
@@ -67,6 +70,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Entities\EntityManager.h" />
+    <ClInclude Include="Entities\World.h" />
     <ClInclude Include="Include\Assert.h" />
     <ClInclude Include="Include\AssetData.h" />
     <ClInclude Include="Include\Const.h" />
@@ -77,10 +81,12 @@
     <ClInclude Include="Managers\DeviceManager.h" />
     <ClInclude Include="Managers\EffectManager.h" />
     <ClInclude Include="Managers\EventManager.h" />
-    <ClInclude Include="Managers\Mananger.h" />
+    <ClInclude Include="Managers\Manager.h" />
     <ClInclude Include="Managers\StateManager.h" />
     <ClInclude Include="Managers\WindowManager.h" />
+    <ClInclude Include="RenderGraph\RenderData.h" />
     <ClInclude Include="RenderGraph\RenderGraph.h" />
+    <ClInclude Include="RenderGraph\RenderHelper.h" />
     <ClInclude Include="RenderGraph\RenderPass.h" />
     <ClInclude Include="RenderGraph\RenderPasses.h" />
     <ClInclude Include="Systems\AnimationSystem.h" />
