@@ -1,7 +1,7 @@
 #include "InputSystem.h"
 
 #include "Managers/WindowManager.h"
-#include "Entities/EntityManager.h"
+#include "Entities/World.h"
 #include "Components/InputComponent.h"
 
 namespace Zongine {
@@ -17,11 +17,11 @@ namespace Zongine {
     void InputSystem::Tick(float fDeltaTime) {
         // Clear transient events from previous frame
         // This runs BEFORE message processing, so new events will be captured this frame
+        auto& world = World::GetInstance();
         auto inputEntity = GetInputEntity();
-        auto& entity = EntityManager::GetInstance().GetEntity(inputEntity);
 
-        if (entity.HasComponent<InputComponent>()) {
-            auto& input = entity.GetComponent<InputComponent>();
+        if (world.Has<InputComponent>(inputEntity)) {
+            auto& input = world.Get<InputComponent>(inputEntity);
             input.KeysDown.clear();
             input.KeysUp.clear();
             input.MouseDeltaX = 0;
@@ -31,14 +31,14 @@ namespace Zongine {
     }
 
     void InputSystem::OnWindowEvent(const WindowEvent& event) {
+        auto& world = World::GetInstance();
         auto inputEntity = GetInputEntity();
-        auto& entity = EntityManager::GetInstance().GetEntity(inputEntity);
 
-        if (!entity.HasComponent<InputComponent>()) {
-            entity.AddComponent(InputComponent{});
+        if (!world.Has<InputComponent>(inputEntity)) {
+            world.Assign<InputComponent>(inputEntity, InputComponent{});
         }
 
-        auto& input = entity.GetComponent<InputComponent>();
+        auto& input = world.Get<InputComponent>(inputEntity);
 
         switch (event.message)
         {
@@ -132,9 +132,9 @@ namespace Zongine {
 
     EntityID InputSystem::GetInputEntity() {
         if (m_InputEntity == 0) {
-            auto& inputEntity = EntityManager::GetInstance().CreateEntity("__GlobalInput__");
-            m_InputEntity = inputEntity.GetID();
-            inputEntity.AddComponent(InputComponent{});
+            auto& world = World::GetInstance();
+            m_InputEntity = world.CreateEntity("__GlobalInput__");
+            world.Assign<InputComponent>(m_InputEntity, InputComponent{});
         }
         return m_InputEntity;
     }

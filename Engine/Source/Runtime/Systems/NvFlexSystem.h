@@ -11,11 +11,11 @@ namespace Zongine {
         void Initialize();
         void Uninitialize();
 
-        void Tick(int nDeltaTime);
+        void Tick(float deltaTime);
     private:
         void _InitializeParams();
 
-        void _UpdateWind(int nDeltaTime);
+        void _UpdateWind(float deltaTime);
 
         NvFlexLibrary* m_FlexLib{};
         NvFlexSolver* m_Solver{};

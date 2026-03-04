@@ -1,6 +1,6 @@
 #include "PhysicsSystem.h"
 
-#include "Entities/EntityManager.h"
+#include "Entities/World.h"
 #include "Managers/AssetManager.h"
 
 #include "Components/FlexibleComponent.h"
@@ -9,11 +9,11 @@
 
 namespace Zongine {
     void PhysicsSystem::Tick(float fDeltaTime) {
-        auto& entities = EntityManager::GetInstance().GetEntities<FlexibleComponent>();
+        auto& world = World::GetInstance();
+        auto& entities = world.GetComponents<FlexibleComponent>();
         for (auto& [entityID, flexibleComponent] : entities) {
-            auto& entity = EntityManager::GetInstance().GetEntity(entityID);
-            auto& transformComponent = entity.GetComponent<TransformComponent>();
-            auto& meshComponent = entity.GetComponent<MeshComponent>();
+            auto& transformComponent = world.Get<TransformComponent>(entityID);
+            auto& meshComponent = world.Get<MeshComponent>(entityID);
 
             auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
 

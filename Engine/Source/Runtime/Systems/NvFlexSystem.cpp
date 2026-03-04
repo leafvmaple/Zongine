@@ -2,7 +2,7 @@
 
 #include "../Managers/DeviceManager.h"
 #include "../Managers/AssetManager.h"
-#include "../Entities/EntityManager.h"
+#include "../Entities/World.h"
 
 #include "../Components/NVFlexComponent.h"
 #include "../Components/TransformComponent.h"
@@ -59,19 +59,18 @@ namespace Zongine {
             NvFlexShutdown(m_FlexLib);
     }
 
-    void NvFlexSystem::Tick(int nDeltaTime) {
+    void NvFlexSystem::Tick(float deltaTime) {
 
 
-        _UpdateWind(nDeltaTime);
+        _UpdateWind(deltaTime);
 
-        auto& entities = EntityManager::GetInstance().GetEntities<NvFlexComponent>();
+        auto& entities = World::GetInstance().GetComponents<NvFlexComponent>();
         for (auto& [entityID, flexComponent] : entities) {
-            auto& entity = EntityManager::GetInstance().GetEntity(entityID);
 
             if (!flexComponent.bInitialized) {
                 NvFlexCopyDesc copyDesc{};
 
-                flexComponent.Initialize(entity, m_FlexLib);
+                flexComponent.Initialize(entityID, m_FlexLib);
 
                 copyDesc.elementCount = flexComponent.Content->Particles.size();
 
@@ -102,7 +101,7 @@ namespace Zongine {
 
             NvFlexSetParams(m_Solver, m_FlexParams.get());
 
-            NvFlexUpdateSolver(m_Solver, nDeltaTime / 1000.f / 10, 2, false);
+            NvFlexUpdateSolver(m_Solver, deltaTime / 10.0f, 2, false);
 
             NvFlexGetParticles(m_Solver, flexComponent.Content->Particles.buffer, nullptr);
             NvFlexGetPhases(m_Solver, flexComponent.Content->Phases.buffer, nullptr);
@@ -172,8 +171,8 @@ namespace Zongine {
         (DirectX::XMFLOAT4&)m_FlexParams->planes[0] = { 0.0f, 1.0f, 0.0f, -0.01f };
     }
 
-    void NvFlexSystem::_UpdateWind(int nDeltaTime) {
-        m_WindTime += nDeltaTime / 1000.f;
+    void NvFlexSystem::_UpdateWind(float deltaTime) {
+        m_WindTime += deltaTime;
 
         auto noise = Perlin1D(m_WindTime * 0.5f, 10, 0.25f);
 

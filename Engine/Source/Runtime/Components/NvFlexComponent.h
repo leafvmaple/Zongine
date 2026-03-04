@@ -6,12 +6,12 @@
 #include <DirectXMath.h>
 
 #include "../Include/const.h"
+#include "../Include/Types.h"
 
 #include "NVFlex/include/NvFlexExt.h"
 
 namespace Zongine {
     constexpr int FLEX_NORMALIZE_SCLAE = 100;
-    class Entity;
 
     struct NvFlexContent {
         NvFlexVector<int> Active;
@@ -84,6 +84,6 @@ namespace Zongine {
         int ParticlesCount{};
         int TrianglesCount{};
 
-        void Initialize(const Entity& entity, NvFlexLibrary* library);
+        void Initialize(EntityID entity, NvFlexLibrary* library);
     };
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Components/AnimationStateComponents.h"
-#include "Entities/Entity.h"
+#include "Include/Types.h"
 
 namespace Zongine {
     /**
@@ -9,7 +9,7 @@ namespace Zongine {
      * Provides a convenient API to set up animation state machine for entities
      * 
      * Usage example:
-     * AnimStateMachineBuilder builder(entity);
+     * AnimStateMachineBuilder builder(entityID);
      * builder.AddState("Idle", "idle.anim")
      *        .AddState("Walk", "walk.anim")
      *        .AddTransition("Idle", "Walk", 0.2f)
@@ -19,7 +19,7 @@ namespace Zongine {
      */
     class AnimStateMachineBuilder {
     public:
-        AnimStateMachineBuilder(Entity& entity);
+        AnimStateMachineBuilder(EntityID entity);
 
         // Add a state
         AnimStateMachineBuilder& AddState(const std::string& name, const std::string& animPath, 
@@ -51,10 +51,10 @@ namespace Zongine {
         bool SaveToJson(const std::string& filePath) const;
 
         // Deserialize from JSON file and build state machine
-        static bool LoadFromJson(Entity& entity, const std::string& filePath);
+        static bool LoadFromJson(EntityID entity, const std::string& filePath);
 
     private:
-        Entity& m_Entity;
+        EntityID m_Entity;
         AnimStateCollectionComponent m_States;
         AnimTransitionCollectionComponent m_Transitions;
 
@@ -67,17 +67,17 @@ namespace Zongine {
      */
     class AnimParameterHelper {
     public:
-        static void SetFloat(Entity& entity, const std::string& name, float value);
-        static void SetInt(Entity& entity, const std::string& name, int value);
-        static void SetBool(Entity& entity, const std::string& name, bool value);
-        static void SetTrigger(Entity& entity, const std::string& name);
-        static void ResetTrigger(Entity& entity, const std::string& name);
+        static void SetFloat(EntityID entity, const std::string& name, float value);
+        static void SetInt(EntityID entity, const std::string& name, int value);
+        static void SetBool(EntityID entity, const std::string& name, bool value);
+        static void SetTrigger(EntityID entity, const std::string& name);
+        static void ResetTrigger(EntityID entity, const std::string& name);
 
-        static float GetFloat(const Entity& entity, const std::string& name, float defaultValue = 0.0f);
-        static int GetInt(const Entity& entity, const std::string& name, int defaultValue = 0);
-        static bool GetBool(const Entity& entity, const std::string& name, bool defaultValue = false);
+        static float GetFloat(EntityID entity, const std::string& name, float defaultValue = 0.0f);
+        static int GetInt(EntityID entity, const std::string& name, int defaultValue = 0);
+        static bool GetBool(EntityID entity, const std::string& name, bool defaultValue = false);
 
     private:
-        static AnimParameter& GetOrCreateParameter(Entity& entity, const std::string& name, AnimParameterType type);
+        static AnimParameter& GetOrCreateParameter(EntityID entity, const std::string& name, AnimParameterType type);
     };
 }

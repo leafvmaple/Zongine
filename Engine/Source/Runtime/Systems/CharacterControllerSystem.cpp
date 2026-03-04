@@ -1,7 +1,7 @@
 #include "CharacterControllerSystem.h"
 
-#include "Entities/EntityManager.h"
-#include "Entities/Entity.h"
+#include "Entities/World.h"
+#include "Components/NameComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/CharacterControllerComponent.h"
 #include "Components/AnimationStateComponents.h"
@@ -10,41 +10,41 @@
 namespace Zongine {
     void CharacterControllerSystem::Initialize() {
         // Get global input entity ID
-        auto& entities = EntityManager::GetInstance().GetEntities();
-        for (auto& [id, entity] : entities) {
-            if (entity.GetName() == "__GlobalInput__") {
+        auto& world = World::GetInstance();
+        world.ForEach<NameComponent>([this](EntityID id, NameComponent& name) {
+            if (name.Name == "__GlobalInput__") {
                 m_InputEntity = id;
-                break;
             }
-        }
+        });
     }
 
     void CharacterControllerSystem::Tick(float deltaTime) {
+        auto& world = World::GetInstance();
         // Get global input
         if (m_InputEntity == 0) return;
 
-        auto& inputEntity = EntityManager::GetInstance().GetEntity(m_InputEntity);
-        if (!inputEntity.HasComponent<InputComponent>()) return;
+        if (!world.Has<InputComponent>(m_InputEntity)) return;
 
-        const auto& input = inputEntity.GetComponent<InputComponent>();
+        const auto& input = world.Get<InputComponent>(m_InputEntity);
 
         // Iterate through all character controllers
-        EntityManager::GetInstance().ForEach<CharacterControllerComponent>(
+        world.ForEach<CharacterControllerComponent>(
             [this, &input, deltaTime](EntityID entityID, auto& controller) {
                 if (!controller.EnableInput) return;
 
-                auto& entity = EntityManager::GetInstance().GetEntity(entityID);
-                _UpdateCharacter(entity, input, deltaTime);
+                _UpdateCharacter(entityID, input, deltaTime);
             });
     }
 
     void CharacterControllerSystem::_UpdateCharacter(
-        Entity& character, 
+        EntityID characterID, 
         const InputComponent& input, 
         float deltaTime) {
 
+        auto& world = World::GetInstance();
+
         // Ensure character has animation parameter component
-        if (!character.HasComponent<AnimParameterCollectionComponent>()) {
+        if (!world.Has<AnimParameterCollectionComponent>(characterID)) {
             return;
         }
 
@@ -59,7 +59,7 @@ namespace Zongine {
         // Calculate movement speed
         float speed = 0.0f;
         if (wPressed || aPressed || sPressed || dPressed) {
-            auto& controller = character.GetComponent<CharacterControllerComponent>();
+            auto& controller = world.Get<CharacterControllerComponent>(characterID);
             
             if (shiftPressed) {
                 speed = controller.RunSpeed;  // Hold Shift to run
@@ -69,11 +69,11 @@ namespace Zongine {
         }
 
         // Update animation parameters
-        AnimParameterHelper::SetFloat(character, "Speed", speed);
+        AnimParameterHelper::SetFloat(characterID, "Speed", speed);
 
         // Jump trigger
         if (spacePressed) {
-            AnimParameterHelper::SetTrigger(character, "Jump");
+            AnimParameterHelper::SetTrigger(characterID, "Jump");
         }
 
         // Can add more control logic...

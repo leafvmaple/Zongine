@@ -1,6 +1,6 @@
 #include "TransformSystem.h"
 
-#include "Entities/EntityManager.h"
+#include "Entities/World.h"
 #include "Managers/AssetManager.h"
 
 #include "Components/TransformComponent.h"
@@ -15,11 +15,12 @@ namespace Zongine {
     void TransformSystem::Tick(float fDeltaTime) {
         DirectX::XMFLOAT4X4 identity{};
         XMStoreFloat4x4(&identity, XMMatrixIdentity());
-        _UpdateWorldTransformRecursive(EntityManager::GetInstance().GetRootEntity(), identity);
+        _UpdateWorldTransformRecursive(World::GetInstance().GetRootEntity(), identity);
     }
 
-    void TransformSystem::_UpdateWorldTransformRecursive(Entity entity, const DirectX::XMFLOAT4X4& parentMatrix) {
-        auto& transformComponent = entity.GetComponent<TransformComponent>();
+    void TransformSystem::_UpdateWorldTransformRecursive(EntityID entityID, const DirectX::XMFLOAT4X4& parentMatrix) {
+        auto& world = World::GetInstance();
+        auto& transformComponent = world.Get<TransformComponent>(entityID);
         auto& rotation = transformComponent.Rotation;
 
         auto localMatrix = XMMatrixTransformation(
@@ -33,15 +34,14 @@ namespace Zongine {
 
         XMStoreFloat4x4(&transformComponent.World, XMLoadFloat4x4(&parentMatrix) * localMatrix);
 
-        for (auto& id : entity.GetChildren()) {
-            auto& child = EntityManager::GetInstance().GetEntity(id);
-            if (!child.HasComponent<TransformComponent>()) continue;
-            auto& component = child.GetComponent<TransformComponent>();
+        for (auto& childID : world.GetChildren(entityID)) {
+            if (!world.Has<TransformComponent>(childID)) continue;
+            auto& component = world.Get<TransformComponent>(childID);
 
             auto targetMatrix = transformComponent.World;
 
             if (component.BindType == BIND_TYPE::Socket) {
-                auto& meshComponent = entity.GetComponent<MeshComponent>();
+                auto& meshComponent = world.Get<MeshComponent>(entityID);
                 auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
                 if (component.SocketIndex == -1) {
                     auto it = std::lower_bound(mesh->Sockets.begin(), mesh->Sockets.end(), component.TargetName,
@@ -59,7 +59,7 @@ namespace Zongine {
                     XMLoadFloat4x4(&socket.Offset) * XMLoadFloat4x4(&modelTransform) * XMLoadFloat4x4(&transformComponent.World));
             }
 
-            _UpdateWorldTransformRecursive(child, targetMatrix);
+            _UpdateWorldTransformRecursive(childID, targetMatrix);
         }
     }
 }

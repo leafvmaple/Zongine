@@ -1,6 +1,6 @@
 #include "EntitiesWidget.h"
 
-#include "Runtime/Entities/EntityManager.h"
+#include "Runtime/Entities/World.h"
 
 namespace Zongine {
     EntitiesWidget::EntitiesWidget(std::shared_ptr<Engine> engine, QWidget* parent /*= nullptr*/) {
@@ -22,8 +22,9 @@ namespace Zongine {
 
     void EntitiesWidget::UpdateEntities() {
         clear();
-        auto& rootEntity = m_Engine->GetRootEntity();
-        auto& children = rootEntity.GetChildren();
+        auto& world = World::GetInstance();
+        auto rootID = m_Engine->GetRootEntity();
+        auto children = world.GetChildren(rootID);
         for (auto& id : children) {
             auto item = new QTreeWidgetItem(this);
             UpdateEntity(id, item);
@@ -31,13 +32,13 @@ namespace Zongine {
     }
 
     void EntitiesWidget::UpdateEntity(EntityID id, QTreeWidgetItem* item) {
-        auto& entity = m_Engine->GetEntity(id);
-        auto name = entity.GetName();
+        auto& world = World::GetInstance();
+        auto name = world.GetName(id);
         item->setText(0, QString::number(id));
         item->setText(1, QString::fromStdString(name));
         item->setData(0, Qt::UserRole, QVariant::fromValue(id));
 
-        auto& children = entity.GetChildren();
+        auto children = world.GetChildren(id);
         for (auto& child : children) {
             auto sub = new QTreeWidgetItem(item);
             UpdateEntity(child, sub);

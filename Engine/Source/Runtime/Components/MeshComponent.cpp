@@ -3,7 +3,7 @@
 #include "../Managers/AssetManager.h"
 
 namespace Zongine {
-    void MeshComponent::Initialize(const Entity& entity) {
+    void MeshComponent::Initialize() {
         auto mesh = AssetManager::GetInstance().GetMeshAsset(Path);
 
         BoneModelTransforms.resize(mesh->Bones.size());

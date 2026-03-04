@@ -1,6 +1,6 @@
 #include "NVFlexComponent.h"
 
-#include "../Entities/EntityManager.h"
+#include "../Entities/World.h"
 #include "../Managers/AssetManager.h"
 #include "../Managers/DeviceManager.h"
 
@@ -26,11 +26,12 @@ namespace Zongine {
     using DirectX::XMFLOAT4X4;
     using DirectX::XMLoadFloat3;
 
-    void NvFlexComponent::Initialize(const Entity& entity, NvFlexLibrary* library) {
+    void NvFlexComponent::Initialize(EntityID entity, NvFlexLibrary* library) {
         std::vector<std::unordered_set<int>> neighborVertices;
 
-        auto& transformComponent = entity.GetComponent<TransformComponent>();
-        auto& meshComponent = entity.GetComponent<MeshComponent>();
+        auto& world = World::GetInstance();
+        auto& transformComponent = world.Get<TransformComponent>(entity);
+        auto& meshComponent = world.Get<MeshComponent>(entity);
 
         auto flex = AssetManager::GetInstance().GetNvFlexAsset(Path);
         auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);

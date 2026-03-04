@@ -1,7 +1,7 @@
 #include "ComponentsWidget.h"
 
 #include "Runtime/Engine.h"
-#include "Runtime/Entities/Entity.h"
+#include "Runtime/Entities/World.h"
 
 #include "Runtime/Components/TransformComponent.h"
 #include "Runtime/Components/MeshComponent.h"
@@ -29,13 +29,13 @@ namespace Zongine {
         m_Engine = engine;
     }
     void ComponentWidget::UpdateComponents(uint64_t id) {
-        auto entity = m_Engine->GetEntity(id);
+        auto& world = World::GetInstance();
         clear();
-        if (entity.HasComponent<TransformComponent>()) {
+        if (world.Has<TransformComponent>(id)) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Transform");
 
-            auto& transform = entity.GetComponent<TransformComponent>();
+            auto& transform = world.Get<TransformComponent>(id);
             auto position = new QTreeWidgetItem(item);
             position->setText(0, "Particles");
 
@@ -52,21 +52,21 @@ namespace Zongine {
             AddVectorProperty(transform.Scale, scale);
 
         }
-        if (entity.HasComponent<MeshComponent>()) {
+        if (world.Has<MeshComponent>(id)) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Mesh");
 
-            auto mesh = entity.GetComponent<MeshComponent>();
+            auto mesh = world.Get<MeshComponent>(id);
             auto path = new QTreeWidgetItem(item);
             path->setText(0, "Path");
 
             AddPathProperty(mesh.Path, path);
         }
-        if (entity.HasComponent<ShaderComponent>()) {
+        if (world.Has<ShaderComponent>(id)) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Shader");
 
-            auto shader = entity.GetComponent<ShaderComponent>();
+            auto shader = world.Get<ShaderComponent>(id);
             auto paths = new QTreeWidgetItem(item);
             paths->setText(0, "Paths");
 
@@ -76,18 +76,18 @@ namespace Zongine {
                 AddPathProperty(shader.Paths[i], path);
             }
         }
-        if (entity.HasComponent<MaterialComponent>()) {
+        if (world.Has<MaterialComponent>(id)) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Material");
 
-            auto material = entity.GetComponent<MaterialComponent>();
+            auto material = world.Get<MaterialComponent>(id);
             auto path = new QTreeWidgetItem(item);
             path->setText(0, "Path");
 
             AddPathProperty(material.Path, path);
         }
-        if (entity.HasComponent<CameraComponent>()) {
-            auto camera = entity.GetComponent<CameraComponent>();
+        if (world.Has<CameraComponent>(id)) {
+            auto camera = world.Get<CameraComponent>(id);
 
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Camera");
@@ -100,31 +100,31 @@ namespace Zongine {
             fov->setText(0, "Fov");
             AddNumberProperty(camera.Perspective.fFovAngleY, fov);
         }
-        if (entity.HasComponent<SkeletonComponent>()) {
+        if (world.Has<SkeletonComponent>(id)) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Skeleton");
 
-            auto skeleton = entity.GetComponent<SkeletonComponent>();
+            auto skeleton = world.Get<SkeletonComponent>(id);
             auto path = new QTreeWidgetItem(item);
             path->setText(0, "Path");
 
             AddPathProperty(skeleton.Path, path);
         }
-        if (entity.HasComponent<AnimationComponent>()) {
+        if (world.Has<AnimationComponent>(id)) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Animation");
 
-            auto animation = entity.GetComponent<AnimationComponent>();
+            auto animation = world.Get<AnimationComponent>(id);
             auto path = new QTreeWidgetItem(item);
             path->setText(0, "Path");
 
             AddPathProperty(animation.Path, path);
         }
-        if (entity.HasComponent<FlexibleComponent>()) {
+        if (world.Has<FlexibleComponent>(id)) {
             auto item = new QTreeWidgetItem(this);
             item->setText(0, "Flexible");
 
-            auto flexible = entity.GetComponent<FlexibleComponent>();
+            auto flexible = world.Get<FlexibleComponent>(id);
             auto drivers = new QTreeWidgetItem(item);
             drivers->setText(0, "Drivers");
 

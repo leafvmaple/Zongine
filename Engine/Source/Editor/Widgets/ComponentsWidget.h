@@ -4,7 +4,6 @@
 
 namespace Zongine {
     class Engine;
-    class Entity;
 
     class ComponentWidget : public QTreeWidget {
         Q_OBJECT

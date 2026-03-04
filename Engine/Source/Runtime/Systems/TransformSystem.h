@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Entities/EntityManager.h"
+#include "Include/Types.h"
 
 #include <DirectXMath.h>
 
@@ -10,6 +10,6 @@ namespace Zongine {
         void Tick(float fDeltaTime);
 
     private:
-        void _UpdateWorldTransformRecursive(Entity entity, const DirectX::XMFLOAT4X4& parentMatrix);
+        void _UpdateWorldTransformRecursive(EntityID entityID, const DirectX::XMFLOAT4X4& parentMatrix);
     };
 }

@@ -1,6 +1,6 @@
 #include "AssetManager.h"
 
-#include "Entities/EntityManager.h"
+#include "Entities/World.h"
 
 #include "Managers/DeviceManager.h"
 #include "Managers/EffectManager.h"
@@ -37,51 +37,52 @@
 #include <fstream>
 
 namespace Zongine {
-    void AssetManager::LoadPlayer(Entity& player, const std::string& path) {
+    void AssetManager::LoadPlayer(EntityID player, const std::string& path) {
+        auto& world = World::GetInstance();
         std::ifstream stream(path);
         nlohmann::json playerConfig;
         stream >> playerConfig;
 
         LoadModel(player, playerConfig["mdl"].get<std::string>());
 
-        auto& head = player.AddChild("Head");
+        EntityID head = world.AddChild(player, "Head");
         LoadMesh(head, playerConfig["mesh"]["head"].get<std::string>());
-        auto& body = player.AddChild("Body");
+        EntityID body = world.AddChild(player, "Body");
         LoadMesh(body, playerConfig["mesh"]["body"].get<std::string>());
-        auto& face = head.AddChild("Face");
+        EntityID face = world.AddChild(head, "Face");
         LoadMesh(face, playerConfig["mesh"]["face"].get<std::string>(), "s_face");
-        //auto& hat = head.AddChild("Hat");
-        //auto& weapon = hand.AddChild("Weapon");
 
-        // TODO
-        player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/����/F1b02dj����b.ani" });
+        // TODO: Load animation path from player config instead of hardcoding
+        world.Assign<AnimationComponent>(player, AnimationComponent{ "data/source/player/F1/����/F1b02dj����b.ani" });
 
         LoadAnimStateMachine(player, playerConfig["state_machine"].get<std::string>());
 
-        auto& controller = player.AddComponent<CharacterControllerComponent>(CharacterControllerComponent{});
+        auto& controller = world.Assign<CharacterControllerComponent>(player, CharacterControllerComponent{});
         controller.MoveSpeed = 5.0f;
         controller.EnableInput = true;
     }
 
-    void AssetManager::LoadModel(Entity& entity, const std::string& path) {
+    void AssetManager::LoadModel(EntityID entity, const std::string& path) {
+        auto& world = World::GetInstance();
         MODEL_DESC desc{ path.c_str() };
         MODEL_SOURCE source{};
 
-        entity.AddComponent<TransformComponent>(TransformComponent{});
+        world.Assign<TransformComponent>(entity, TransformComponent{});
 
         ::LoadModel(&desc, &source);
 
-        entity.AddComponent<SkeletonComponent>(SkeletonComponent{ source.szSkeletonPath });
+        world.Assign<SkeletonComponent>(entity, SkeletonComponent{ source.szSkeletonPath });
 
         return;
     }
 
-    void AssetManager::LoadMesh(Entity& entity, const std::string& path) {
+    void AssetManager::LoadMesh(EntityID entity, const std::string& path) {
+        auto& world = World::GetInstance();
         std::filesystem::path filePath = path;
 
-        entity.AddComponent<TransformComponent>(TransformComponent{});
-        auto& meshComponent = entity.AddComponent<MeshComponent>(MeshComponent { path });
-        meshComponent.Initialize(entity);
+        world.Assign<TransformComponent>(entity, TransformComponent{});
+        auto& meshComponent = world.Assign<MeshComponent>(entity, MeshComponent { path });
+        meshComponent.Initialize();
 
         auto mesh = GetMeshAsset(path);
         std::vector<DriverInfo> driversInfo;
@@ -93,13 +94,13 @@ namespace Zongine {
             }
         }
         if (!driversInfo.empty()) {
-            auto& flexibleComponent = entity.AddComponent<FlexibleComponent>(FlexibleComponent{ driversInfo });
+            auto& flexibleComponent = world.Assign<FlexibleComponent>(entity, FlexibleComponent{ driversInfo });
             flexibleComponent.Initialize(entity);
         }
 
         if (TryReplaceExtension(filePath, ".JsonInspack")) {
             auto materialPath = filePath.string();
-            entity.AddComponent<MaterialComponent>(MaterialComponent{ materialPath });
+            world.Assign<MaterialComponent>(entity, MaterialComponent{ materialPath });
 
             auto material = GetModelMaterialAsset(materialPath);
             std::vector<std::string> paths;
@@ -107,48 +108,50 @@ namespace Zongine {
                 [](const auto& subset) -> std::string {
                     return subset.ShaderName;
                 });
-            entity.AddComponent<ShaderComponent>(ShaderComponent{ paths });
+            world.Assign<ShaderComponent>(entity, ShaderComponent{ paths });
         }
         if (TryReplaceExtension(filePath, ".mesh.flx")) {
             auto flexPath = filePath.string();
-            auto& flexComponent = entity.AddComponent<NvFlexComponent>(NvFlexComponent{false, flexPath, path });
+            auto& flexComponent = world.Assign<NvFlexComponent>(entity, NvFlexComponent{false, flexPath, path });
         }
     }
 
-    void AssetManager::LoadMesh(Entity& entity, const std::string& path, const std::string& socketName) {
+    void AssetManager::LoadMesh(EntityID entity, const std::string& path, const std::string& socketName) {
         LoadMesh(entity, path);
-        auto& transform = entity.GetComponent<TransformComponent>();
+        auto& transform = World::GetInstance().Get<TransformComponent>(entity);
         transform.BindType = BIND_TYPE::Socket;
         transform.TargetName = socketName;
     }
 
-    void AssetManager::LoadScene(Entity& entity, const std::string& path) {
+    void AssetManager::LoadScene(EntityID entity, const std::string& path) {
+        auto& world = World::GetInstance();
         SCENE_DESC desc{ path.c_str() };
         SCENE_SOURCE source{};
 
         ::LoadScene(&desc, &source);
 
-        auto& landscape = entity.AddChild("Landscape");
-        landscape.AddComponent<TransformComponent>(TransformComponent{});
-        landscape.AddComponent<LandscapeComponent>(LandscapeComponent{ source.szLandscape });
+        EntityID landscape = world.AddChild(entity, "Landscape");
+        world.Assign<TransformComponent>(landscape, TransformComponent{});
+        world.Assign<LandscapeComponent>(landscape, LandscapeComponent{ source.szLandscape });
 
         auto landscapeAsset = GetLandscapeAsset(source.szDir, source.szMapName);
         for (auto& row : landscapeAsset->Regions) {
             for (auto& region : row) {
-                auto& regionEntity = landscape.AddChild("Region");
-                regionEntity.AddComponent<TransformComponent>(TransformComponent{});
-                regionEntity.AddComponent<LandscapeRegionComponent>(LandscapeRegionComponent{});
-                regionEntity.AddComponent<ShaderComponent>(ShaderComponent{ { region.Material.ShaderName } });
+                EntityID regionEntity = world.AddChild(landscape, "Region");
+                world.Assign<TransformComponent>(regionEntity, TransformComponent{});
+                world.Assign<LandscapeRegionComponent>(regionEntity, LandscapeRegionComponent{});
+                world.Assign<ShaderComponent>(regionEntity, ShaderComponent{ { region.Material.ShaderName } });
             }
         }
     }
 
-    void AssetManager::LoadAnimStateMachine(Entity& entity, const std::string& path) {
+    void AssetManager::LoadAnimStateMachine(EntityID entity, const std::string& path) {
+        auto& world = World::GetInstance();
         // This method is called by AnimationSystem during initialization
         // AnimStateMachineBuilder will handle the actual JSON loading
         // We just ensure the component is properly set up
-        if (!entity.HasComponent<AnimStateMachineComponent>()) {
-            entity.AddComponent<AnimStateMachineComponent>(AnimStateMachineComponent{ path, false });
+        if (!world.Has<AnimStateMachineComponent>(entity)) {
+            world.Assign<AnimStateMachineComponent>(entity, AnimStateMachineComponent{ path, false });
         }
     }
 

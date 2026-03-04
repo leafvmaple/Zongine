@@ -1,6 +1,6 @@
 #include "CameraSystem.h"
 
-#include "Entities/EntityManager.h"
+#include "Entities/World.h"
 #include "Managers/DeviceManager.h"
 #include "Managers/WindowManager.h"
 
@@ -14,8 +14,8 @@ using namespace DirectX;
 
 namespace Zongine {
     bool CameraSystem::Initialize() {
-        auto& entities = EntityManager::GetInstance().GetEntities<CameraComponent>();
-        for (auto& [entityID, cameraComponent] : entities) {
+        auto& cameraEntities = World::GetInstance().GetComponents<CameraComponent>();
+        for (auto& [entityID, cameraComponent] : cameraEntities) {
             cameraComponent.Perspective.fFovAngleY = XMConvertToRadians(30);
             cameraComponent.Perspective.fAspectRatio = (float)WindowManager::GetInstance().GetWidth() / WindowManager::GetInstance().GetHeight();
         }
@@ -24,8 +24,10 @@ namespace Zongine {
     }
 
     void CameraSystem::Tick(float fDeltaTime) {
+        auto& world = World::GetInstance();
+
         // Get input component for camera control
-        auto& inputEntities = EntityManager::GetInstance().GetEntities<InputComponent>();
+        auto& inputEntities = world.GetComponents<InputComponent>();
         InputComponent* pInputComponent = nullptr;
         for (auto& [entityID, inputComponent] : inputEntities) {
             pInputComponent = &inputComponent;
@@ -33,24 +35,22 @@ namespace Zongine {
         }
 
         // Find Player entity
-        Entity* pPlayerEntity = nullptr;
         XMFLOAT3 playerPosition = { 0.0f, 0.0f, 0.0f };
-        auto& nameEntities = EntityManager::GetInstance().GetEntities<NameComponent>();
+        bool foundPlayer = false;
+        auto& nameEntities = world.GetComponents<NameComponent>();
         for (auto& [entityID, nameComponent] : nameEntities) {
             if (nameComponent.Name == "Player") {
-                auto& entity = EntityManager::GetInstance().GetEntity(entityID);
-                if (entity.HasComponent<TransformComponent>()) {
-                    pPlayerEntity = &entity;
-                    playerPosition = entity.GetComponent<TransformComponent>().Position;
+                if (world.Has<TransformComponent>(entityID)) {
+                    playerPosition = world.Get<TransformComponent>(entityID).Position;
+                    foundPlayer = true;
                     break;
                 }
             }
         }
 
-        auto& entities = EntityManager::GetInstance().GetEntities<CameraComponent>();
+        auto& entities = world.GetComponents<CameraComponent>();
         for (auto& [entityID, cameraComponent] : entities) {
-            auto& entity = EntityManager::GetInstance().GetEntity(entityID);
-            auto& transformComponent = entity.GetComponent<TransformComponent>();
+            auto& transformComponent = world.Get<TransformComponent>(entityID);
 
             // Handle camera dragging with left mouse button
             if (pInputComponent && pInputComponent->LeftMouseHeld) {
@@ -84,7 +84,7 @@ namespace Zongine {
             const float playerHeightOffset = 50.0f; // Height to look at on the player
             
             // Calculate camera position orbiting around the player
-            if (pPlayerEntity) {
+            if (foundPlayer) {
                 // Convert rotation to radians
                 float pitch = XMConvertToRadians(transformComponent.Rotation.x);
                 float yaw = XMConvertToRadians(transformComponent.Rotation.y);

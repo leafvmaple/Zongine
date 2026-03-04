@@ -2,7 +2,7 @@
 
 #include "Include/Maths.h"
 
-#include "Entities/EntityManager.h"
+#include "Entities/World.h"
 #include "Managers/AssetManager.h"
 
 #include "Components/AnimationComponent.h"
@@ -15,31 +15,29 @@
 #include <algorithm>
 
 namespace Zongine {
-    void AnimationSystem::Tick(int nDeltaTime) {
-        float deltaSeconds = nDeltaTime / 1000.0f;
+    void AnimationSystem::Tick(float deltaTime) {
+        float deltaSeconds = deltaTime;
 
         // First, check for unloaded state machines and load them
-        EntityManager::GetInstance().ForEach<AnimStateMachineComponent>(
+        World::GetInstance().ForEach<AnimStateMachineComponent>(
             [this](auto entityID, auto& stateMachineComp) {
             if (!stateMachineComp.IsLoaded && !stateMachineComp.StateMachineAssetPath.empty()) {
-                auto& entity = EntityManager::GetInstance().GetEntity(entityID);
-                _LoadStateMachineFromAsset(entity, stateMachineComp);
+                _LoadStateMachineFromAsset(entityID, stateMachineComp);
             }
         });
 
         // Then update all state machines (based on ECS components)
-        EntityManager::GetInstance().ForEach<AnimStateMachineRuntimeComponent>(
+        World::GetInstance().ForEach<AnimStateMachineRuntimeComponent>(
             [this, deltaSeconds](auto entityID, auto& runtime) {
-            auto& entity = EntityManager::GetInstance().GetEntity(entityID);
-            _UpdateStateMachine(entity, deltaSeconds);
+            _UpdateStateMachine(entityID, deltaSeconds);
         });
 
         // Finally update all animations
-        EntityManager::GetInstance().ForEach<AnimationComponent>(
-            [this, nDeltaTime](auto entityID, auto& animationComponent) {
+        World::GetInstance().ForEach<AnimationComponent>(
+            [this, deltaTime](auto entityID, auto& animationComponent) {
 
-            auto& entity = EntityManager::GetInstance().GetEntity(entityID);
-            auto& skeletonComponent = entity.GetComponent<SkeletonComponent>();
+            auto& world = World::GetInstance();
+            auto& skeletonComponent = world.Get<SkeletonComponent>(entityID);
 
             if (animationComponent.Path.empty())
                 return;
@@ -50,8 +48,9 @@ namespace Zongine {
             if (!animation || !skeleton)
                 return;
 
-            // Apply speed multiplier
-            int scaledDeltaTime = static_cast<int>(nDeltaTime * animationComponent.Speed);
+            // Apply speed multiplier (convert seconds to milliseconds for animation timeline)
+            int nDeltaTimeMs = static_cast<int>(deltaTime * 1000.0f);
+            int scaledDeltaTime = static_cast<int>(nDeltaTimeMs * animationComponent.Speed);
             animationComponent.nPlayTime += scaledDeltaTime;
 
             // Handle looping
@@ -109,9 +108,9 @@ namespace Zongine {
     }
 
     void AnimationSystem::_MapSkeletonTransformsToMesh(EntityID entityID, const SkeletonComponent& skeleton, const AnimationComponent& animation) {
-        auto& entity = EntityManager::GetInstance().GetEntity(entityID);
-        if (entity.HasComponent<MeshComponent>()) {
-            auto& meshComponent = entity.GetComponent<MeshComponent>();
+        auto& world = World::GetInstance();
+        if (world.Has<MeshComponent>(entityID)) {
+            auto& meshComponent = world.Get<MeshComponent>(entityID);
             auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
 
             auto& meshSkeletonMap = AssetManager::GetInstance().GetMeshSkeletonMap(skeleton.Path, meshComponent.Path);
@@ -130,7 +129,7 @@ namespace Zongine {
             }
         }
 
-        for (auto childID : entity.GetChildren()) {
+        for (auto childID : world.GetChildren(entityID)) {
             _MapSkeletonTransformsToMesh(childID, skeleton, animation);
         }
     }
@@ -139,25 +138,26 @@ namespace Zongine {
     // State Machine Logic Implementation (Pure ECS)
     // ============================================
 
-    void AnimationSystem::_UpdateStateMachine(Entity& entity, float deltaTime) {
-        if (!entity.HasComponent<AnimStateCollectionComponent>() ||
-            !entity.HasComponent<AnimStateMachineRuntimeComponent>() ||
-            !entity.HasComponent<AnimationComponent>()) {
+    void AnimationSystem::_UpdateStateMachine(EntityID entityID, float deltaTime) {
+        auto& world = World::GetInstance();
+        if (!world.Has<AnimStateCollectionComponent>(entityID) ||
+            !world.Has<AnimStateMachineRuntimeComponent>(entityID) ||
+            !world.Has<AnimationComponent>(entityID)) {
             return;
         }
 
-        auto& states = entity.GetComponent<AnimStateCollectionComponent>();
-        auto& runtime = entity.GetComponent<AnimStateMachineRuntimeComponent>();
-        auto& animComp = entity.GetComponent<AnimationComponent>();
+        auto& states = world.Get<AnimStateCollectionComponent>(entityID);
+        auto& runtime = world.Get<AnimStateMachineRuntimeComponent>(entityID);
+        auto& animComp = world.Get<AnimationComponent>(entityID);
 
         // Initialize state machine
         if (!runtime.Initialized) {
-            _InitializeStateMachine(entity);
+            _InitializeStateMachine(entityID);
             return;
         }
 
         if (runtime.IsTransitioning) {
-            _UpdateTransition(entity, deltaTime);
+            _UpdateTransition(entityID, deltaTime);
         } else {
             // Get current state
             auto stateIt = states.States.find(runtime.CurrentState);
@@ -188,11 +188,11 @@ namespace Zongine {
             }
 
             // Check state transitions
-            _CheckTransitions(entity);
+            _CheckTransitions(entityID);
 
             // Reset all triggers
-            if (entity.HasComponent<AnimParameterCollectionComponent>()) {
-                auto& params = entity.GetComponent<AnimParameterCollectionComponent>();
+            if (world.Has<AnimParameterCollectionComponent>(entityID)) {
+                auto& params = world.Get<AnimParameterCollectionComponent>(entityID);
                 for (auto& [name, param] : params.Parameters) {
                     if (param.Type == AnimParameterType::Trigger && param.BoolValue) {
                         param.BoolValue = false;
@@ -202,10 +202,11 @@ namespace Zongine {
         }
     }
 
-    void AnimationSystem::_InitializeStateMachine(Entity& entity) {
-        auto& states = entity.GetComponent<AnimStateCollectionComponent>();
-        auto& runtime = entity.GetComponent<AnimStateMachineRuntimeComponent>();
-        auto& animComp = entity.GetComponent<AnimationComponent>();
+    void AnimationSystem::_InitializeStateMachine(EntityID entityID) {
+        auto& world = World::GetInstance();
+        auto& states = world.Get<AnimStateCollectionComponent>(entityID);
+        auto& runtime = world.Get<AnimStateMachineRuntimeComponent>(entityID);
+        auto& animComp = world.Get<AnimationComponent>(entityID);
 
         runtime.CurrentState = states.DefaultState;
         runtime.CurrentStateTime = 0.0f;
@@ -222,27 +223,28 @@ namespace Zongine {
         }
     }
 
-    void AnimationSystem::_CheckTransitions(Entity& entity) {
-        if (!entity.HasComponent<AnimTransitionCollectionComponent>() ||
-            !entity.HasComponent<AnimParameterCollectionComponent>()) {
+    void AnimationSystem::_CheckTransitions(EntityID entityID) {
+        auto& world = World::GetInstance();
+        if (!world.Has<AnimTransitionCollectionComponent>(entityID) ||
+            !world.Has<AnimParameterCollectionComponent>(entityID)) {
             return;
         }
 
-        auto& transitions = entity.GetComponent<AnimTransitionCollectionComponent>();
-        auto& params = entity.GetComponent<AnimParameterCollectionComponent>();
-        auto& runtime = entity.GetComponent<AnimStateMachineRuntimeComponent>();
+        auto& transitions = world.Get<AnimTransitionCollectionComponent>(entityID);
+        auto& params = world.Get<AnimParameterCollectionComponent>(entityID);
+        auto& runtime = world.Get<AnimStateMachineRuntimeComponent>(entityID);
 
         for (const auto& transition : transitions.Transitions) {
             if (transition.FromState == runtime.CurrentState &&
                 _CanTransition(transition, params, runtime.CurrentStateNormalizedTime)) {
-                _StartTransition(entity, transition);
+                _StartTransition(entityID, transition);
                 break;
             }
         }
     }
 
-    void AnimationSystem::_StartTransition(Entity& entity, const AnimTransition& transition) {
-        auto& runtime = entity.GetComponent<AnimStateMachineRuntimeComponent>();
+    void AnimationSystem::_StartTransition(EntityID entityID, const AnimTransition& transition) {
+        auto& runtime = World::GetInstance().Get<AnimStateMachineRuntimeComponent>(entityID);
 
         runtime.IsTransitioning = true;
         runtime.NextState = transition.ToState;
@@ -250,10 +252,11 @@ namespace Zongine {
         runtime.TransitionDuration = transition.TransitionDuration;
     }
 
-    void AnimationSystem::_UpdateTransition(Entity& entity, float deltaTime) {
-        auto& runtime = entity.GetComponent<AnimStateMachineRuntimeComponent>();
-        auto& states = entity.GetComponent<AnimStateCollectionComponent>();
-        auto& animComp = entity.GetComponent<AnimationComponent>();
+    void AnimationSystem::_UpdateTransition(EntityID entityID, float deltaTime) {
+        auto& world = World::GetInstance();
+        auto& runtime = world.Get<AnimStateMachineRuntimeComponent>(entityID);
+        auto& states = world.Get<AnimStateCollectionComponent>(entityID);
+        auto& animComp = world.Get<AnimationComponent>(entityID);
 
         runtime.TransitionProgress += deltaTime / runtime.TransitionDuration;
 
@@ -361,9 +364,9 @@ namespace Zongine {
         return true;
     }
 
-    void AnimationSystem::_LoadStateMachineFromAsset(Entity& entity, AnimStateMachineComponent& stateMachineComp) {
+    void AnimationSystem::_LoadStateMachineFromAsset(EntityID entityID, AnimStateMachineComponent& stateMachineComp) {
         // Use AnimStateMachineBuilder to load from JSON
-        if (AnimStateMachineBuilder::LoadFromJson(entity, stateMachineComp.StateMachineAssetPath)) {
+        if (AnimStateMachineBuilder::LoadFromJson(entityID, stateMachineComp.StateMachineAssetPath)) {
             stateMachineComp.IsLoaded = true;
         }
     }

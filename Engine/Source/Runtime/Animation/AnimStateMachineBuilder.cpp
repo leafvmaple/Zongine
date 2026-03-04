@@ -1,5 +1,5 @@
 #include "AnimStateMachineBuilder.h"
-#include "Entities/EntityManager.h"
+#include "Entities/World.h"
 
 #include "../LLoader/3rd/rapidjson/include/rapidjson/document.h"
 #include "../LLoader/3rd/rapidjson/include/rapidjson/writer.h"
@@ -14,7 +14,7 @@ namespace Zongine {
     // AnimStateMachineBuilder Implementation
     // ============================================
 
-    AnimStateMachineBuilder::AnimStateMachineBuilder(Entity& entity)
+    AnimStateMachineBuilder::AnimStateMachineBuilder(EntityID entity)
         : m_Entity(entity) {
     }
 
@@ -116,29 +116,30 @@ namespace Zongine {
     }
 
     void AnimStateMachineBuilder::Build() {
+        auto& world = World::GetInstance();
         // Add or update components
-        if (m_Entity.HasComponent<AnimStateCollectionComponent>()) {
-            m_Entity.GetComponent<AnimStateCollectionComponent>() = m_States;
+        if (world.Has<AnimStateCollectionComponent>(m_Entity)) {
+            world.Get<AnimStateCollectionComponent>(m_Entity) = m_States;
         } else {
-            m_Entity.AddComponent(m_States);
+            world.Assign<AnimStateCollectionComponent>(m_Entity, m_States);
         }
 
-        if (m_Entity.HasComponent<AnimTransitionCollectionComponent>()) {
-            m_Entity.GetComponent<AnimTransitionCollectionComponent>() = m_Transitions;
+        if (world.Has<AnimTransitionCollectionComponent>(m_Entity)) {
+            world.Get<AnimTransitionCollectionComponent>(m_Entity) = m_Transitions;
         } else {
-            m_Entity.AddComponent(m_Transitions);
+            world.Assign<AnimTransitionCollectionComponent>(m_Entity, m_Transitions);
         }
 
         // Ensure parameter component exists
-        if (!m_Entity.HasComponent<AnimParameterCollectionComponent>()) {
-            m_Entity.AddComponent(AnimParameterCollectionComponent{});
+        if (!world.Has<AnimParameterCollectionComponent>(m_Entity)) {
+            world.Assign<AnimParameterCollectionComponent>(m_Entity, AnimParameterCollectionComponent{});
         }
 
         // Ensure runtime state component exists
-        if (!m_Entity.HasComponent<AnimStateMachineRuntimeComponent>()) {
+        if (!world.Has<AnimStateMachineRuntimeComponent>(m_Entity)) {
             AnimStateMachineRuntimeComponent runtime;
             runtime.CurrentState = m_States.DefaultState;
-            m_Entity.AddComponent(runtime);
+            world.Assign<AnimStateMachineRuntimeComponent>(m_Entity, runtime);
         }
     }
 
@@ -155,40 +156,42 @@ namespace Zongine {
     // AnimParameterHelper Implementation
     // ============================================
 
-    void AnimParameterHelper::SetFloat(Entity& entity, const std::string& name, float value) {
+    void AnimParameterHelper::SetFloat(EntityID entity, const std::string& name, float value) {
         auto& param = GetOrCreateParameter(entity, name, AnimParameterType::Float);
         param.FloatValue = value;
     }
 
-    void AnimParameterHelper::SetInt(Entity& entity, const std::string& name, int value) {
+    void AnimParameterHelper::SetInt(EntityID entity, const std::string& name, int value) {
         auto& param = GetOrCreateParameter(entity, name, AnimParameterType::Int);
         param.IntValue = value;
     }
 
-    void AnimParameterHelper::SetBool(Entity& entity, const std::string& name, bool value) {
+    void AnimParameterHelper::SetBool(EntityID entity, const std::string& name, bool value) {
         auto& param = GetOrCreateParameter(entity, name, AnimParameterType::Bool);
         param.BoolValue = value;
     }
 
-    void AnimParameterHelper::SetTrigger(Entity& entity, const std::string& name) {
+    void AnimParameterHelper::SetTrigger(EntityID entity, const std::string& name) {
         auto& param = GetOrCreateParameter(entity, name, AnimParameterType::Trigger);
         param.BoolValue = true;
     }
 
-    void AnimParameterHelper::ResetTrigger(Entity& entity, const std::string& name) {
-        if (!entity.HasComponent<AnimParameterCollectionComponent>()) return;
+    void AnimParameterHelper::ResetTrigger(EntityID entity, const std::string& name) {
+        auto& world = World::GetInstance();
+        if (!world.Has<AnimParameterCollectionComponent>(entity)) return;
 
-        auto& params = entity.GetComponent<AnimParameterCollectionComponent>();
+        auto& params = world.Get<AnimParameterCollectionComponent>(entity);
         auto it = params.Parameters.find(name);
         if (it != params.Parameters.end() && it->second.Type == AnimParameterType::Trigger) {
             it->second.BoolValue = false;
         }
     }
 
-    float AnimParameterHelper::GetFloat(const Entity& entity, const std::string& name, float defaultValue) {
-        if (!entity.HasComponent<AnimParameterCollectionComponent>()) return defaultValue;
+    float AnimParameterHelper::GetFloat(EntityID entity, const std::string& name, float defaultValue) {
+        auto& world = World::GetInstance();
+        if (!world.Has<AnimParameterCollectionComponent>(entity)) return defaultValue;
 
-        const auto& params = entity.GetComponent<AnimParameterCollectionComponent>();
+        const auto& params = world.Get<AnimParameterCollectionComponent>(entity);
         auto it = params.Parameters.find(name);
         if (it != params.Parameters.end() && it->second.Type == AnimParameterType::Float) {
             return it->second.FloatValue;
@@ -196,10 +199,11 @@ namespace Zongine {
         return defaultValue;
     }
 
-    int AnimParameterHelper::GetInt(const Entity& entity, const std::string& name, int defaultValue) {
-        if (!entity.HasComponent<AnimParameterCollectionComponent>()) return defaultValue;
+    int AnimParameterHelper::GetInt(EntityID entity, const std::string& name, int defaultValue) {
+        auto& world = World::GetInstance();
+        if (!world.Has<AnimParameterCollectionComponent>(entity)) return defaultValue;
 
-        const auto& params = entity.GetComponent<AnimParameterCollectionComponent>();
+        const auto& params = world.Get<AnimParameterCollectionComponent>(entity);
         auto it = params.Parameters.find(name);
         if (it != params.Parameters.end() && it->second.Type == AnimParameterType::Int) {
             return it->second.IntValue;
@@ -207,10 +211,11 @@ namespace Zongine {
         return defaultValue;
     }
 
-    bool AnimParameterHelper::GetBool(const Entity& entity, const std::string& name, bool defaultValue) {
-        if (!entity.HasComponent<AnimParameterCollectionComponent>()) return defaultValue;
+    bool AnimParameterHelper::GetBool(EntityID entity, const std::string& name, bool defaultValue) {
+        auto& world = World::GetInstance();
+        if (!world.Has<AnimParameterCollectionComponent>(entity)) return defaultValue;
 
-        const auto& params = entity.GetComponent<AnimParameterCollectionComponent>();
+        const auto& params = world.Get<AnimParameterCollectionComponent>(entity);
         auto it = params.Parameters.find(name);
         if (it != params.Parameters.end() && 
             (it->second.Type == AnimParameterType::Bool || it->second.Type == AnimParameterType::Trigger)) {
@@ -220,13 +225,14 @@ namespace Zongine {
     }
 
     AnimParameter& AnimParameterHelper::GetOrCreateParameter(
-        Entity& entity, const std::string& name, AnimParameterType type) {
+        EntityID entity, const std::string& name, AnimParameterType type) {
+        auto& world = World::GetInstance();
         
-        if (!entity.HasComponent<AnimParameterCollectionComponent>()) {
-            entity.AddComponent(AnimParameterCollectionComponent{});
+        if (!world.Has<AnimParameterCollectionComponent>(entity)) {
+            world.Assign<AnimParameterCollectionComponent>(entity, AnimParameterCollectionComponent{});
         }
 
-        auto& params = entity.GetComponent<AnimParameterCollectionComponent>();
+        auto& params = world.Get<AnimParameterCollectionComponent>(entity);
         auto it = params.Parameters.find(name);
         
         if (it == params.Parameters.end()) {
@@ -318,7 +324,7 @@ namespace Zongine {
         return true;
     }
 
-    bool AnimStateMachineBuilder::LoadFromJson(Entity& entity, const std::string& filePath) {
+    bool AnimStateMachineBuilder::LoadFromJson(EntityID entity, const std::string& filePath) {
         using namespace rapidjson;
 
         // Read file

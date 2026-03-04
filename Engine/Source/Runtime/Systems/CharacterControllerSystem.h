@@ -4,7 +4,6 @@
 
 namespace Zongine {
     struct InputComponent;
-    class Entity;
 
     /**
      * Character Controller System
@@ -24,6 +23,6 @@ namespace Zongine {
     private:
         EntityID m_InputEntity = 0;
 
-        void _UpdateCharacter(Entity& character, const InputComponent& input, float deltaTime);
+        void _UpdateCharacter(EntityID characterID, const InputComponent& input, float deltaTime);
     };
 }

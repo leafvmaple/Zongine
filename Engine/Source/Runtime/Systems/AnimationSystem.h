@@ -24,7 +24,6 @@ namespace Zongine {
     struct AnimStateMachineComponent;
     struct AnimCondition;
     struct AnimTransition;
-    class Entity;
 
     /**
      * 动画系统
@@ -37,18 +36,18 @@ namespace Zongine {
      */
     class AnimationSystem {
     public:
-        void Tick(int nDeltaTime);
+        void Tick(float deltaTime);
 
     private:
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_SkeletonMeshMap{};
 
         // 状态机逻辑
-        void _LoadStateMachineFromAsset(Entity& entity, AnimStateMachineComponent& stateMachineComp);
-        void _UpdateStateMachine(Entity& entity, float deltaTime);
-        void _InitializeStateMachine(Entity& entity);
-        void _CheckTransitions(Entity& entity);
-        void _StartTransition(Entity& entity, const AnimTransition& transition);
-        void _UpdateTransition(Entity& entity, float deltaTime);
+        void _LoadStateMachineFromAsset(EntityID entityID, AnimStateMachineComponent& stateMachineComp);
+        void _UpdateStateMachine(EntityID entityID, float deltaTime);
+        void _InitializeStateMachine(EntityID entityID);
+        void _CheckTransitions(EntityID entityID);
+        void _StartTransition(EntityID entityID, const AnimTransition& transition);
+        void _UpdateTransition(EntityID entityID, float deltaTime);
         bool _EvaluateCondition(const AnimCondition& condition, const AnimParameterCollectionComponent& params) const;
         bool _CanTransition(const AnimTransition& transition, const AnimParameterCollectionComponent& params, float normalizedTime) const;
 

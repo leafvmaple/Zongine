@@ -2,7 +2,7 @@
 
 #include "MeshComponent.h"
 
-#include "../Entities/EntityManager.h"
+#include "../Entities/World.h"
 #include "../Managers/AssetManager.h"
 
 namespace Zongine {
@@ -16,8 +16,8 @@ namespace Zongine {
         }
     }
 
-    void FlexibleComponent::Initialize(const Entity& entity) {
-        auto& meshComponent = entity.GetComponent<MeshComponent>();
+    void FlexibleComponent::Initialize(EntityID entity) {
+        auto& meshComponent = World::GetInstance().Get<MeshComponent>(entity);
         auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
 
         for (auto& driver : Drivers) {

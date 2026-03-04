@@ -17,13 +17,13 @@
 #include "Systems/CharacterControllerSystem.h"
 
 #include "Components/CameraComponent.h"
-#include "components/MaterialComponent.h"
-#include "components/TransformComponent.h"
+#include "Components/MaterialComponent.h"
+#include "Components/TransformComponent.h"
 #include "Components/AnimationComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/CharacterControllerComponent.h"
 
-#include "Entities/EntityManager.h"
+#include "Entities/World.h"
 
 #include <algorithm>
 #include <string>
@@ -33,29 +33,77 @@
 
 namespace Zongine {
     Engine::Engine() {
+        QueryPerformanceFrequency(&m_Frequency);
+        QueryPerformanceCounter(&m_LastTime);
+        _CreateManagers();
     }
+
     Engine::~Engine() {
+        _DestroyManagers();
+    }
+
+    void Engine::_CreateManagers() {
+        // Creation order matters: later managers may depend on earlier ones
+        m_EventManager = std::make_unique<EventManager>();
+        SingleManager<EventManager>::Register(m_EventManager.get());
+
+        m_WindowManager = std::make_unique<WindowManager>();
+        SingleManager<WindowManager>::Register(m_WindowManager.get());
+
+        m_World = std::make_unique<World>();
+        SingleManager<World>::Register(m_World.get());
+
+        m_DeviceManager = std::make_unique<DeviceManager>();
+        SingleManager<DeviceManager>::Register(m_DeviceManager.get());
+
+        m_StateManager = std::make_unique<StateManager>();
+        SingleManager<StateManager>::Register(m_StateManager.get());
+
+        m_EffectManager = std::make_unique<EffectManager>();
+        SingleManager<EffectManager>::Register(m_EffectManager.get());
+
+        m_AssetManager = std::make_unique<AssetManager>();
+        SingleManager<AssetManager>::Register(m_AssetManager.get());
+    }
+
+    void Engine::_DestroyManagers() {
+        // Unregister before reset to avoid dangling pointer access
+        // Destroy in reverse order of creation
+        SingleManager<AssetManager>::Unregister();
+        m_AssetManager.reset();
+
+        SingleManager<EffectManager>::Unregister();
+        m_EffectManager.reset();
+
+        SingleManager<StateManager>::Unregister();
+        m_StateManager.reset();
+
+        SingleManager<DeviceManager>::Unregister();
+        m_DeviceManager.reset();
+
+        SingleManager<World>::Unregister();
+        m_World.reset();
+
+        SingleManager<WindowManager>::Unregister();
+        m_WindowManager.reset();
+
+        SingleManager<EventManager>::Unregister();
+        m_EventManager.reset();
     }
 
     HWND Engine::CreateAndInitialize(HINSTANCE hInstance, const wchar_t* title, int width, int height) {
-        // Create window internally via WindowManager
-        HWND hWnd = WindowManager::GetInstance().CreateGameWindow(hInstance, title, width, height);
-        
-        // Initialize engine with the created window
+        HWND hWnd = m_WindowManager->CreateGameWindow(hInstance, title, width, height);
         Initialize(hWnd);
-        
         return hWnd;
     }
 
     void Engine::Initialize(HWND wnd) {
-        m_nLastTime = timeGetTime();
+        QueryPerformanceCounter(&m_LastTime);
 
-        auto& assetManager = AssetManager::GetInstance();
-
-        WindowManager::GetInstance().Initialize(wnd);
-        DeviceManager::GetInstance().Initialize();
-        StateManager::GetInstance().Initialize();
-        EffectManager::GetInstance().Initialize();
+        m_WindowManager->Initialize(wnd);
+        m_DeviceManager->Initialize();
+        m_StateManager->Initialize();
+        m_EffectManager->Initialize();
 
         // System initialization
         renderSystem = std::make_unique<RenderSystem>();
@@ -67,55 +115,24 @@ namespace Zongine {
         nvFlexSystem = std::make_unique<NvFlexSystem>();
         characterControllerSystem = std::make_unique<CharacterControllerSystem>();
 
-        auto& root = EntityManager::GetInstance().GetRootEntity();
-        // assetManager.LoadScene(root, "data/source/maps/稻香村/稻香村.jsonmap");
-        root.AddComponent<TransformComponent>(TransformComponent{});
-        root.AddComponent<NameComponent>(NameComponent({ "Root" }));
+        auto& world = World::GetInstance();
+        EntityID root = world.GetRootEntity();
+        world.Assign<TransformComponent>(root, TransformComponent{});
 
-        auto& camera = root.AddChild("Camera");
-        auto& player = root.AddChild("Player");
+        EntityID camera = world.AddChild(root, "Camera");
+        EntityID player = world.AddChild(root, "Player");
 
-        assetManager.LoadPlayer(player, "Settings/player.json");
+        m_AssetManager->LoadPlayer(player, "Settings/player.json");
 
-        camera.AddComponent<CameraComponent>(CameraComponent{});
-        auto& cameraTransform = camera.AddComponent<TransformComponent>(TransformComponent{});
+        world.Assign<CameraComponent>(camera, CameraComponent{});
+        auto& cameraTransform = world.Assign<TransformComponent>(camera, TransformComponent{});
         cameraTransform.Position = { 0.0f, 50.f, -200.0f };
-
-        //assetManager.LoadModel(player, "data/source/player/F1/部件/Mdl/F1.mdl");
-        //assetManager.LoadAnimStateMachine(player, "data/player_statemachine.json");
-        //player.AddComponent<AnimationComponent>(AnimationComponent{ "data/source/player/F1/动作/F1b02dj打坐b.ani" });
-
-        //auto& playerTransform = player.GetComponent<TransformComponent>();
-        //playerTransform.Position = { 0.0f, 0, 50.0f };
-
-        //auto& head = player.AddChild("Head");
-        //auto& body = player.AddChild("Body");
-        ////auto& hand = player.AddChild("Hand");
-        ////auto& leg = player.AddChild("Leg");
-        ////auto& belt = player.AddChild("Belt");
-
-        //assetManager.LoadMesh(head, "data/source/player/F1/部件/F1_5407h_a_head.mesh");
-        ////assetManager.LoadMesh(body, "data/source/player/F1/部件/F1_5407h_body.mesh");
-        //assetManager.LoadMesh(body, "data/source/player/F1/parts/f1_5407h_body.gltf");
-        ////assetManager.LoadMesh(hand, "data/source/player/F1/部件/F1_2206_hand.mesh");
-        ////assetManager.LoadMesh(leg, "data/source/player/F1/部件/F1_2206_leg.mesh");
-        ////assetManager.LoadMesh(belt, "data/source/player/F1/部件/F1_2206_belt.mesh");
-
-        //auto& face = head.AddChild("Face");
-        ////auto& hat = head.AddChild("Hat");
-        ////auto& weapon = hand.AddChild("Weapon");
-
-        //assetManager.LoadMesh(face, "data/source/player/F1/部件/f1_new_face.Mesh", "s_face");
-        //assetManager.LoadMesh(hat, "data/source/player/F1/部件/F1_2206_hat.mesh", "s_hat");
-        //assetManager.LoadMesh(weapon, "data/source/item/weapon/brush/RH_brush_001.Mesh", "s_rh");
 
         inputSystem->Initialize();
         characterControllerSystem->Initialize();
         cameraSystem->Initialize();
         nvFlexSystem->Initialize();
         renderSystem->Initialize();
-
-        // eventManager->Emit("ENTITIY_UPDATE");
     }
 
     void Engine::Uninitialize() {
@@ -123,55 +140,56 @@ namespace Zongine {
         m_bRunning = false;
     }
 
-    constexpr uint64_t targetFrameTime = 1000 / 60;
+    constexpr float targetFrameTime = 1.0f / 60.0f;
 
     void Engine::Tick() {
-        uint64_t nTime = timeGetTime();
-        uint64_t nDeltaTime = nTime - m_nLastTime;
+        LARGE_INTEGER now{};
+        QueryPerformanceCounter(&now);
+        float deltaTime = static_cast<float>(now.QuadPart - m_LastTime.QuadPart) / static_cast<float>(m_Frequency.QuadPart);
 
-        // Clear input events from previous frame before processing new messages
-        inputSystem->Tick(nDeltaTime);
+        inputSystem->Tick(deltaTime);
         
         MSG msg{};
-        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) {
                 Exit();
+                return;
             }
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
         
-        characterControllerSystem->Tick(nDeltaTime);
-        animationSystem->Tick(nDeltaTime);
-        transformSystem->Tick(nDeltaTime);
-        physicsSystem->Tick(nDeltaTime);
-        nvFlexSystem->Tick(nDeltaTime);
-        cameraSystem->Tick(nDeltaTime);
-        renderSystem->Tick(nDeltaTime);
+        characterControllerSystem->Tick(deltaTime);
+        animationSystem->Tick(deltaTime);
+        transformSystem->Tick(deltaTime);
+        physicsSystem->Tick(deltaTime);
+        nvFlexSystem->Tick(deltaTime);
+        cameraSystem->Tick(deltaTime);
+        renderSystem->Tick(deltaTime);
 
-        uint64_t frameProcessTime = timeGetTime() - nTime;
+        LARGE_INTEGER afterFrame{};
+        QueryPerformanceCounter(&afterFrame);
+        float frameProcessTime = static_cast<float>(afterFrame.QuadPart - now.QuadPart) / static_cast<float>(m_Frequency.QuadPart);
 
         if (frameProcessTime < targetFrameTime) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(targetFrameTime - frameProcessTime));
+            auto sleepMs = static_cast<int>((targetFrameTime - frameProcessTime) * 1000.0f);
+            if (sleepMs > 0)
+                std::this_thread::sleep_for(std::chrono::milliseconds(sleepMs));
         }
 
-        m_nLastTime = nTime;
+        m_LastTime = now;
     }
 
     void Engine::Resize(int width, int height) {
-        WindowManager::GetInstance().Resize(width, height);
-        DeviceManager::GetInstance().Resize();
+        m_WindowManager->Resize(width, height);
+        m_DeviceManager->Resize();
     }
 
-    Entity& Engine::GetRootEntity() {
-        return EntityManager::GetInstance().GetEntity(0);
-    }
-
-    Entity& Engine::GetEntity(EntityID id) {
-        return EntityManager::GetInstance().GetEntity(id);
+    EntityID Engine::GetRootEntity() {
+        return World::GetInstance().GetRootEntity();
     }
 
     void Engine::SubscribeEvent(const std::string& eventName, const std::function<void()>& callback) {
-        EventManager::GetInstance().Subscribe(eventName, callback);
+        m_EventManager->Subscribe(eventName, callback);
     }
 }

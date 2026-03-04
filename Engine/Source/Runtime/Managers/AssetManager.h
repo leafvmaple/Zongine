@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Mananger.h"
+#include "Manager.h"
 
 #include "Include/AssetData.h"
 
@@ -19,18 +19,16 @@ struct MATERIAL_SOURCE;
 struct LANDSCAPE_REGION;
 
 namespace Zongine {
-    class Entity;
-
     using Microsoft::WRL::ComPtr;
 
     class AssetManager : public SingleManager<AssetManager> {
     public:
-        void LoadPlayer(Entity& player, const std::string& path);
-        void LoadModel(Entity& entity, const std::string& path);
-        void LoadMesh(Entity& entity, const std::string& path);
-        void LoadMesh(Entity& entity, const std::string& path, const std::string& socketName);
-        void LoadScene(Entity& entity, const std::string& path);
-        void LoadAnimStateMachine(Entity& entity, const std::string& path);
+        void LoadPlayer(EntityID player, const std::string& path);
+        void LoadModel(EntityID entity, const std::string& path);
+        void LoadMesh(EntityID entity, const std::string& path);
+        void LoadMesh(EntityID entity, const std::string& path, const std::string& socketName);
+        void LoadScene(EntityID entity, const std::string& path);
+        void LoadAnimStateMachine(EntityID entity, const std::string& path);
 
         std::shared_ptr<MeshAsset> GetMeshAsset(const std::string& path);
         std::shared_ptr<MaterialAsset> GetModelMaterialAsset(const std::string& path);

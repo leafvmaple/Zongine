@@ -13,8 +13,16 @@
 #pragma comment(lib, "dxguid.lib")
 
 namespace Zongine {
-    class Entity;
+    // Forward declare Managers
+    class WindowManager;
+    class DeviceManager;
+    class StateManager;
+    class EffectManager;
+    class AssetManager;
+    class EventManager;
+    class World;
 
+    // Forward declare Systems
     class RenderSystem;
     class InputSystem;
     class CameraSystem;
@@ -42,12 +50,21 @@ namespace Zongine {
         bool IsRunning() const { return m_bRunning; }
         void Exit() { m_bRunning = false; };
 
-        Entity& GetRootEntity();
-        Entity& GetEntity(EntityID id);
+        EntityID GetRootEntity();
 
         void SubscribeEvent(const std::string& eventName, const std::function<void()>& callback);
 
     private:
+        // === Managers (Engine owns them, initialization order matters) ===
+        std::unique_ptr<WindowManager> m_WindowManager;
+        std::unique_ptr<DeviceManager> m_DeviceManager;
+        std::unique_ptr<StateManager> m_StateManager;
+        std::unique_ptr<EffectManager> m_EffectManager;
+        std::unique_ptr<AssetManager> m_AssetManager;
+        std::unique_ptr<EventManager> m_EventManager;
+        std::unique_ptr<World> m_World;
+
+        // === Systems ===
         std::unique_ptr<RenderSystem> renderSystem{};
         std::unique_ptr<InputSystem> inputSystem{};
         std::unique_ptr<CameraSystem> cameraSystem{};
@@ -58,6 +75,11 @@ namespace Zongine {
         std::unique_ptr<CharacterControllerSystem> characterControllerSystem{};
 
         bool m_bRunning{ true };
-        uint64_t m_nLastTime{};
+
+        LARGE_INTEGER m_LastTime{};
+        LARGE_INTEGER m_Frequency{};
+
+        void _CreateManagers();
+        void _DestroyManagers();
     };
 }
