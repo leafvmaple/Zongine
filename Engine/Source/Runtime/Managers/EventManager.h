@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Mananger.h"
+#include "Manager.h"
 
 #include <unordered_map>
 #include <string>

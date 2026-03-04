@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Mananger.h"
+#include "Manager.h"
 
 #include <d3d11.h>
 #include <wrl/client.h>

@@ -123,8 +123,6 @@ namespace Zongine {
         CHECK_HRESULT(m_piSwapChain->GetBuffer(0, __uuidof(buffer), reinterpret_cast<void**>(buffer.GetAddressOf())));
         CHECK_HRESULT(m_piDevice->CreateRenderTargetView(buffer.Get(), nullptr, m_SwapChainRTV.GetAddressOf()));
 
-        // m_piImmediateContext->OMSetRenderTargets(1, m_piRenderTargetView.GetAddressOf(), m_piDepthStencilView.Get());
-
         return true;
     }
 
@@ -136,7 +134,7 @@ namespace Zongine {
         texDesc.Height = uHeight;
         texDesc.MipLevels = 1;
         texDesc.ArraySize = 1;
-        texDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT; // 高精度格式
+        texDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT; // 锟竭撅拷锟饺革拷式
         texDesc.SampleDesc.Count = 1;
         texDesc.Usage = D3D11_USAGE_DEFAULT;
         texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;

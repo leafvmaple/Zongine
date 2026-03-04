@@ -3,7 +3,7 @@
 #include "Include/Enums.h"
 #include "Include/AssetData.h"
 
-#include "Mananger.h"
+#include "Manager.h"
 
 #include <unordered_map>
 #include <string>

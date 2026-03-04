@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Include/Enums.h"
-#include "Mananger.h"
+#include "Manager.h"
 
 #include <array>
 #include <d3d11.h>

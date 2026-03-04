@@ -4,7 +4,7 @@
 #include <functional>
 #include <vector>
 
-#include "Mananger.h"
+#include "Manager.h"
 
 namespace Zongine {
     struct WindowEvent {
