@@ -2,6 +2,9 @@
 
 #include "../Components/NameComponent.h"
 #include "../Components/HierarchyComponent.h"
+#include "../Managers/EventManager.h"
+
+#include <algorithm>
 
 namespace Zongine {
     World::World() {
@@ -11,10 +14,53 @@ namespace Zongine {
     }
 
     EntityID World::CreateEntity(const std::string& name) {
-        EntityID id = ++m_NextEntityID;
+        EntityID id;
+        if (!m_FreeList.empty()) {
+            id = m_FreeList.back();
+            m_FreeList.pop_back();
+        } else {
+            id = ++m_NextEntityID;
+        }
         m_AliveEntities.insert(id);
         Assign<NameComponent>(id, NameComponent{ name });
         return id;
+    }
+
+    void World::DestroyEntity(EntityID entity) {
+        if (entity == 0) return;           // Cannot destroy root
+        if (!IsAlive(entity)) return;
+
+        // Recursively destroy children first (copy list -- it will be mutated)
+        if (Has<HierarchyComponent>(entity)) {
+            auto children = Get<HierarchyComponent>(entity).Children;
+            for (EntityID child : children) {
+                DestroyEntity(child);
+            }
+        }
+
+        // Detach from parent
+        if (Has<HierarchyComponent>(entity)) {
+            EntityID parent = Get<HierarchyComponent>(entity).Parent;
+            if (Has<HierarchyComponent>(parent)) {
+                auto& siblings = Get<HierarchyComponent>(parent).Children;
+                siblings.erase(
+                    std::remove(siblings.begin(), siblings.end(), entity),
+                    siblings.end()
+                );
+            }
+        }
+
+        // Remove all components from every storage pool
+        for (auto& [typeIdx, storage] : m_Storages) {
+            storage->RemoveEntity(entity);
+        }
+
+        m_AliveEntities.erase(entity);
+        m_FreeList.push_back(entity);
+
+        if (EventManager::IsRegistered()) {
+            EventManager::GetInstance().Emit("ENTITY_UPDATE");
+        }
     }
 
     bool World::IsAlive(EntityID entity) const {
@@ -32,6 +78,10 @@ namespace Zongine {
         HierarchyComponent childHierarchy{};
         childHierarchy.Parent = parent;
         Assign<HierarchyComponent>(child, childHierarchy);
+
+        if (EventManager::IsRegistered()) {
+            EventManager::GetInstance().Emit("ENTITY_UPDATE");
+        }
 
         return child;
     }

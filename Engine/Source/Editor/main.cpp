@@ -6,8 +6,10 @@
 #include "Widgets/RenderWidget.h"
 #include "Widgets/EntitiesWidget.h"
 #include "Widgets/ComponentsWidget.h"
+#include "Widgets/QtEventBridge.h"
 
 #include "Runtime/Engine.h"
+#include "Runtime/Include/IEditorBridge.h"
 
 using namespace Zongine;
 
@@ -17,13 +19,24 @@ int main(int argc, char* argv[])
     app.setApplicationName("Zongine Editor");
 
     auto engine = std::make_shared<Engine>();
+    engine->SetEditorMode(true);
 
     QSplitter splitter(Qt::Horizontal);
     splitter.setGeometry(QRect(0, 0, 1480, 720));
 
+    // RenderWidget still needs Engine for Initialize/Tick
     RenderWidget* renderWidget = new RenderWidget(engine);
-    EntitiesWidget* entityTree = new EntitiesWidget(engine);
-    ComponentWidget* componentWidget = new ComponentWidget(engine);
+
+    // After Initialize, get the decoupled bridge interface
+    IEditorBridge& bridge = engine->GetEditorBridge();
+
+    // QtEventBridge converts engine events → Qt signals
+    QtEventBridge* eventBridge = new QtEventBridge(&splitter);
+    eventBridge->ConnectToEngine(bridge);
+
+    // Widgets now depend only on IEditorBridge, not Engine/World/Components
+    EntitiesWidget* entityTree = new EntitiesWidget(bridge, *eventBridge);
+    ComponentWidget* componentWidget = new ComponentWidget(bridge);
 
     QObject::connect(entityTree, &QTreeWidget::itemClicked, [=](QTreeWidgetItem* item, int column) {
         uint64_t id = item->data(0, Qt::UserRole).value<uint64_t>();

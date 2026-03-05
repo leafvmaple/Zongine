@@ -84,6 +84,9 @@
     <ClCompile Include="Managers\EventManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\EditorBridgeImpl.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
     <ClCompile Include="Systems\PhysicsSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -205,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="Managers\EventManager.h">
       <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\EditorBridgeImpl.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\IEditorBridge.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Components\HierarchyComponent.h">
       <Filter>Source Files\Components</Filter>

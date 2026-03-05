@@ -29,6 +29,7 @@
     <ClCompile Include="Entities\World.cpp" />
     <ClCompile Include="Managers\AssetManager.cpp" />
     <ClCompile Include="Managers\DeviceManager.cpp" />
+    <ClCompile Include="Managers\EditorBridgeImpl.cpp" />
     <ClCompile Include="Managers\EffectManager.cpp" />
     <ClCompile Include="Managers\EventManager.cpp" />
     <ClCompile Include="Managers\StateManager.cpp" />
@@ -77,8 +78,10 @@
     <ClInclude Include="Include\Enums.h" />
     <ClInclude Include="Include\Maths.h" />
     <ClInclude Include="Include\Types.h" />
+    <ClInclude Include="Include\IEditorBridge.h" />
     <ClInclude Include="Managers\AssetManager.h" />
     <ClInclude Include="Managers\DeviceManager.h" />
+    <ClInclude Include="Managers\EditorBridgeImpl.h" />
     <ClInclude Include="Managers\EffectManager.h" />
     <ClInclude Include="Managers\EventManager.h" />
     <ClInclude Include="Managers\Manager.h" />

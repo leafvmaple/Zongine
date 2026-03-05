@@ -21,6 +21,7 @@ namespace Zongine {
     class AssetManager;
     class EventManager;
     class World;
+    class IEditorBridge;
 
     // Forward declare Systems
     class RenderSystem;
@@ -50,9 +51,15 @@ namespace Zongine {
         bool IsRunning() const { return m_bRunning; }
         void Exit() { m_bRunning = false; };
 
+        void SetEditorMode(bool enabled) { m_bEditorMode = enabled; }
+        bool IsEditorMode() const { return m_bEditorMode; }
+
         EntityID GetRootEntity();
 
         void SubscribeEvent(const std::string& eventName, const std::function<void()>& callback);
+
+        // Editor Bridge -- provides a decoupled interface for Editor UI
+        IEditorBridge& GetEditorBridge();
 
     private:
         // === Managers (Engine owns them, initialization order matters) ===
@@ -75,9 +82,12 @@ namespace Zongine {
         std::unique_ptr<CharacterControllerSystem> characterControllerSystem{};
 
         bool m_bRunning{ true };
+        bool m_bEditorMode{ false };
 
         LARGE_INTEGER m_LastTime{};
         LARGE_INTEGER m_Frequency{};
+
+        std::unique_ptr<IEditorBridge> m_EditorBridge;
 
         void _CreateManagers();
         void _DestroyManagers();

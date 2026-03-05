@@ -1,9 +1,12 @@
 #include "EntitiesWidget.h"
+#include "QtEventBridge.h"
 
-#include "Runtime/Entities/World.h"
+#include "Runtime/Include/IEditorBridge.h"
 
 namespace Zongine {
-    EntitiesWidget::EntitiesWidget(std::shared_ptr<Engine> engine, QWidget* parent /*= nullptr*/) {
+    EntitiesWidget::EntitiesWidget(IEditorBridge& bridge, QtEventBridge& eventBridge, QWidget* parent /*= nullptr*/)
+        : QTreeWidget(parent), m_Bridge(bridge)
+    {
         setColumnCount(2);
         setHeaderLabels({ "ID", "Name" });
 
@@ -11,37 +14,31 @@ namespace Zongine {
         setColumnWidth(0, 30);
         setAlternatingRowColors(true);
 
-        engine->SubscribeEvent("ENTITY_UPDATE", [this] {
-            this->UpdateEntities();
-        });
-
-        m_Engine = engine;
+        // React to engine entity changes via Qt signal (safe for UI thread)
+        connect(&eventBridge, &QtEventBridge::entityTreeChanged, this, &EntitiesWidget::UpdateEntities);
 
         UpdateEntities();
     }
 
     void EntitiesWidget::UpdateEntities() {
         clear();
-        auto& world = World::GetInstance();
-        auto rootID = m_Engine->GetRootEntity();
-        auto children = world.GetChildren(rootID);
-        for (auto& id : children) {
+        auto rootID = m_Bridge.GetRootEntity();
+        auto rootInfo = m_Bridge.GetEntityInfo(rootID);
+        for (auto& childId : rootInfo.Children) {
             auto item = new QTreeWidgetItem(this);
-            UpdateEntity(id, item);
+            UpdateEntity(childId, item);
         }
     }
 
-    void EntitiesWidget::UpdateEntity(EntityID id, QTreeWidgetItem* item) {
-        auto& world = World::GetInstance();
-        auto name = world.GetName(id);
-        item->setText(0, QString::number(id));
-        item->setText(1, QString::fromStdString(name));
-        item->setData(0, Qt::UserRole, QVariant::fromValue(id));
+    void EntitiesWidget::UpdateEntity(uint32_t id, QTreeWidgetItem* item) {
+        auto info = m_Bridge.GetEntityInfo(id);
+        item->setText(0, QString::number(info.ID));
+        item->setText(1, QString::fromStdString(info.Name));
+        item->setData(0, Qt::UserRole, QVariant::fromValue(static_cast<uint64_t>(info.ID)));
 
-        auto children = world.GetChildren(id);
-        for (auto& child : children) {
+        for (auto& childId : info.Children) {
             auto sub = new QTreeWidgetItem(item);
-            UpdateEntity(child, sub);
+            UpdateEntity(childId, sub);
         }
     }
 }

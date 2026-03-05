@@ -24,6 +24,7 @@
 #include "Components/CharacterControllerComponent.h"
 
 #include "Entities/World.h"
+#include "Managers/EditorBridgeImpl.h"
 
 #include <algorithm>
 #include <string>
@@ -140,8 +141,6 @@ namespace Zongine {
         m_bRunning = false;
     }
 
-    constexpr float targetFrameTime = 1.0f / 60.0f;
-
     void Engine::Tick() {
         LARGE_INTEGER now{};
         QueryPerformanceCounter(&now);
@@ -149,14 +148,16 @@ namespace Zongine {
 
         inputSystem->Tick(deltaTime);
         
-        MSG msg{};
-        while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-            if (msg.message == WM_QUIT) {
-                Exit();
-                return;
+        if (!m_bEditorMode) {
+            MSG msg{};
+            while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+                if (msg.message == WM_QUIT) {
+                    Exit();
+                    return;
+                }
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
             }
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
         }
         
         characterControllerSystem->Tick(deltaTime);
@@ -167,14 +168,19 @@ namespace Zongine {
         cameraSystem->Tick(deltaTime);
         renderSystem->Tick(deltaTime);
 
-        LARGE_INTEGER afterFrame{};
-        QueryPerformanceCounter(&afterFrame);
-        float frameProcessTime = static_cast<float>(afterFrame.QuadPart - now.QuadPart) / static_cast<float>(m_Frequency.QuadPart);
+        // In standalone mode, limit frame rate to ~60 FPS.
+        // In editor mode, QTimer controls pacing -- no sleep needed.
+        if (!m_bEditorMode) {
+            constexpr float targetFrameTime = 1.0f / 60.0f;
+            LARGE_INTEGER afterFrame{};
+            QueryPerformanceCounter(&afterFrame);
+            float frameProcessTime = static_cast<float>(afterFrame.QuadPart - now.QuadPart) / static_cast<float>(m_Frequency.QuadPart);
 
-        if (frameProcessTime < targetFrameTime) {
-            auto sleepMs = static_cast<int>((targetFrameTime - frameProcessTime) * 1000.0f);
-            if (sleepMs > 0)
-                std::this_thread::sleep_for(std::chrono::milliseconds(sleepMs));
+            if (frameProcessTime < targetFrameTime) {
+                auto sleepMs = static_cast<int>((targetFrameTime - frameProcessTime) * 1000.0f);
+                if (sleepMs > 0)
+                    std::this_thread::sleep_for(std::chrono::milliseconds(sleepMs));
+            }
         }
 
         m_LastTime = now;
@@ -191,5 +197,12 @@ namespace Zongine {
 
     void Engine::SubscribeEvent(const std::string& eventName, const std::function<void()>& callback) {
         m_EventManager->Subscribe(eventName, callback);
+    }
+
+    IEditorBridge& Engine::GetEditorBridge() {
+        if (!m_EditorBridge) {
+            m_EditorBridge = std::make_unique<EditorBridgeImpl>();
+        }
+        return *m_EditorBridge;
     }
 }

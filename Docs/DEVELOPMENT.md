@@ -15,6 +15,8 @@
 | 5 | 清理注释掉的死代码（Engine.cpp、AssetManager.cpp、DeviceManager.cpp、EntityManager.h） | ✅ |
 | 6 | 单例重构：Meyers' Singleton → 指针注册式，Engine 持有所有 Manager 的 `unique_ptr`，生命周期可控 | ✅ |
 | 7 | ComponentStorage 从 `unordered_map<EntityID, T>` 重构为 `vector<pair<EntityID, T>>` + 稀疏索引，缓存友好 | ✅ |
+| 8 | 资源管理 RAII 封装：`DeviceManager` 全部 COM 对象迁移到 `ComPtr<T>`，移除手动 `Release()` | ✅ |
+| 9 | ECS 补齐：`DestroyEntity` (递归销毁子实体+ID 回收)、`Remove<T>`、`View<>.Each(Exclude<T>{})`、EntityID FreeList 回收 | ✅ |
 
 ---
 
@@ -22,16 +24,7 @@
 
 ### P0 — 核心架构问题
 
-#### 2.1 资源管理缺乏 RAII 封装
-
-**现状**：`DeviceManager` 中 D3D11 资源（`ID3D11Device*`、`ID3D11DeviceContext*`、`IDXGISwapChain*`）使用裸指针，依赖手动 `Release()`。泄露风险高。
-
-**建议**：
-- [ ] 引入 `ComPtr<T>`（`wrl/client.h`）包装所有 COM 对象
-- [ ] SwapChain、RenderTargetView、DepthStencilView 等全部迁移到 `ComPtr`
-- [ ] 移除手动 `Release()` 调用
-
-#### 2.2 RenderGraph 缺少自动资源生命周期管理
+#### 2.1 RenderGraph 缺少自动资源生命周期管理
 
 **现状**：RenderGraph 实现了基于拓扑排序的 Pass 执行顺序，但渲染资源（RT、DS、SRV）的创建/销毁仍然手动管理，未与 Pass 的读写声明联动。
 
@@ -40,20 +33,11 @@
 - [ ] RenderGraph 编译时自动推导资源生命周期，结合引用计数自动创建/释放瞬态资源
 - [ ] 添加资源别名（Aliasing）支持，减少显存占用
 
-#### 2.3 ECS 缺少多组件联合查询
-
-**现状**：`ForEach<T>` 只支持单组件遍历，系统中需要多组件时手动调用 `HasComponent` + `GetComponent` 逐一检查。
-
-**建议**：
-- [ ] 实现 `View<A, B, C...>` 多组件联合视图，自动取交集
-- [ ] 支持 `Exclude<T>` 排除某组件的实体
-- [ ] 提供 `Each(func)` 接口直接以 lambda 遍历：`view.Each([](EntityID, TransformComponent&, MeshComponent&) { ... })`
-
 ---
 
 ### P1 — 重要改进
 
-#### 2.4 场景管理
+#### 2.2 场景管理
 
 **现状**：当前只有一个全局 Entity 树（根节点 ID=0），没有场景概念。无法分离关卡、切换场景、做场景序列化/反序列化。
 
@@ -62,7 +46,7 @@
 - [ ] 实现场景序列化（JSON / 二进制）与加载
 - [ ] 支持场景切换和预加载
 
-#### 2.5 日志系统
+#### 2.3 日志系统
 
 **现状**：调试信息通过 `OutputDebugString` 或直接 `printf`，无分级、无文件输出、无可过滤的 Tag。
 
@@ -72,7 +56,7 @@
 - [ ] 添加 Tag/Category 过滤
 - [ ] 编辑器中集成日志面板
 
-#### 2.6 内存分配优化
+#### 2.4 内存分配优化
 
 **现状**：Component 存储已迁移到连续 `vector`，但频繁的 `emplace_back` 会触发重分配。Entity 存储仍使用 `unordered_map`。
 
@@ -85,7 +69,7 @@
 
 ### P2 — 代码质量
 
-#### 2.7 统一命名规范
+#### 2.5 统一命名规范
 
 **现状**：混合使用匈牙利命名（`m_nWidth`）、驼峰（`renderSystem`）、下划线前缀（`_UpdateWind`）等多种风格。
 
@@ -93,7 +77,7 @@
 - [ ] 制定并文档化命名规范（推荐：成员变量 `m_CamelCase`，私有方法 `CamelCase`，局部变量 `camelCase`）
 - [ ] 逐步统一现有代码
 
-#### 2.8 头文件依赖清理
+#### 2.6 头文件依赖清理
 
 **现状**：部分头文件包含了不必要的完整头文件（如 `Entity.h` 包含了完整的组件头文件），增加编译时间。
 

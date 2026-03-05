@@ -46,6 +46,9 @@
     <ClCompile Include="Widgets\ComponentsWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\QtEventBridge.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\RenderWidget.h">
@@ -55,6 +58,9 @@
       <Filter>Widgets</Filter>
     </QtMoc>
     <QtMoc Include="Widgets\ComponentsWidget.h">
+      <Filter>Widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\QtEventBridge.h">
       <Filter>Widgets</Filter>
     </QtMoc>
   </ItemGroup>

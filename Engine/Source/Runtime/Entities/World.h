@@ -19,11 +19,11 @@ namespace Zongine {
     template<typename... Components> class View;
 
     // =========================================================================
-    // ComponentStorage — contiguous packed arrays with O(1) entity lookup
+    // ComponentStorage -- contiguous packed arrays with O(1) entity lookup
     //
     // Data layout:
     //   m_Data:          [ {entityA, compA}, {entityB, compB}, ... ]  (packed)
-    //   m_EntityToIndex: { entityA→0, entityB→1, ... }               (sparse)
+    //   m_EntityToIndex: { entityA->0, entityB->1, ... }               (sparse)
     //
     // Iteration is cache-friendly (sequential vector traversal).
     // Lookup by EntityID is O(1) amortized via hash map.
@@ -31,6 +31,7 @@ namespace Zongine {
     class IComponentStorage {
     public:
         virtual ~IComponentStorage() = default;
+        virtual void RemoveEntity(EntityID entity) = 0;
     };
 
     template<typename T>
@@ -71,12 +72,33 @@ namespace Zongine {
         std::vector<std::pair<EntityID, T>>& GetComponents() { return m_Data; }
         const std::vector<std::pair<EntityID, T>>& GetComponents() const { return m_Data; }
 
+        void RemoveComponent(EntityID entity) {
+            auto it = m_EntityToIndex.find(entity);
+            if (it == m_EntityToIndex.end()) return;
+
+            uint32_t index = it->second;
+            uint32_t lastIndex = static_cast<uint32_t>(m_Data.size()) - 1;
+
+            if (index != lastIndex) {
+                EntityID lastEntity = m_Data[lastIndex].first;
+                m_Data[index] = std::move(m_Data[lastIndex]);
+                m_EntityToIndex[lastEntity] = index;
+            }
+
+            m_Data.pop_back();
+            m_EntityToIndex.erase(it);
+        }
+
+        void RemoveEntity(EntityID entity) override {
+            RemoveComponent(entity);
+        }
+
         size_t Size() const { return m_Data.size(); }
         bool Empty() const { return m_Data.empty(); }
     };
 
     // =========================================================================
-    // World — Central ECS Registry
+    // World -- Central ECS Registry
     //
     // Entity is just an ID (EntityID = uint32_t). All data lives in
     // ComponentStorage pools owned by World. Systems query data through
@@ -92,6 +114,7 @@ namespace Zongine {
 
         // === Entity lifecycle ===
         EntityID CreateEntity(const std::string& name = "");
+        void DestroyEntity(EntityID entity);
         bool IsAlive(EntityID entity) const;
         EntityID GetRootEntity() const { return 0; }
 
@@ -117,6 +140,15 @@ namespace Zongine {
             auto it = m_Storages.find(idx);
             if (it == m_Storages.end()) return false;
             return static_cast<const ComponentStorage<T>&>(*it->second).HasComponent(entity);
+        }
+
+        template<typename T>
+        void Remove(EntityID entity) {
+            std::type_index idx(typeid(T));
+            auto it = m_Storages.find(idx);
+            if (it != m_Storages.end()) {
+                static_cast<ComponentStorage<T>&>(*it->second).RemoveComponent(entity);
+            }
         }
 
         // === Multi-component View ===
@@ -149,6 +181,7 @@ namespace Zongine {
 
     private:
         EntityID m_NextEntityID{0};
+        std::vector<EntityID> m_FreeList;
         std::unordered_set<EntityID> m_AliveEntities;
         std::unordered_map<std::type_index, std::unique_ptr<IComponentStorage>> m_Storages;
 
@@ -179,7 +212,16 @@ namespace Zongine {
     };
 
     // =========================================================================
-    // View — Multi-component query
+    // Exclude -- tag type for View exclusion filters
+    //
+    // Usage:
+    //   view.Each(Exclude<NvFlexComponent>{}, [](EntityID id, A& a, B& b) { ... });
+    // =========================================================================
+    template<typename... Ts>
+    struct Exclude {};
+
+    // =========================================================================
+    // View -- Multi-component query
     //
     // Usage:
     //   world.CreateView<TransformComponent, MeshComponent>()
@@ -187,7 +229,13 @@ namespace Zongine {
     //           // iterate all entities that have BOTH components
     //       });
     //
-    // Iterates the first component's pool and filters by the rest.
+    //   // With exclusion:
+    //   world.CreateView<TransformComponent, MeshComponent>()
+    //       .Each(Exclude<NvFlexComponent>{}, [](EntityID id, TransformComponent& t, MeshComponent& m) {
+    //           // iterate entities with Transform+Mesh but WITHOUT NvFlex
+    //       });
+    //
+    // Iterates the smallest component pool and filters by the rest.
     // =========================================================================
     template<typename... Components>
     class View {
@@ -201,6 +249,17 @@ namespace Zongine {
             auto& data = m_World.GetComponents<First>();
             for (auto& [entityID, _] : data) {
                 if ((m_World.Has<Components>(entityID) && ...)) {
+                    func(entityID, m_World.Get<Components>(entityID)...);
+                }
+            }
+        }
+
+        template<typename... Excluded, typename Func>
+        void Each(Exclude<Excluded...>, Func&& func) {
+            auto& data = m_World.GetComponents<First>();
+            for (auto& [entityID, _] : data) {
+                if ((m_World.Has<Components>(entityID) && ...) &&
+                    (!m_World.Has<Excluded>(entityID) && ...)) {
                     func(entityID, m_World.Get<Components>(entityID)...);
                 }
             }
