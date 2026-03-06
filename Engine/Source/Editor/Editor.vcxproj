@@ -102,6 +102,7 @@
   <ItemGroup>
     <ClCompile Include="Widgets\ComponentsWidget.cpp" />
     <ClCompile Include="Widgets\EntitiesWidget.cpp" />
+    <ClCompile Include="Widgets\EngineThread.cpp" />
     <ClCompile Include="Widgets\QtEventBridge.cpp" />
     <ClCompile Include="Widgets\RenderWidget.cpp" />
     <QtUic Include="Editor.ui" />
@@ -123,6 +124,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\QtEventBridge.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Widgets\EngineThread.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -9,15 +9,19 @@
 
 namespace Zongine {
     class IEditorBridge;
+    class QtEventBridge;
 
     class ComponentWidget : public QTreeWidget {
         Q_OBJECT
 
     public:
-        explicit ComponentWidget(IEditorBridge& bridge, QWidget* parent = nullptr);
+        explicit ComponentWidget(IEditorBridge& bridge, QtEventBridge& eventBridge, QWidget* parent = nullptr);
         ~ComponentWidget() = default;
 
         void UpdateComponents(uint64_t id);
+
+    public slots:
+        void RefreshCurrentEntity();
 
     private:
         using PropertyValue = std::variant<
@@ -39,5 +43,6 @@ namespace Zongine {
         void AddStringProperty(const std::string& value, QTreeWidgetItem* parent, bool readOnly);
 
         IEditorBridge& m_Bridge;
+        uint64_t m_CurrentEntityId{ 0 };
     };
 }

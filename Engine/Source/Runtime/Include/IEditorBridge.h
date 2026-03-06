@@ -64,6 +64,18 @@ namespace Zongine {
         virtual bool SetProperty(EntityID id, const std::string& componentName,
                                  const std::string& propertyName, const PropertyValue& value) = 0;
 
+        // === Property read (for undo -- get current value before overwrite) ===
+        virtual PropertyValue GetProperty(EntityID id, const std::string& componentName,
+                                          const std::string& propertyName) const = 0;
+
+        // === Undo / Redo ===
+        virtual bool SetPropertyWithUndo(EntityID id, const std::string& componentName,
+                                         const std::string& propertyName, const PropertyValue& value) = 0;
+        virtual bool Undo() = 0;
+        virtual bool Redo() = 0;
+        virtual bool CanUndo() const = 0;
+        virtual bool CanRedo() const = 0;
+
         // === Event subscription ===
         virtual void Subscribe(const std::string& event, std::function<void()> callback) = 0;
         virtual void Emit(const std::string& event) = 0;

@@ -1,6 +1,6 @@
 #pragma once
 
-// RenderData.h — Pure data structures for the rendering pipeline.
+// RenderData.h -- Pure data structures for the rendering pipeline.
 // No system/manager dependencies. This file breaks the circular dependency
 // between RenderSystem and RenderPasses.
 

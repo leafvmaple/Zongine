@@ -87,6 +87,12 @@
     <ClCompile Include="Managers\EditorBridgeImpl.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Managers\CommandHistory.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\ComponentReflection.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
     <ClCompile Include="Systems\PhysicsSystem.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
@@ -214,6 +220,15 @@
     </ClInclude>
     <ClInclude Include="Include\IEditorBridge.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ICommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ComponentReflection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\CommandHistory.h">
+      <Filter>Source Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Components\HierarchyComponent.h">
       <Filter>Source Files\Components</Filter>

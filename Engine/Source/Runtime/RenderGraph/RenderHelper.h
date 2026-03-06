@@ -1,6 +1,6 @@
 #pragma once
 
-// RenderHelper.h — Stateless draw-call submission utilities.
+// RenderHelper.h -- Stateless draw-call submission utilities.
 // Extracted from RenderSystem::TickRenderEntity to decouple
 // RenderPasses from RenderSystem.
 

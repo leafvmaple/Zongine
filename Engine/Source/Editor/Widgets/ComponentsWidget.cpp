@@ -1,4 +1,5 @@
 #include "ComponentsWidget.h"
+#include "QtEventBridge.h"
 
 #include "Runtime/Include/IEditorBridge.h"
 
@@ -11,15 +12,19 @@
 #include <QStringEncoder>
 
 namespace Zongine {
-    ComponentWidget::ComponentWidget(IEditorBridge& bridge, QWidget* parent /*= nullptr*/)
+    ComponentWidget::ComponentWidget(IEditorBridge& bridge, QtEventBridge& eventBridge, QWidget* parent /*= nullptr*/)
         : QTreeWidget(parent), m_Bridge(bridge)
     {
         setColumnCount(2);
         setHeaderLabels({ "Property", "" });
         setAlternatingRowColors(true);
+
+        // Refresh when undo/redo changes component data
+        connect(&eventBridge, &QtEventBridge::componentChanged, this, &ComponentWidget::RefreshCurrentEntity);
     }
 
     void ComponentWidget::UpdateComponents(uint64_t id) {
+        m_CurrentEntityId = id;
         clear();
 
         auto components = m_Bridge.GetComponents(static_cast<uint32_t>(id));
@@ -60,6 +65,12 @@ namespace Zongine {
         expandAll();
     }
 
+    void ComponentWidget::RefreshCurrentEntity() {
+        if (m_CurrentEntityId != 0) {
+            UpdateComponents(m_CurrentEntityId);
+        }
+    }
+
     void ComponentWidget::AddVectorProperty(const std::array<float, 3>& vec, QTreeWidgetItem* parent,
                                             uint64_t entityId, const std::string& componentName,
                                             const std::string& propertyName, bool readOnly)
@@ -96,8 +107,8 @@ namespace Zongine {
                     yEdit->text().toFloat(),
                     zEdit->text().toFloat()
                 };
-                m_Bridge.SetProperty(static_cast<uint32_t>(entityId), compName, propName,
-                                     PropertyValue(newVec));
+                m_Bridge.SetPropertyWithUndo(static_cast<uint32_t>(entityId), compName, propName,
+                                             PropertyValue(newVec));
             };
 
             connect(xEdit, &QLineEdit::editingFinished, this, onEditFinished);
@@ -131,8 +142,8 @@ namespace Zongine {
 
             connect(edit, &QLineEdit::editingFinished, this, [this, edit, entityId, compName, propName]() {
                 float newVal = edit->text().toFloat();
-                m_Bridge.SetProperty(static_cast<uint32_t>(entityId), compName, propName,
-                                     PropertyValue(newVal));
+                m_Bridge.SetPropertyWithUndo(static_cast<uint32_t>(entityId), compName, propName,
+                                             PropertyValue(newVal));
             });
         }
 
@@ -168,8 +179,8 @@ namespace Zongine {
             std::string propName = propertyName;
 
             connect(checkBox, &QCheckBox::toggled, this, [this, entityId, compName, propName](bool checked) {
-                m_Bridge.SetProperty(static_cast<uint32_t>(entityId), compName, propName,
-                                     PropertyValue(checked));
+                m_Bridge.SetPropertyWithUndo(static_cast<uint32_t>(entityId), compName, propName,
+                                             PropertyValue(checked));
             });
         }
 

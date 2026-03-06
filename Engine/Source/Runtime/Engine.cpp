@@ -25,6 +25,7 @@
 
 #include "Entities/World.h"
 #include "Managers/EditorBridgeImpl.h"
+#include "Include/ComponentReflection.h"
 
 #include <algorithm>
 #include <string>
@@ -65,6 +66,9 @@ namespace Zongine {
 
         m_AssetManager = std::make_unique<AssetManager>();
         SingleManager<AssetManager>::Register(m_AssetManager.get());
+
+        // Register component reflection data for editor introspection
+        RegisterAllComponents();
     }
 
     void Engine::_DestroyManagers() {
@@ -142,6 +146,8 @@ namespace Zongine {
     }
 
     void Engine::Tick() {
+        std::lock_guard<std::recursive_mutex> lock(m_TickMutex);
+
         LARGE_INTEGER now{};
         QueryPerformanceCounter(&now);
         float deltaTime = static_cast<float>(now.QuadPart - m_LastTime.QuadPart) / static_cast<float>(m_Frequency.QuadPart);
@@ -201,7 +207,7 @@ namespace Zongine {
 
     IEditorBridge& Engine::GetEditorBridge() {
         if (!m_EditorBridge) {
-            m_EditorBridge = std::make_unique<EditorBridgeImpl>();
+            m_EditorBridge = std::make_unique<EditorBridgeImpl>(m_TickMutex);
         }
         return *m_EditorBridge;
     }

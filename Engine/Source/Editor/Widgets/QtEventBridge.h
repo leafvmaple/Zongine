@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QObject>
-#include <cstdint>
 
 namespace Zongine {
     class IEditorBridge;
@@ -24,6 +23,6 @@ namespace Zongine {
 
     signals:
         void entityTreeChanged();
-        void componentChanged(uint64_t entityId);
+        void componentChanged();
     };
 }

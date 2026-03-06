@@ -1,8 +1,7 @@
 #include "RenderWidget.h"
+#include "EngineThread.h"
 
 #include "Runtime/Engine.h"
-
-#include <QTimer>
 
 namespace Zongine {
     RenderWidget::RenderWidget(std::shared_ptr<Engine> engine, QWidget* parent /*= nullptr*/) {
@@ -11,16 +10,19 @@ namespace Zongine {
         setAttribute(Qt::WA_NoSystemBackground);
 
         hwnd = reinterpret_cast<HWND>(winId());
-        auto nWidth = width();
-        auto nHeight = height();
 
         engine->Initialize(hwnd);
-
-        QTimer* timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &RenderWidget::Tick);
-        timer->start(16);
-
         m_Engine = engine;
+
+        // Start the engine tick loop on a dedicated thread
+        m_EngineThread = new EngineThread(engine, this);
+        m_EngineThread->start();
+    }
+
+    RenderWidget::~RenderWidget() {
+        if (m_EngineThread) {
+            m_EngineThread->Stop();
+        }
     }
 
     void RenderWidget::resizeEvent(QResizeEvent* event) {
@@ -29,11 +31,6 @@ namespace Zongine {
     }
 
     void RenderWidget::paintEvent(QPaintEvent* event) {
-        // engine->Run();
-    }
-
-    void RenderWidget::Tick() {
-        if (m_Engine->IsRunning())
-            m_Engine->Tick();
+        // Rendering is handled by EngineThread
     }
 }

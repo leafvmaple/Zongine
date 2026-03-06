@@ -26,13 +26,13 @@ namespace Zongine {
     struct AnimTransition;
 
     /**
-     * 动画系统
+     * Animation System
      * 
-     * 负责更新所有实体的动画状态机和动画组件
-     * 完全基于ECS架构:
-     * 1. 状态机驱动的动画切换（纯组件数据）
-     * 2. 骨骼动画播放和插值
-     * 3. 蒙皮变换计算
+     * Responsible for updating animation state machines and animation components for all entities
+     * Fully based on ECS architecture:
+     * 1. State machine driven animation switching (pure component data)
+     * 2. Skeletal animation playback and interpolation
+     * 3. Skinning transform computation
      */
     class AnimationSystem {
     public:
@@ -41,7 +41,7 @@ namespace Zongine {
     private:
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<int>>> m_SkeletonMeshMap{};
 
-        // 状态机逻辑
+        // State machine logic
         void _LoadStateMachineFromAsset(EntityID entityID, AnimStateMachineComponent& stateMachineComp);
         void _UpdateStateMachine(EntityID entityID, float deltaTime);
         void _InitializeStateMachine(EntityID entityID);
@@ -51,7 +51,7 @@ namespace Zongine {
         bool _EvaluateCondition(const AnimCondition& condition, const AnimParameterCollectionComponent& params) const;
         bool _CanTransition(const AnimTransition& transition, const AnimParameterCollectionComponent& params, float normalizedTime) const;
 
-        // 骨骼动画逻辑
+        // Skeletal animation logic
         void _UpdateSkeletonSpaceRecursive(
             AnimationComponent& component,
             std::shared_ptr<SkeletonAsset> skeleton,

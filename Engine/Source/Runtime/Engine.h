@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <string>
 #include <functional>
+#include <mutex>
 
 #include "Include/Types.h"
 
@@ -61,6 +62,10 @@ namespace Zongine {
         // Editor Bridge -- provides a decoupled interface for Editor UI
         IEditorBridge& GetEditorBridge();
 
+        // Tick mutex -- protects ECS data access across threads
+        // Engine thread locks during Tick(); UI thread locks during property access
+        std::recursive_mutex& GetTickMutex() { return m_TickMutex; }
+
     private:
         // === Managers (Engine owns them, initialization order matters) ===
         std::unique_ptr<WindowManager> m_WindowManager;
@@ -88,6 +93,7 @@ namespace Zongine {
         LARGE_INTEGER m_Frequency{};
 
         std::unique_ptr<IEditorBridge> m_EditorBridge;
+        std::recursive_mutex m_TickMutex;
 
         void _CreateManagers();
         void _DestroyManagers();

@@ -7,5 +7,9 @@ namespace Zongine {
         bridge.Subscribe("ENTITY_UPDATE", [this]() {
             emit entityTreeChanged();
         });
+
+        bridge.Subscribe("COMPONENT_UPDATE", [this]() {
+            emit componentChanged();
+        });
     }
 }
