@@ -119,8 +119,9 @@ namespace Zongine {
 
             for (int i = 0; i < meshSkeletonMap.size(); i++) {
                 auto skeletonIndex = meshSkeletonMap[i];
-                if (skeletonIndex == -1)
+                if (skeletonIndex == -1) {
                     continue;
+                }
 
                 meshComponent.BoneModelTransforms[i] = animation.ModelTransforms[skeletonIndex];
 

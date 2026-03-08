@@ -5,8 +5,10 @@
 #include "../Managers/DeviceManager.h"
 #include "../Managers/StateManager.h"
 #include "../Managers/EffectManager.h"
+#include <iostream>
 
 namespace Zongine {
+    static bool g_firstOpaquePass = true;
 
     // ==================== OpaquePass ====================
     OpaquePass::OpaquePass() {
@@ -24,10 +26,21 @@ namespace Zongine {
         if (!m_bEnabled) return;
 
         auto* ctx = graph.GetRenderContext();
-        if (!ctx) return;
+        if (!ctx) {
+            if (g_firstOpaquePass) std::cerr << "[OpaquePass] ERROR: RenderContext is NULL" << std::endl;
+            return;
+        }
 
         auto rtv = graph.GetRenderTarget("MainRT");
         auto dsv = graph.GetDepthStencil("DepthStencil");
+        
+        if (g_firstOpaquePass) {
+            std::cout << "[OpaquePass] MainRT: " << (rtv ? "OK" : "NULL") 
+                      << ", DepthStencil: " << (dsv ? "OK" : "NULL")
+                      << ", OpaqueQueue size: " << ctx->OpaqueQueue.size() << std::endl;
+            g_firstOpaquePass = false;
+        }
+        
         if (!rtv || !dsv) return;
 
         // Set render target

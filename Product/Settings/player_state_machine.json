@@ -3,13 +3,13 @@
   "states": [
     {
       "name": "Idle",
-      "animationPath": "Art/Animations/F1_Idle.ani",
+      "animationPath": "assets/Animations/F1_Idle.gltf",
       "loop": true,
       "speed": 1.0
     },
     {
       "name": "Run",
-      "animationPath": "Art/Animations/F1_Run.ani",
+      "animationPath": "assets/Animations/F1_Run.gltf",
       "loop": true,
       "speed": 1.0
     }

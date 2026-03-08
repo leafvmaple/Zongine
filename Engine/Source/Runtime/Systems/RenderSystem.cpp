@@ -20,6 +20,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <memory>
+#include <iostream>
 
 #include "FX11/inc/d3dx11effect.h"
 
@@ -66,13 +67,13 @@ namespace Zongine {
         m_RenderGraph->ImportRenderTarget("OITAccumulation", deviceMgr.GetOITAccRTV());
         m_RenderGraph->ImportRenderTarget("OITWeight", deviceMgr.GetOITWeightRTV());
         
-        // Add render passes — passes no longer need a RenderSystem pointer
+        // Add render passes -- passes no longer need a RenderSystem pointer
         // 0. Clear SwapChain - Black background
-        auto clearSwapChain = m_RenderGraph->AddPass<ClearPass>("ClearSwapChain", "SwapChainRT", Colors::Black);
+        auto clearSwapChain = m_RenderGraph->AddPass<ClearPass>("ClearSwapChain", "SwapChainRT", Colors::CornflowerBlue);
         clearSwapChain->SetClearDepth(false);
         
         // 1. Clear main render target and depth buffer - Black background
-        auto clearMainRT = m_RenderGraph->AddPass<ClearPass>("ClearMainRT", "MainRT", Colors::Black);
+        auto clearMainRT = m_RenderGraph->AddPass<ClearPass>("ClearMainRT", "MainRT", Colors::CornflowerBlue);
         
         // 2. Opaque Pass
         auto opaquePass = m_RenderGraph->AddPass<OpaquePass>("OpaquePass");
@@ -146,7 +147,12 @@ namespace Zongine {
 
     void RenderSystem::_UpdateRenderQueue(EntityID entityID) {
         auto& world = World::GetInstance();
+        static bool firstUpdate = true;
+        
         if (world.Has<MeshComponent>(entityID)) {
+            if (firstUpdate) {
+                std::cout << "[RenderSystem] Adding mesh entity: " << entityID << std::endl;
+            }
             _AddRenderEntity(entityID);
         }
         if (world.Has<LandscapeRegionComponent>(entityID)) {
@@ -155,6 +161,13 @@ namespace Zongine {
 
         for (auto& childID : world.GetChildren(entityID)) {
             _UpdateRenderQueue(childID);
+        }
+        
+        if (firstUpdate && entityID == World::GetInstance().GetRootEntity()) {
+            std::cout << "[RenderSystem] Render queues built - Opaque: " << m_RenderContext.OpaqueQueue.size() 
+                      << ", OIT: " << m_RenderContext.OITQueue.size() 
+                      << ", Terrain: " << m_RenderContext.TerrainQueue.size() << std::endl;
+            firstUpdate = false;
         }
     }
 
@@ -172,11 +185,34 @@ namespace Zongine {
         auto& materialComponent = world.Get<MaterialComponent>(entityID);
 
         auto mesh = AssetManager::GetInstance().GetMeshAsset(meshComponent.Path);
+        if (!mesh) {
+            std::cerr << "[RenderSystem] ERROR: Failed to get mesh asset: " << meshComponent.Path << std::endl;
+            return;
+        }
+        
         auto material = AssetManager::GetInstance().GetModelMaterialAsset(materialComponent.Path);
+        if (!material) {
+            std::cerr << "[RenderSystem] ERROR: Failed to get material asset: " << materialComponent.Path << std::endl;
+            return;
+        }
+        
         auto shader = AssetManager::GetInstance().GetShaderAsset(mesh->Macro, shaderComponent.Paths);
+        if (!shader) {
+            std::cerr << "[RenderSystem] ERROR: Failed to get shader asset for mesh: " << meshComponent.Path << std::endl;
+            return;
+        }
 
         auto& vertexBuffer = mesh->Vertex;
         auto& indexBuffer = mesh->Index;
+        
+        if (!vertexBuffer.Buffer) {
+            std::cerr << "[RenderSystem] ERROR: Mesh has null vertex buffer: " << meshComponent.Path << std::endl;
+            return;
+        }
+        if (!indexBuffer.Buffer) {
+            std::cerr << "[RenderSystem] ERROR: Mesh has null index buffer: " << meshComponent.Path << std::endl;
+            return;
+        }
 
         XMStoreFloat4x4A(&inverseTransform, XMMatrixInverse(nullptr, XMLoadFloat4x4(&transformComponent.World)));
 

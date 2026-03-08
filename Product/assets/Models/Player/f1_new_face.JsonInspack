@@ -1,0 +1,708 @@
+{
+    "UseDX9Lighting": 1,
+    "UseDX9Detail": 0,
+    "LOD": [
+        {
+            "Group": [
+                {
+                    "Subset": [
+                        {
+                            "Info": {
+                                "Version": 2,
+                                "RefPath": "data\\material\\material\\mtl_face_classic.jsondef"
+                            },
+                            "RenderState": {
+                                "bOverWriteRS": 1,
+                                "nRenderState": 0,
+                                "AlphaRef": 0,
+                                "AlphaRef2": 0,
+                                "TwoSide": 0,
+                                "CreatShadow": 1,
+                                "BlendMode": 0,
+                                "OITWorkflow": 0,
+                                "OITOptimiseOption": 0,
+                                "DistortionMode": 0
+                            },
+                            "Param": [
+                                {
+                                    "Name": "BaseColorMap",
+                                    "Type": "Texture",
+                                    "Value": "data\\source\\player\\f1\\部件\\texture\\f1_new_face.tga"
+                                },
+                                {
+                                    "Name": "eyeShadowMask",
+                                    "Type": "Texture",
+                                    "Value": "data\\material\\texture\\facetexture\\eyeshadowmask04.tga"
+                                },
+                                {
+                                    "Name": "glitter_1_NormalUV",
+                                    "Type": "Texture",
+                                    "Value": "data\\material\\texture\\facetexture\\glitter_normal_rgba_001.tga"
+                                },
+                                {
+                                    "Name": "glitter_2_NormalUV",
+                                    "Type": "Texture",
+                                    "Value": "data\\material\\texture\\facetexture\\glitter_normal_rgba_002.tga"
+                                },
+                                {
+                                    "Name": "glitter_3_NormalUV",
+                                    "Type": "Texture",
+                                    "Value": "data\\material\\texture\\facetexture\\glitter_normal_rgba_003.tga"
+                                },
+                                {
+                                    "Name": "glitter_4_NormalUV",
+                                    "Type": "Texture",
+                                    "Value": "data\\material\\texture\\facetexture\\glitter_normal_rgba_004.tga"
+                                },
+                                {
+                                    "Name": "唇膏 - Mask",
+                                    "Type": "Texture",
+                                    "Value": "data\\material\\texture\\facetexture\\lipmask.tga"
+                                },
+                                {
+                                    "Name": "闪粉 - NoiseMap",
+                                    "Type": "Texture",
+                                    "Value": "data\\material\\texture\\facetexture\\noise_mask_01.tga"
+                                },
+                                {
+                                    "Name": "anisoAngleMax",
+                                    "Type": "Float",
+                                    "Value": 0.3499999940395355
+                                },
+                                {
+                                    "Name": "anisoAngleMax1",
+                                    "Type": "Float",
+                                    "Value": 0.3499999940395355
+                                },
+                                {
+                                    "Name": "anisoAngleMin",
+                                    "Type": "Float",
+                                    "Value": 0.05000000074505806
+                                },
+                                {
+                                    "Name": "anisoAngleMin1",
+                                    "Type": "Float",
+                                    "Value": 0.05000000074505806
+                                },
+                                {
+                                    "Name": "anisoX<-->1-X",
+                                    "Type": "Float",
+                                    "Value": 0.10999999940395355
+                                },
+                                {
+                                    "Name": "anisoY<- ->1-Y",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "aniso强度2",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "aniso强度22",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "aniso强度3",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "aniso强度33",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "aniso强度4",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "aniso强度44",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "eyeShadowMaskUVScale",
+                                    "Type": "Float",
+                                    "Value": 5.848599910736084
+                                },
+                                {
+                                    "Name": "eyeShadow_1_strength",
+                                    "Type": "Float",
+                                    "Value": 0.08969999849796295
+                                },
+                                {
+                                    "Name": "eyeShadow_1_switch",
+                                    "Type": "Float",
+                                    "Value": 1.0
+                                },
+                                {
+                                    "Name": "eyeShadow_2_strength",
+                                    "Type": "Float",
+                                    "Value": 0.11029999703168869
+                                },
+                                {
+                                    "Name": "eyeShadow_2_switch",
+                                    "Type": "Float",
+                                    "Value": 1.0
+                                },
+                                {
+                                    "Name": "eyeShadow_3_strength",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "eyeShadow_3_switch",
+                                    "Type": "Float",
+                                    "Value": 1.0
+                                },
+                                {
+                                    "Name": "eyeShadow_4_strength",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "eyeShadow_4_switch",
+                                    "Type": "Float",
+                                    "Value": 1.0
+                                },
+                                {
+                                    "Name": "glitter - Tiling",
+                                    "Type": "Float",
+                                    "Value": 0.07880000025033951
+                                },
+                                {
+                                    "Name": "glitter_1_Density",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "glitter_1_switch",
+                                    "Type": "Float",
+                                    "Value": 1.0
+                                },
+                                {
+                                    "Name": "glitter_2_Density",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "glitter_2_switch",
+                                    "Type": "Float",
+                                    "Value": 1.0
+                                },
+                                {
+                                    "Name": "glitter_3_Density",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "glitter_3_switch",
+                                    "Type": "Float",
+                                    "Value": 1.0
+                                },
+                                {
+                                    "Name": "glitter_4_Density",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "glitter_4_switch",
+                                    "Type": "Float",
+                                    "Value": 1.0
+                                },
+                                {
+                                    "Name": "maskFlip_H",
+                                    "Type": "Float",
+                                    "Value": 1.0
+                                },
+                                {
+                                    "Name": "唇膏 - 开关（1为打开）",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "唇膏 - 强度",
+                                    "Type": "Float",
+                                    "Value": 0.5699999928474426
+                                },
+                                {
+                                    "Name": "叠涂 - 开关（1为打开）",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "叠涂 - 强度",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "偏光 - 开关（1为打开）",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "偏光 - 强度",
+                                    "Type": "Float",
+                                    "Value": 0.6100000143051148
+                                },
+                                {
+                                    "Name": "闪粉 - Tiling",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "闪粉 - 开关（1为打开）",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "眼影闪片密度Max",
+                                    "Type": "Float",
+                                    "Value": 0.7576000094413757
+                                },
+                                {
+                                    "Name": "着色范围修正",
+                                    "Type": "Float",
+                                    "Value": 0.009999999776482582
+                                },
+                                {
+                                    "Name": "着色力度",
+                                    "Type": "Float",
+                                    "Value": 0.0
+                                },
+                                {
+                                    "Name": "eyeShadowMaskOffSet",
+                                    "Type": "Float2",
+                                    "Value": [
+                                        -3.0081000328063967,
+                                        -3.414599895477295
+                                    ]
+                                },
+                                {
+                                    "Name": "偏色分量RGB",
+                                    "Type": "Float3",
+                                    "Value": [
+                                        0.0,
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Name": "SpecularColor",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.7901121377944946,
+                                        0.4134584665298462,
+                                        1.0,
+                                        0.44999998807907107
+                                    ]
+                                },
+                                {
+                                    "Name": "anisoColor2",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.2549020051956177,
+                                        0.5294119715690613,
+                                        0.6509799957275391,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Name": "anisoColor22",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.2549020051956177,
+                                        0.5294119715690613,
+                                        0.6509799957275391,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Name": "anisoColor3",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.1450980007648468,
+                                        0.6509799957275391,
+                                        0.003921569790691137,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Name": "anisoColor33",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.1450980007648468,
+                                        0.6509799957275391,
+                                        0.003921569790691137,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Name": "anisoColor4",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.6509799957275391,
+                                        0.050980400294065478,
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Name": "anisoColor44",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.6509799957275391,
+                                        0.050980400294065478,
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Name": "eyeShadow_1_color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.6941180229187012,
+                                        0.6823530197143555,
+                                        0.0,
+                                        0.6065000295639038
+                                    ]
+                                },
+                                {
+                                    "Name": "eyeShadow_2_color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.8087430000305176,
+                                        0.0,
+                                        0.15675599873065949,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Name": "eyeShadow_3_color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.09019610285758972,
+                                        0.5372549891471863,
+                                        0.4313730001449585,
+                                        2.6658999919891359
+                                    ]
+                                },
+                                {
+                                    "Name": "eyeShadow_4_color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.5960779786109924,
+                                        0.21960799396038056,
+                                        0.0,
+                                        2.277600049972534
+                                    ]
+                                },
+                                {
+                                    "Name": "glitter_1_Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.7213090062141419,
+                                        0.07333490252494812,
+                                        0.0,
+                                        2.210200071334839
+                                    ]
+                                },
+                                {
+                                    "Name": "glitter_2_Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.8961780071258545,
+                                        0.05169760063290596,
+                                        0.49167600274086,
+                                        3.0
+                                    ]
+                                },
+                                {
+                                    "Name": "glitter_3_Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.24641799926757813,
+                                        0.24274100363254548,
+                                        0.7213090062141419,
+                                        3.0
+                                    ]
+                                },
+                                {
+                                    "Name": "glitter_4_Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.09738309681415558,
+                                        0.7213090062141419,
+                                        0.0,
+                                        3.0
+                                    ]
+                                },
+                                {
+                                    "Name": "唇膏 - ColorTint",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.9746242761611939,
+                                        0.4288243055343628,
+                                        0.540627121925354,
+                                        0.35040000081062319
+                                    ]
+                                },
+                                {
+                                    "Name": "叠涂 - BaseColorTint",
+                                    "Type": "Color",
+                                    "Value": [
+                                        1.0,
+                                        0.17998015880584718,
+                                        0.1250019073486328,
+                                        0.6827999949455261
+                                    ]
+                                },
+                                {
+                                    "Name": "偏光 - 区域Tint",
+                                    "Type": "Color",
+                                    "Value": [
+                                        1.0,
+                                        0.251834899187088,
+                                        0.0,
+                                        1.2920000553131104
+                                    ]
+                                },
+                                {
+                                    "Name": "偏色颜色",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.2623029947280884,
+                                        0.24840199947357179,
+                                        0.21356500685214997,
+                                        0.4300000071525574
+                                    ]
+                                },
+                                {
+                                    "Name": "闪粉 - Color",
+                                    "Type": "Color",
+                                    "Value": [
+                                        1.0,
+                                        0.6954759955406189,
+                                        0.0673075020313263,
+                                        1.1699999570846558
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "Info": {
+                                "Version": 2,
+                                "RefPath": "data\\material\\material\\mtl_eye_classic.jsondef"
+                            },
+                            "RenderState": {
+                                "bOverWriteRS": 1,
+                                "nRenderState": 0,
+                                "AlphaRef": 128,
+                                "AlphaRef2": 128,
+                                "TwoSide": 0,
+                                "CreatShadow": 1,
+                                "BlendMode": 1,
+                                "OITWorkflow": 0,
+                                "OITOptimiseOption": 0,
+                                "DistortionMode": 0
+                            },
+                            "Param": [
+                                {
+                                    "Name": "静态眼神光纹理",
+                                    "Type": "Texture",
+                                    "Value": "data\\source\\player\\f2\\部件\\f2裸体模型\\face\\f2_eyelight_02.tga"
+                                },
+                                {
+                                    "Name": "眼球颜色",
+                                    "Type": "Texture",
+                                    "Value": "data\\source\\player\\f1\\部件\\texture\\eyediffuse.tga"
+                                },
+                                {
+                                    "Name": "眼神光纹理",
+                                    "Type": "Texture",
+                                    "Value": "data\\source\\player\\f2\\部件\\f2裸体模型\\face\\f2_eyelight_01.tga"
+                                },
+                                {
+                                    "Name": "静态眼神光UV尺寸",
+                                    "Type": "Float",
+                                    "Value": 50.0
+                                },
+                                {
+                                    "Name": "眼神光UV尺寸",
+                                    "Type": "Float",
+                                    "Value": 0.8051999807357788
+                                },
+                                {
+                                    "Name": "眼神光强度",
+                                    "Type": "Float",
+                                    "Value": 0.10000000149011612
+                                },
+                                {
+                                    "Name": "眼神光切换",
+                                    "Type": "Float",
+                                    "Value": 0.550000011920929
+                                },
+                                {
+                                    "Name": "静态眼神光位置",
+                                    "Type": "Float2",
+                                    "Value": [
+                                        -0.014499999582767487,
+                                        0.12080000340938568
+                                    ]
+                                },
+                                {
+                                    "Name": "眼神光偏移位置",
+                                    "Type": "Float2",
+                                    "Value": [
+                                        0.23669999837875367,
+                                        0.15940000116825105
+                                    ]
+                                },
+                                {
+                                    "Name": "静态眼神光颜色",
+                                    "Type": "Color",
+                                    "Value": [
+                                        1.0,
+                                        1.0,
+                                        1.0,
+                                        0.8579999804496765
+                                    ]
+                                },
+                                {
+                                    "Name": "眼神光颜色",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.38684672117233279,
+                                        0.3333180844783783,
+                                        0.5028610825538635,
+                                        17.75079917907715
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "Info": {
+                                "Version": 2,
+                                "RefPath": "data\\material\\material\\mtl_eye_classic.jsondef"
+                            },
+                            "RenderState": {
+                                "bOverWriteRS": 1,
+                                "nRenderState": 0,
+                                "AlphaRef": 128,
+                                "AlphaRef2": 128,
+                                "TwoSide": 0,
+                                "CreatShadow": 1,
+                                "BlendMode": 1,
+                                "OITWorkflow": 0,
+                                "OITOptimiseOption": 0,
+                                "DistortionMode": 0
+                            },
+                            "Param": [
+                                {
+                                    "Name": "静态眼神光纹理",
+                                    "Type": "Texture",
+                                    "Value": "data\\source\\player\\f2\\部件\\f2裸体模型\\face\\f2_eyelight_02.tga"
+                                },
+                                {
+                                    "Name": "眼球颜色",
+                                    "Type": "Texture",
+                                    "Value": "data\\source\\player\\f1\\部件\\texture\\eyediffuse.tga"
+                                },
+                                {
+                                    "Name": "眼神光纹理",
+                                    "Type": "Texture",
+                                    "Value": "data\\source\\player\\f2\\部件\\f2裸体模型\\face\\f2_eyelight_01.tga"
+                                },
+                                {
+                                    "Name": "静态眼神光UV尺寸",
+                                    "Type": "Float",
+                                    "Value": 50.0
+                                },
+                                {
+                                    "Name": "眼神光UV尺寸",
+                                    "Type": "Float",
+                                    "Value": 0.8051999807357788
+                                },
+                                {
+                                    "Name": "眼神光强度",
+                                    "Type": "Float",
+                                    "Value": 0.10000000149011612
+                                },
+                                {
+                                    "Name": "眼神光切换",
+                                    "Type": "Float",
+                                    "Value": 0.550000011920929
+                                },
+                                {
+                                    "Name": "静态眼神光位置",
+                                    "Type": "Float2",
+                                    "Value": [
+                                        -0.014499999582767487,
+                                        0.12080000340938568
+                                    ]
+                                },
+                                {
+                                    "Name": "眼神光偏移位置",
+                                    "Type": "Float2",
+                                    "Value": [
+                                        0.014499999582767487,
+                                        0.188400000333786
+                                    ]
+                                },
+                                {
+                                    "Name": "静态眼神光颜色",
+                                    "Type": "Color",
+                                    "Value": [
+                                        1.0,
+                                        1.0,
+                                        1.0,
+                                        0.8579999804496765
+                                    ]
+                                },
+                                {
+                                    "Name": "眼神光颜色",
+                                    "Type": "Color",
+                                    "Value": [
+                                        0.38684672117233279,
+                                        0.3333180844783783,
+                                        0.5028610825538635,
+                                        17.75079917907715
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "Info": {
+                                "Version": 2,
+                                "RefPath": "data\\material\\material\\mtl_std.jsondef"
+                            },
+                            "RenderState": {
+                                "bOverWriteRS": 1,
+                                "nRenderState": 0,
+                                "AlphaRef": 253,
+                                "AlphaRef2": 0,
+                                "TwoSide": 1,
+                                "CreatShadow": 1,
+                                "BlendMode": 5,
+                                "OITWorkflow": 0,
+                                "OITOptimiseOption": 0,
+                                "DistortionMode": 0
+                            },
+                            "Param": [
+                                {
+                                    "Name": "BaseColorMap",
+                                    "Type": "Texture",
+                                    "Value": "data\\source\\player\\f1\\部件\\texture\\f1_new_face.tga"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

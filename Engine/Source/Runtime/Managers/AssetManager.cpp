@@ -18,6 +18,7 @@
 
 #include "LAssert.h"
 
+#include <iostream>
 #include "IMesh.h"
 #include "IGltfLoader.h"
 #include "IModel.h"
@@ -43,14 +44,29 @@ namespace Zongine {
         nlohmann::json playerConfig;
         stream >> playerConfig;
 
-        LoadModel(player, playerConfig["mdl"].get<std::string>());
+        std::cout << "[AssetManager] Loading player from config: " << path << std::endl;
+        
+        // Support both legacy "mdl" and new "skeleton" format
+        if (playerConfig.contains("skeleton")) {
+            std::cout << "[AssetManager] Using skeleton format: " << playerConfig["skeleton"].get<std::string>() << std::endl;
+            // New format: skeleton path points directly to a glTF file with bone hierarchy
+            LoadModel(player, playerConfig["skeleton"].get<std::string>());
+        } else if (playerConfig.contains("mdl")) {
+            std::cout << "[AssetManager] Using mdl format: " << playerConfig["mdl"].get<std::string>() << std::endl;
+            // Legacy format: mdl file contains skeleton txt path
+            LoadModel(player, playerConfig["mdl"].get<std::string>());
+        } else {
+            std::cerr << "[AssetManager] ERROR: player config missing skeleton or mdl field" << std::endl;
+        }
 
+        std::cout << "[AssetManager] Loading meshes..." << std::endl;
         EntityID head = world.AddChild(player, "Head");
         LoadMesh(head, playerConfig["mesh"]["head"].get<std::string>());
         EntityID body = world.AddChild(player, "Body");
         LoadMesh(body, playerConfig["mesh"]["body"].get<std::string>());
         EntityID face = world.AddChild(head, "Face");
         LoadMesh(face, playerConfig["mesh"]["face"].get<std::string>(), "s_face");
+        std::cout << "[AssetManager] Meshes loaded" << std::endl;
 
         // TODO: Load animation path from player config instead of hardcoding
         world.Assign<AnimationComponent>(player, AnimationComponent{ "data/source/player/F1/����/F1b02dj����b.ani" });
@@ -60,18 +76,25 @@ namespace Zongine {
         auto& controller = world.Assign<CharacterControllerComponent>(player, CharacterControllerComponent{});
         controller.MoveSpeed = 5.0f;
         controller.EnableInput = true;
+        std::cout << "[AssetManager] Player loaded successfully" << std::endl;
     }
 
     void AssetManager::LoadModel(EntityID entity, const std::string& path) {
         auto& world = World::GetInstance();
-        MODEL_DESC desc{ path.c_str() };
-        MODEL_SOURCE source{};
-
+        
         world.Assign<TransformComponent>(entity, TransformComponent{});
 
-        ::LoadModel(&desc, &source);
-
-        world.Assign<SkeletonComponent>(entity, SkeletonComponent{ source.szSkeletonPath });
+        // Check if the path is a glTF file (new format) or mdl file (legacy)
+        if (IsGLTFFile(path.c_str())) {
+            // New format: path directly points to glTF file containing skeleton
+            world.Assign<SkeletonComponent>(entity, SkeletonComponent{ path });
+        } else {
+            // Legacy format: path points to mdl file
+            MODEL_DESC desc{ path.c_str() };
+            MODEL_SOURCE source{};
+            ::LoadModel(&desc, &source);
+            world.Assign<SkeletonComponent>(entity, SkeletonComponent{ source.szSkeletonPath });
+        }
 
         return;
     }
@@ -210,6 +233,7 @@ namespace Zongine {
             auto skeleton = AssetManager::GetSkeletonAsset(skeletonPath);
             auto mesh = GetMeshAsset(meshPath);
             map.resize(mesh->BoneMap.size(), -1);
+            
             for (auto [boneName, index] : mesh->BoneMap) {
                 auto it = std::find_if(skeleton->Bones.begin(), skeleton->Bones.end(), [boneName](const SkeletonBone& bone) {
                     return bone.Name == boneName;
@@ -314,13 +338,26 @@ namespace Zongine {
         MESH_SOURCE source{};
         auto mesh = std::make_shared<MeshAsset>();
 
+        std::cout << "[AssetManager] Loading mesh: " << path << std::endl;
+        
+        bool loadSuccess = false;
         if (IsGLTFFile(path.c_str())) {
             GLTF_DESC gltfDesc{ path.c_str() };
-            LoadMeshFromGLTF(&gltfDesc, &source);
+            loadSuccess = LoadMeshFromGLTF(&gltfDesc, &source);
         }
         else {
             MESH_DESC desc{ path.c_str() };
-            ::LoadMesh(&desc, &source);
+            loadSuccess = ::LoadMesh(&desc, &source);
+        }
+        
+        if (!loadSuccess) {
+            std::cerr << "[AssetManager] ERROR: Failed to load mesh: " << path << std::endl;
+            return nullptr;
+        }
+        
+        if (source.nVerticesCount == 0) {
+            std::cerr << "[AssetManager] ERROR: Mesh has 0 vertices: " << path << std::endl;
+            return nullptr;
         }
 
         if (source.nVertexFVF & FVF_SKIN)
@@ -332,8 +369,18 @@ namespace Zongine {
         _LoadBone(mesh.get(), source);
         _LoadSocket(mesh.get(), source);
 
-        _LoadVertexBuffer(mesh.get(), source);
-        _LoadIndexBuffer(mesh.get(), source);
+        if (!_LoadVertexBuffer(mesh.get(), source)) {
+            std::cerr << "[AssetManager] ERROR: Failed to create vertex buffer for: " << path << std::endl;
+            return nullptr;
+        }
+        if (!_LoadIndexBuffer(mesh.get(), source)) {
+            std::cerr << "[AssetManager] ERROR: Failed to create index buffer for: " << path << std::endl;
+            return nullptr;
+        }
+        
+        std::cout << "[AssetManager] Mesh buffers created - Vertices: " << source.nVerticesCount 
+                  << ", Indices: " << source.nIndexCount 
+                  << ", Bones: " << source.nBonesCount << std::endl;
 
         neighborVertices.resize(source.nVerticesCount);
         for (int i = 0; i < source.nIndexCount / 3; i++) {
@@ -357,8 +404,23 @@ namespace Zongine {
             mesh->NeighborVertices[i].assign(neighborVertices[i].begin(), neighborVertices[i].end());
         }
 
-        if (TryReplaceExtension(filePath, ".mesh.flx")) {
-            auto flex = GetNvFlexAsset(filePath.string());
+        // Try to find .flx file for flex mesh support
+        // For glTF files, try both .mesh.flx and .gltf.flx extensions
+        std::filesystem::path flexPath = filePath;
+        bool hasFlexConfig = false;
+        
+        if (TryReplaceExtension(flexPath, ".mesh.flx")) {
+            hasFlexConfig = true;
+        } else {
+            flexPath = filePath;
+            if (TryReplaceExtension(flexPath, ".gltf.flx")) {
+                hasFlexConfig = true;
+            }
+        }
+        
+        if (hasFlexConfig) {
+            std::cout << "[AssetManager] Found flex config: " << flexPath.string() << std::endl;
+            auto flex = GetNvFlexAsset(flexPath.string());
             mesh->Macro = RUNTIME_MACRO_FLEX_MESH;
 
             _LoadNvFlexBuffer(flex.get(), mesh.get(), source);
@@ -385,11 +447,34 @@ namespace Zongine {
     }
 
     std::shared_ptr<SkeletonAsset> AssetManager::_LoadSkeleton(const std::string& path) {
-        SKELETON_DESC desc{ path.c_str() };
         SKELETON_SOURCE source{};
 
         auto skeleton = std::make_shared<SkeletonAsset>();
-        ::LoadSkeleton(&desc, &source);
+        
+        std::cout << "[AssetManager] Loading skeleton: " << path << std::endl;
+        
+        // Check if it's a glTF file
+        bool loadSuccess = false;
+        if (IsGLTFFile(path.c_str())) {
+            GLTF_SKELETON_DESC gltfDesc{ path.c_str() };
+            loadSuccess = ::LoadSkeletonFromGLTF(&gltfDesc, &source);
+        } else {
+            SKELETON_DESC desc{ path.c_str() };
+            loadSuccess = ::LoadSkeleton(&desc, &source);
+        }
+        
+        if (!loadSuccess) {
+            std::cerr << "[AssetManager] ERROR: Failed to load skeleton: " << path << std::endl;
+            return nullptr;
+        }
+        
+        if (source.nBoneCount == 0) {
+            std::cerr << "[AssetManager] ERROR: Skeleton has 0 bones: " << path << std::endl;
+            return nullptr;
+        }
+        
+        std::cout << "[AssetManager] Skeleton loaded - Bones: " << source.nBoneCount << std::endl;
+        
         skeleton->Path = path;
 
         for (unsigned int i = 0; i < source.nBoneCount; i++) {
@@ -427,11 +512,19 @@ namespace Zongine {
     }
 
     std::shared_ptr<AnimationAsset> AssetManager::_LoadAnimation(const std::string& path) {
-        ANIMATION_DESC desc{ path.c_str() };
         ANIMATION_SOURCE source{};
 
         auto animation = std::make_shared<AnimationAsset>();
-        ::LoadAnimation(&desc, &source);
+        
+        // Check if it's a glTF file
+        if (IsGLTFFile(path.c_str())) {
+            GLTF_ANIMATION_DESC gltfDesc{ path.c_str() };
+            LoadAnimationFromGLTF(&gltfDesc, &source);
+        }
+        else {
+            ANIMATION_DESC desc{ path.c_str() };
+            ::LoadAnimation(&desc, &source);
+        }
 
         animation->Path = path;
         animation->FrameLength = source.fFrameLength;
@@ -566,6 +659,11 @@ namespace Zongine {
         D3D11_BUFFER_DESC desc{};
         D3D11_SUBRESOURCE_DATA data{};
 
+        if (source.nVerticesCount == 0 || source.pVertices == nullptr) {
+            std::cerr << "[AssetManager] ERROR: Cannot create vertex buffer - no vertex data" << std::endl;
+            return false;
+        }
+
         desc.ByteWidth = source.nVertexSize * source.nVerticesCount;;
         desc.Usage = D3D11_USAGE_IMMUTABLE;
         desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -573,7 +671,11 @@ namespace Zongine {
 
         mesh->Vertex.uStride = source.nVertexSize;
 
-        DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, &data, mesh->Vertex.Buffer.GetAddressOf());
+        HRESULT hr = DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, &data, mesh->Vertex.Buffer.GetAddressOf());
+        if (FAILED(hr)) {
+            std::cerr << "[AssetManager] ERROR: CreateBuffer for vertex failed, HRESULT: 0x" << std::hex << hr << std::dec << std::endl;
+            return false;
+        }
 
         return true;
     }
@@ -582,6 +684,11 @@ namespace Zongine {
         D3D11_BUFFER_DESC desc{};
         D3D11_SUBRESOURCE_DATA data{};
         UINT nOffset{};
+
+        if (source.nIndexCount == 0 || source.pIndices == nullptr) {
+            std::cerr << "[AssetManager] ERROR: Cannot create index buffer - no index data" << std::endl;
+            return false;
+        }
 
         for (int i = 0; i < source.nSubsetCount; i++) {
             mesh->Subsets.emplace_back(SubsetMeshAsset{ nOffset, source.pSubsetVertexCount[i] });
@@ -595,7 +702,11 @@ namespace Zongine {
 
         mesh->Index.eFormat = DXGI_FORMAT_R32_UINT;
 
-        DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, &data, mesh->Index.Buffer.GetAddressOf());
+        HRESULT hr = DeviceManager::GetInstance().GetDevice()->CreateBuffer(&desc, &data, mesh->Index.Buffer.GetAddressOf());
+        if (FAILED(hr)) {
+            std::cerr << "[AssetManager] ERROR: CreateBuffer for index failed, HRESULT: 0x" << std::hex << hr << std::dec << std::endl;
+            return false;
+        }
 
         return true;
     }

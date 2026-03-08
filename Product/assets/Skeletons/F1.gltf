@@ -1,0 +1,564 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Zongine Skeleton Converter"
+  },
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0,
+  "nodes": [
+    {
+      "name": "bip01",
+      "children": [
+        1
+      ]
+    },
+    {
+      "name": "bip01 pelvis",
+      "children": [
+        2,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "name": "bip01 spine",
+      "children": [
+        3,
+        4,
+        5,
+        19,
+        6,
+        7
+      ]
+    },
+    {
+      "name": "bip01 l thigh",
+      "children": [
+        16
+      ]
+    },
+    {
+      "name": "bip01 r thigh",
+      "children": [
+        17
+      ]
+    },
+    {
+      "name": "bip01 spine1",
+      "children": [
+        18
+      ]
+    },
+    {
+      "name": "bip01 lthightwist"
+    },
+    {
+      "name": "bip01 rthightwist"
+    },
+    {
+      "name": "add_l501",
+      "children": [
+        20
+      ]
+    },
+    {
+      "name": "add_l401",
+      "children": [
+        21
+      ]
+    },
+    {
+      "name": "add_r401",
+      "children": [
+        22
+      ]
+    },
+    {
+      "name": "add_r501",
+      "children": [
+        23
+      ]
+    },
+    {
+      "name": "add_r101",
+      "children": [
+        24
+      ]
+    },
+    {
+      "name": "add_l101",
+      "children": [
+        25
+      ]
+    },
+    {
+      "name": "b_lp"
+    },
+    {
+      "name": "b_rp"
+    },
+    {
+      "name": "bip01 l calf",
+      "children": [
+        26
+      ]
+    },
+    {
+      "name": "bip01 r calf",
+      "children": [
+        27
+      ]
+    },
+    {
+      "name": "bip01 spine2",
+      "children": [
+        28,
+        34,
+        35,
+        36,
+        37
+      ]
+    },
+    {
+      "name": "b_spine"
+    },
+    {
+      "name": "add_l502"
+    },
+    {
+      "name": "add_l402"
+    },
+    {
+      "name": "add_r402"
+    },
+    {
+      "name": "add_r502"
+    },
+    {
+      "name": "add_r102"
+    },
+    {
+      "name": "add_l102"
+    },
+    {
+      "name": "bip01 l foot",
+      "children": [
+        29
+      ]
+    },
+    {
+      "name": "bip01 r foot",
+      "children": [
+        30
+      ]
+    },
+    {
+      "name": "bip01 neck",
+      "children": [
+        31,
+        32,
+        33
+      ]
+    },
+    {
+      "name": "bip01 l toe0"
+    },
+    {
+      "name": "bip01 r toe0"
+    },
+    {
+      "name": "bip01 neck1",
+      "children": [
+        38
+      ]
+    },
+    {
+      "name": "bip01 l clavicle",
+      "children": [
+        39,
+        40
+      ]
+    },
+    {
+      "name": "bip01 r clavicle",
+      "children": [
+        41,
+        42
+      ]
+    },
+    {
+      "name": "b_lc"
+    },
+    {
+      "name": "b_rc"
+    },
+    {
+      "name": "b_spine2"
+    },
+    {
+      "name": "b_long"
+    },
+    {
+      "name": "bip01 head",
+      "children": [
+        47
+      ]
+    },
+    {
+      "name": "bip01 l upperarm",
+      "children": [
+        43,
+        44
+      ]
+    },
+    {
+      "name": "bone_shd_l"
+    },
+    {
+      "name": "bip01 r upperarm",
+      "children": [
+        45,
+        46
+      ]
+    },
+    {
+      "name": "bone_shd_r"
+    },
+    {
+      "name": "bone_l_armtwist"
+    },
+    {
+      "name": "bip01 l foretwist",
+      "children": [
+        49
+      ]
+    },
+    {
+      "name": "bone_r_armtwist"
+    },
+    {
+      "name": "bip01 r foretwist",
+      "children": [
+        51
+      ]
+    },
+    {
+      "name": "b_hat"
+    },
+    {
+      "name": "bip01 l hand",
+      "children": [
+        52,
+        53,
+        54,
+        55,
+        56,
+        67
+      ]
+    },
+    {
+      "name": "bip01 l foretwist1",
+      "children": [
+        48
+      ]
+    },
+    {
+      "name": "bip01 r hand",
+      "children": [
+        57,
+        58,
+        59,
+        60,
+        61,
+        73
+      ]
+    },
+    {
+      "name": "bip01 r foretwist1",
+      "children": [
+        50
+      ]
+    },
+    {
+      "name": "bip01 l finger0",
+      "children": [
+        62
+      ]
+    },
+    {
+      "name": "bip01 l finger1",
+      "children": [
+        63
+      ]
+    },
+    {
+      "name": "bip01 l finger2",
+      "children": [
+        64
+      ]
+    },
+    {
+      "name": "bip01 l finger3",
+      "children": [
+        65
+      ]
+    },
+    {
+      "name": "bip01 l finger4",
+      "children": [
+        66
+      ]
+    },
+    {
+      "name": "bip01 r finger0",
+      "children": [
+        68
+      ]
+    },
+    {
+      "name": "bip01 r finger1",
+      "children": [
+        69
+      ]
+    },
+    {
+      "name": "bip01 r finger2",
+      "children": [
+        70
+      ]
+    },
+    {
+      "name": "bip01 r finger3",
+      "children": [
+        71
+      ]
+    },
+    {
+      "name": "bip01 r finger4",
+      "children": [
+        72
+      ]
+    },
+    {
+      "name": "bip01 l finger01",
+      "children": [
+        74
+      ]
+    },
+    {
+      "name": "bip01 l finger11",
+      "children": [
+        75
+      ]
+    },
+    {
+      "name": "bip01 l finger21",
+      "children": [
+        76
+      ]
+    },
+    {
+      "name": "bip01 l finger31",
+      "children": [
+        77
+      ]
+    },
+    {
+      "name": "bip01 l finger41",
+      "children": [
+        78
+      ]
+    },
+    {
+      "name": "b_lh"
+    },
+    {
+      "name": "bip01 r finger01",
+      "children": [
+        79
+      ]
+    },
+    {
+      "name": "bip01 r finger11",
+      "children": [
+        80
+      ]
+    },
+    {
+      "name": "bip01 r finger21",
+      "children": [
+        81
+      ]
+    },
+    {
+      "name": "bip01 r finger31",
+      "children": [
+        82
+      ]
+    },
+    {
+      "name": "bip01 r finger41",
+      "children": [
+        83
+      ]
+    },
+    {
+      "name": "b_rh"
+    },
+    {
+      "name": "bip01 l finger02"
+    },
+    {
+      "name": "bip01 l finger12"
+    },
+    {
+      "name": "bip01 l finger22"
+    },
+    {
+      "name": "bip01 l finger32"
+    },
+    {
+      "name": "bip01 l finger42"
+    },
+    {
+      "name": "bip01 r finger02"
+    },
+    {
+      "name": "bip01 r finger12"
+    },
+    {
+      "name": "bip01 r finger22"
+    },
+    {
+      "name": "bip01 r finger32"
+    },
+    {
+      "name": "bip01 r finger42"
+    }
+  ],
+  "skins": [
+    {
+      "joints": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83
+      ],
+      "inverseBindMatrices": 0,
+      "skeleton": 0
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 84,
+      "type": "MAT4"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 5376
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 5376,
+      "uri": "F1.bin"
+    }
+  ]
+}
